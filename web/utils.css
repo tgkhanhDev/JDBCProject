@@ -1,0 +1,22 @@
+*{
+    --maxWidth: 1902px;
+    --minNavHeight:80px
+}
+
+.activeNav{
+    font-weight: bold;
+    color: rgb(37,99,235);
+}
+
+.non-actNav{
+    color:rgb(156 163 175) ;
+}
+.non-actNav:hover{
+    color:rgb(56, 58, 62) ;
+
+}
+
+.container{
+    margin: auto;
+    width: 1902px;
+}
