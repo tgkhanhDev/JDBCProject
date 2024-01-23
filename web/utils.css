@@ -1,22 +1,47 @@
-*{
-    --maxWidth: 1902px;
-    --minNavHeight:80px
+* {
+  font-family: "Rubik", sans-serif;
+  --maxWidth: 1902px;
+  --minNavHeight: 80px;
+
+  --mainblue: #37cbd8;
+  --maingreen: #7ed957;
+  --secblue: #2475da;
+  --linearbg: linear-gradient(to right, #7ed957, #2475da);
+
+  /* smooth scroll */
+  scroll-behavior: smooth;
 }
 
-.activeNav{
-    font-weight: bold;
-    color: rgb(37,99,235);
+.activeNav {
+  font-weight: bold;
+  color: rgb(37, 99, 235);
 }
 
-.non-actNav{
-    color:rgb(156 163 175) ;
+.non-actNav {
+  color: rgb(156 163 175);
 }
-.non-actNav:hover{
-    color:rgb(56, 58, 62) ;
-
+.non-actNav:hover {
+  color: rgb(56, 58, 62);
 }
 
-.container{
-    margin: auto;
-    width: 1902px;
+.container {
+  margin: auto;
+  width: 1902px;
+}
+
+/* scrollbar thumbs  */
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+  background-color: #37cbd8;
 }
