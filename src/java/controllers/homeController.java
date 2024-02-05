@@ -5,8 +5,11 @@
  */
 package controllers;
 
+import DAO.ServiceDAO;
+import DTO.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class testServlet extends HttpServlet {
+public class homeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +35,15 @@ public class testServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet testServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet testServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            /* Lấy danh sách seviceList để render ra index page */
+            ServiceDAO ser = new ServiceDAO();
+            ArrayList<Service> serList = ser.getAllService();
+
+            request.setAttribute("serviceList", serList);//get Service for render
+//            Về home nè 
+            request.getRequestDispatcher("mainController?action="+CONSTANTS.VIEWHOME).forward(request, response);
+            
+
         }
     }
 
