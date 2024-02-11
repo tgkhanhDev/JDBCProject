@@ -40,7 +40,7 @@ public class mainController extends HttpServlet {
             {
                 action = CONSTANTS.GETHOME;
             }
-
+            
             switch (action)
             {
                 case CONSTANTS.VIEWHOME:

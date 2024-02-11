@@ -11,6 +11,8 @@ package controllers;
  */
 public interface CONSTANTS {
 
+    //Get => Qua controller lay database
+    //view => Qua JSP
     // ?action=...
     public final String GETHOME = "gethome"; //back to  homeController: (getdata before go home)
     public final String VIEWHOME = "home"; //back to home: index.jsp

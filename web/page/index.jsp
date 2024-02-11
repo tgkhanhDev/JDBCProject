@@ -34,9 +34,14 @@
 
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
             <jsp:include page="/components/carousel/carousel.jsp" />
+            <jsp:include page="/components/navigate/navigate.jsp" />
             <jsp:include page="/components/news/news.jsp" />
             <jsp:include page="/components/countUp/countUp.jsp" />
             <%--<jsp:include page="/components/sponsor/sponsor.jsp" />--%>
+            <jsp:include page="/components/footer//footer.jsp" />
+
+
+
 
         </div> 
 
@@ -92,7 +97,7 @@
         <!--Component's JS--> 
         <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
         <script type="text/javascript"  src="Javascript/News/index.js"></script> <!--For NEWS -->
-
+        <script type="text/javascript"  src="Javascript/Footer/index.js"></script>
 
 
     </body>
