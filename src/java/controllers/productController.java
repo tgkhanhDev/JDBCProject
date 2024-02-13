@@ -6,7 +6,9 @@
 package controllers;
 
 import DAO.ProductDAO;
+import DAO.ServiceDAO;
 import DTO.Product;
+import DTO.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -39,22 +41,22 @@ public class productController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
+            //Do Navbar sd chung nen tam thoi lay luon o day:
+            ServiceDAO ser = new ServiceDAO();
+            ArrayList<Service> serList = ser.getAllService();
+            request.setAttribute("serviceList", serList);
+            
+            
             /* Get Product về để sau đó render. */
-            out.println("ProductController");
-
             String cateID = (String) request.getParameter("cateID");
             if (cateID == null)
             {
                 cateID = "1";
             }
-
             ArrayList<Product> list = new ArrayList<>();
-
             list = new ProductDAO().getAllProductByCateID(cateID);
-
-             request.setAttribute("productList", list);
-             
-            request.getRequestDispatcher("mainController?action="+CONSTANTS.VIEWPRODUCTS+"&cateID="+cateID).forward(request, response);
+            request.setAttribute("productList", list);
+            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCTS + "&cateID=" + cateID).forward(request, response);
             //Giờ qua web render ra
         }
     }

@@ -30,10 +30,16 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
 
         <!-- css  -->
-        <link rel="../../utils.css">
+        <link rel="stylesheet" href="utils.css"/>
     </head>
     <body>
+        <jsp:include page="/components/navbar/navbar.jsp" />
+
+
         <div class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
+
+            <div class="pageTitle">Sản phẩm</div>
+
             <!-- Section -->
             <div class="flex justify-center gap-10 bg-gray-100 py-8">
 
@@ -45,7 +51,7 @@
                         {
                 %>
                 <form action="mainController">
-                    <input type="hidden" name="action" value=<%=            CONSTANTS.GETPRODUCTS          %>>
+                    <input type="hidden" name="action" value=<%=            CONSTANTS.GETPRODUCTS%>>
                     <input type="hidden" name="cateID" value=<%=item.getCate_ID()%>> <!--  Lấy ID bỏ vào param  -->
                     <button type="submit" class="flex items-center flex-col cursor-pointer"> 
                         <div class="bg-gray-300 rounded-[50%] p-2"> 
@@ -125,5 +131,7 @@
         </div>
 
         <script src="./productJS.js"></script>
+        <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
+
     </body>
 </html>

@@ -16,7 +16,10 @@ public interface CONSTANTS {
     // ?action=...
     public final String GETHOME = "gethome"; //back to  homeController: (getdata before go home)
     public final String VIEWHOME = "home"; //back to home: index.jsp
-    
+
+    public final String GETLOGINPAGE = "getloginpage"; //back to  loginController: )
+    public final String VIEWLOGINPAGE = "loginpage"; //back to loginpage
+
     public final String GETPRODUCTS = "getProducts"; // get products xong mới render qua products
     public final String VIEWPRODUCTS = "products"; // qua trang products
 

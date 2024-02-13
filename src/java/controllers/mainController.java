@@ -35,12 +35,13 @@ public class mainController extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             String url = "";
+
             String action = request.getParameter("action");
             if (action == null)
             {
                 action = CONSTANTS.GETHOME;
             }
-            
+
             switch (action)
             {
                 case CONSTANTS.VIEWHOME:
@@ -54,6 +55,12 @@ public class mainController extends HttpServlet {
                     break;
                 case CONSTANTS.VIEWPRODUCTS:
                     url = "page/productPage/products.jsp";
+                    break;
+                case CONSTANTS.GETLOGINPAGE:
+                    url = "loginController";
+                    break;
+                case CONSTANTS.VIEWLOGINPAGE:
+                    url = "page/loginPage/login.jsp";
                     break;
                 default:
                     break;

@@ -31,11 +31,9 @@
         <header>
             <jsp:include page="/components/admin/header/index.jsp" />
         </header>
+        <jsp:include page="/components/admin/body/index.jsp" />
 
-        <div id="body">
-            <div id="sidebar">
-                <jsp:include page="/components/admin/sider/index.jsp" />
-            </div>
-        </div>
+        <!--my JS COI LAI PATH-->  
+        <script type="text/javascript"  src="../../Javascript/Admin/index.js"></script> 
     </body>
 </html>

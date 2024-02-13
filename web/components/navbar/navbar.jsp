@@ -4,6 +4,7 @@
     Author     : ACER
 --%>
 
+<%@page import="com.sun.java.swing.plaf.windows.resources.windows"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Service"%>
 <%@page import="java.util.ArrayList"%>
@@ -85,10 +86,12 @@
                         </li>
                     </ul>
                 </div>
-                <a class=" lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200"
-                   href="#">Sign In</a>
-                <a class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
-                   href="#">Sign up</a>
+                <form  action="mainController">
+                    <input type="hidden" name="action" value= "<%=         CONSTANTS.VIEWLOGINPAGE          %>"  />
+                    <button type="submit" name="sec" value="1" class=" lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200">Sign In</button>
+                    <button type="submit" name="sec" value="2" class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+                            href="#">Sign up</button>
+                </form>
             </nav>
             <div class="navbar-menu relative  hidden">
                 <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
@@ -134,12 +137,12 @@
                         </ul>
                     </div>
                     <div class="mt-auto">
-                        <div class="pt-6">
-                            <button class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
+                        <form class="pt-6"  action="mainController">
+                            <button type="submit" name="login" value="1" class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
                                     >Sign in</button>
-                            <button class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700 rounded-xl"
-                                    >Sign Up</button>
-                        </div>
+                            <button  type="submit" name="register" value="2" class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700 rounded-xl"
+                                     >Sign Up</button>
+                        </form>
                         <p class="my-4 text-xs text-center text-gray-400">
                             <span>Copyright © 2021</span>
                         </p>
@@ -166,13 +169,13 @@
                                     if (item.getServicePrice() == 0)
                                     {
                                 %>
-                                <input type="hidden" name="action" value=<%=CONSTANTS.GETPRODUCTS %>>
+                                <input type="hidden" name="action" value=<%=CONSTANTS.GETPRODUCTS%>>
                                 <%
                                 } else
                                 {
                                 %>
-                                <input type="hidden" name="action" value=<%=CONSTANTS.APPLICATION %>>
-                                <input type="hidden" name="applicationID" value=<%=    item.getId()  %>>
+                                <input type="hidden" name="action" value=<%=CONSTANTS.APPLICATION%>>
+                                <input type="hidden" name="applicationID" value=<%=    item.getId()%>>
                                 <%
                                     }
                                 %>
