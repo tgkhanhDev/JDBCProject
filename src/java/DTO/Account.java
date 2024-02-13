@@ -10,6 +10,7 @@ package DTO;
  * @author ACER
  */
 public class Account {
+
     private int AccountID;
     private String LastName;
     private String FirstName;
@@ -18,12 +19,14 @@ public class Account {
     private String password;
     private String status;
     private String policyStatus;
-    private int RoleID;
+//    private int RoleID;
+    private String RoleName;
     private String script;
 
-    public Account(){}
-    
-    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, int RoleID, String script) {
+    public Account() {
+    }
+
+    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, String RoleName, String script) {
         this.AccountID = AccountID;
         this.LastName = LastName;
         this.FirstName = FirstName;
@@ -32,7 +35,7 @@ public class Account {
         this.password = password;
         this.status = status;
         this.policyStatus = policyStatus;
-        this.RoleID = RoleID;
+        this.RoleName = RoleName;
         this.script = script;
     }
 
@@ -100,12 +103,12 @@ public class Account {
         this.policyStatus = policyStatus;
     }
 
-    public int getRoleID() {
-        return RoleID;
+    public String getRoleName() {
+        return RoleName;
     }
 
-    public void setRoleID(int RoleID) {
-        this.RoleID = RoleID;
+    public void setRoleName(String RoleName) {
+        this.RoleName = RoleName;
     }
 
     public String getScript() {
@@ -115,6 +118,7 @@ public class Account {
     public void setScript(String script) {
         this.script = script;
     }
+
     
     
 }

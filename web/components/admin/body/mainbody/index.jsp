@@ -15,6 +15,7 @@
         <div id="main" class="w-[calc(100vw-200px)] ml-[200px]">
             <%
                 String param = (String) request.getParameter("sec");
+                if(param == null) param="1";
                 switch (param)
                 {
                     case "1":

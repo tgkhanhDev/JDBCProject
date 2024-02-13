@@ -5,10 +5,8 @@
  */
 package controllers;
 
-import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class mainController extends HttpServlet {
+public class ProductController_Admin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,47 +32,16 @@ public class mainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            String url = "";
-
-            String action = request.getParameter("action");
-            if (action == null)
-            {
-                action = CONSTANTS.GETHOME;
-            }
-
-            switch (action)
-            {
-                case CONSTANTS.VIEWHOME:
-                    url = "page/index.jsp";
-                    break;
-                case CONSTANTS.GETHOME:
-                    url = "homeController";
-                    break;
-                case CONSTANTS.GETPRODUCTS:
-                    url = "productController";
-                    break;
-                case CONSTANTS.VIEWPRODUCTS:
-                    url = "page/productPage/products.jsp";
-                    break;
-                case CONSTANTS.GETLOGINPAGE:
-                    url = "loginController";
-                    break;
-                case CONSTANTS.VIEWLOGINPAGE:
-                    url = "page/loginPage/login.jsp";
-                    break;
-                case CONSTANTS.GETPRODUCT_ADMIN:
-                    url = "ProductController_Admin";
-                    break;
-                case CONSTANTS.VIEWPRODUCT_ADMIN:
-                    url = "page/adminPage/admin.jsp";
-                    break;
-                default:
-                    break;
-            }
-
-//            url="productController";
-            request.getRequestDispatcher(url).forward(request, response);
-
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ProductController_Admin</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ProductController_Admin at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

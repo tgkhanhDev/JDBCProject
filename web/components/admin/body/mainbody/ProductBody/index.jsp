@@ -30,20 +30,36 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Product name
+                            AccountID
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Color
+                            LastName
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Category
+                            FirstName
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Price
+                            Phone
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
+                            Gmail
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Password
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Policy status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Script
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Block/Unblock
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="">Other</span>
+                        </th>
+
                     </tr>
                 </thead>
                 <tbody>

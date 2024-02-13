@@ -34,6 +34,6 @@
         <jsp:include page="/components/admin/body/index.jsp" />
 
         <!--my JS COI LAI PATH-->  
-        <script type="text/javascript"  src="../../Javascript/Admin/index.js"></script> 
+        <script type="text/javascript"  src="Javascript/Admin/index.js"></script> 
     </body>
 </html>

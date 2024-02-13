@@ -25,4 +25,7 @@ public interface CONSTANTS {
 
     public final String APPLICATION = "application"; // qua trang viết đơn
 
+    //admin
+    public final String GETPRODUCT_ADMIN = "getProductAdmin"; // Lấy thông tin admin
+    public final String VIEWPRODUCT_ADMIN = "productAdmin"; // qua trang Admin
 }

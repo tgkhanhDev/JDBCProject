@@ -12,7 +12,12 @@
         <title>SIDER COMP</title>
     </head>
     <body>
-        <% String param = request.getParameter("sec"); %>
+        <% 
+            String param = request.getParameter("sec");
+            if(param == null){
+                param="1";
+            }
+        %>
         <form id="sider" class="fixed w-[200px] text-white h-[calc(100vh-56px)] top-[56px] left-0 bg-[#323232]">
             <input id="siderInput" type="hidden" name="sec" value="" />
             <!--Quan Ly--> 

@@ -13,9 +13,9 @@
     </head>
     <body>
         <div id="body">
-            <jsp:include page="/components/admin/body/sider/index.jsp" />
+            <jsp:include page="sider/index.jsp" />
         </div>
-        <jsp:include page="/components/admin/body/mainbody/index.jsp" />
+        <jsp:include page="mainbody/index.jsp" />
 
     </body>
 </html>
