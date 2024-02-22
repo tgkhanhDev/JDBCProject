@@ -4,6 +4,7 @@
     Author     : ACER
 --%>
 
+
 <%@page import="com.sun.java.swing.plaf.windows.resources.windows"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Service"%>
@@ -11,7 +12,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
-
     <head>
         <title>Title</title>
         <!-- Required meta tags -->
@@ -232,9 +232,7 @@
                 </div>
             </div>
         </div>
-
         <!-- Optional JavaScript -->
         <!--PUT IN index.jsp--> 
     </body>
-
 </html>

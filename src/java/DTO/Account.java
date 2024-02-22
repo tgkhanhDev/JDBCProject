@@ -10,7 +10,6 @@ package DTO;
  * @author ACER
  */
 public class Account {
-
     private int AccountID;
     private String LastName;
     private String FirstName;
@@ -86,7 +85,6 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-
     public String getStatus() {
         return status;
     }
@@ -118,7 +116,5 @@ public class Account {
     public void setScript(String script) {
         this.script = script;
     }
-
-    
-    
+   
 }

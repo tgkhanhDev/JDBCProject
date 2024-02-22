@@ -121,7 +121,6 @@
                         tiền thuê thiết bị đầu cuối, phí thu tiền dịch vụ tại nhà và các dịch vụ gia tăng đi kèm khác
                     </div>
                 </div>
-
                 <%
                             }
 
@@ -136,6 +135,5 @@
 
         <script src="./productJS.js"></script>
         <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
-
     </body>
 </html>
