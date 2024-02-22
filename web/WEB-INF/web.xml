@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>SetCharacterEncodingFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SetCharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>mainController</servlet-name>
         <servlet-class>controllers.mainController</servlet-class>
@@ -17,8 +29,24 @@
         <servlet-class>controllers.productController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProductController_Admin</servlet-name>
-        <servlet-class>controllers.ProductController_Admin</servlet-class>
+        <servlet-name>ProductsFormController_Admin</servlet-name>
+        <servlet-class>controllers.ProductsFormController_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminController_Admin</servlet-name>
+        <servlet-class>controllers.AdminController_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateController_Admin</servlet-name>
+        <servlet-class>controllers.UpdateController_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddController_Admin</servlet-name>
+        <servlet-class>controllers.AddController_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlockController_Admin</servlet-name>
+        <servlet-class>controllers.BlockController_Admin</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
@@ -37,8 +65,24 @@
         <url-pattern>/productController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductController_Admin</servlet-name>
-        <url-pattern>/ProductController_Admin</url-pattern>
+        <servlet-name>ProductsFormController_Admin</servlet-name>
+        <url-pattern>/ProductsFormController_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminController_Admin</servlet-name>
+        <url-pattern>/AdminController_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateController_Admin</servlet-name>
+        <url-pattern>/UpdateController_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddController_Admin</servlet-name>
+        <url-pattern>/AddController_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlockController_Admin</servlet-name>
+        <url-pattern>/BlockController_Admin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

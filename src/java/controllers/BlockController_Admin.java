@@ -5,10 +5,11 @@
  */
 package controllers;
 
+import DAO.AccountDAO;
+import DAO.ProductDAO;
 import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class mainController extends HttpServlet {
+public class BlockController_Admin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,64 +35,40 @@ public class mainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            String url = "";
-            
-            String action = request.getParameter("action");
-            
-            if (action == null)
-            {
-                action = CONSTANTS.GETHOME;
-            }
+            /* TODO output your page here. You may use following sample code. */
 
-            switch (action)
+            out.println("<h1>Servlet BlockController_Admin at " + request.getContextPath() + "</h1>");
+            String sec = (String) request.getParameter("sec");
+            String id = (String) request.getParameter("itemID");
+            int result = 0;
+            switch (sec)
             {
-                case CONSTANTS.VIEWHOME:
-                    url = "page/index.jsp";
+                case "1":
+                    result = new ProductDAO().blockProduct(id);
                     break;
-                case CONSTANTS.GETHOME:
-                    url = "homeController";
+                case "2":
+                    String isPolicy = (String) request.getParameter("type");
+                    if (isPolicy != null)
+                    {
+                        result = new AccountDAO().blockAccount_Policy(id);
+                    } else
+                    {
+                        result = new AccountDAO().blockAccount(id);
+                    }
                     break;
-                case CONSTANTS.GETPRODUCTS:
-                    url = "productController";
+                case "3":
                     break;
-                case CONSTANTS.VIEWPRODUCTS:
-                    url = "page/productPage/products.jsp";
-                    break;
-                case CONSTANTS.GETLOGINPAGE:
-                    url = "loginController";
-                    break;
-                case CONSTANTS.VIEWLOGINPAGE:
-                    url = "page/loginPage/login.jsp";
-                    break;
-                    
-//                    CALL GET => VIEW 
-//                    CALL FORM => GET => View 
-                case CONSTANTS.GETPRODUCT_ADMIN:
-                    url = "AdminController_Admin"; 
-                    break;
-                case CONSTANTS.VIEWPRODUCT_ADMIN:
-                    url = "page/adminPage/admin.jsp";
-                    break;
-                    //Lấy thông tin  ra formInput
-                case CONSTANTS.GETFORMINFOPRODUCT_ADMIN:
-                    url="ProductsFormController_Admin";
-                    break;
-                case CONSTANTS.UPDATEINFO_ADMIN:
-                    url="UpdateController_Admin";
-                    break;
-                case CONSTANTS.ADDINFO_ADMIN:
-                    url="AddController_Admin";
-                    break;
-                case CONSTANTS.BLOCK_ADMIN:
-                    url="BlockController_Admin";
-                    break;
-                default:
+                case "4":
                     break;
             }
 
-//            url="productController";
-//            out.print("action: "+ action);
-            request.getRequestDispatcher(url).forward(request, response);
+            if (result >= 1)
+            {
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
+            } else
+            {
+                out.print("Something Wrong");
+            }
 
         }
     }

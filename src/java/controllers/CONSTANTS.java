@@ -10,7 +10,10 @@ package controllers;
  * @author ACER
  */
 public interface CONSTANTS {
-
+    
+    public final int MAXPAGE_ADMIN=5;
+    
+    
     //Get => Qua controller lay database
     //view => Qua JSP
     // ?action=...
@@ -28,4 +31,10 @@ public interface CONSTANTS {
     //admin
     public final String GETPRODUCT_ADMIN = "getProductAdmin"; // Lấy thông tin admin
     public final String VIEWPRODUCT_ADMIN = "productAdmin"; // qua trang Admin
+
+    public final String GETFORMINFOPRODUCT_ADMIN = "formHandle"; // qua trang Admin
+    public final String UPDATEINFO_ADMIN = "updateAdmin"; // Qua update Servlet
+    public final String ADDINFO_ADMIN = "addAdmin"; // qua Add Servlet
+    public final String BLOCK_ADMIN = "blockAdmin"; // qua Add Servlet
+
 }

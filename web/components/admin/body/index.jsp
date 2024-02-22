@@ -13,7 +13,6 @@
     </head>
     <body>
         <div id="body">
-            <jsp:include page="sider/index.jsp" />
         </div>
         <jsp:include page="mainbody/index.jsp" />
 

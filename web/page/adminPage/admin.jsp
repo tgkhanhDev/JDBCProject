@@ -28,10 +28,13 @@
         <link rel="stylesheet" href="utils.css"/>
     </head>
     <body>
-        <header>
+        <nav>
+            <jsp:include page="/components/admin/body/sider/index.jsp" />
+        </nav>
+        <div>
             <jsp:include page="/components/admin/header/index.jsp" />
-        </header>
-        <jsp:include page="/components/admin/body/index.jsp" />
+            <jsp:include page="/components/admin/body/index.jsp" />
+        </div>
 
         <!--my JS COI LAI PATH-->  
         <script type="text/javascript"  src="Javascript/Admin/index.js"></script> 

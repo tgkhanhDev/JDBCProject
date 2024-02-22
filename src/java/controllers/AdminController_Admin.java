@@ -1,11 +1,14 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
-
-import DTO.Product;
+import DAO.AccountDAO;
+import DAO.ProductDAO;
+import DAO.RequestDAO;
+import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class mainController extends HttpServlet {
+public class AdminController_Admin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,65 +37,51 @@ public class mainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            String url = "";
-            
-            String action = request.getParameter("action");
-            
-            if (action == null)
+            ArrayList list = new ArrayList();
+            String sec = request.getParameter("sec");
+            String search = request.getParameter("search");
+            if (sec == null)
             {
-                action = CONSTANTS.GETHOME;
+                sec = "1";
             }
 
-            switch (action)
+            switch (sec)
             {
-                case CONSTANTS.VIEWHOME:
-                    url = "page/index.jsp";
+                case "1":
+                    if (search != null)
+                    {
+                        list = new ProductDAO().getProductByName(search);
+                    } else
+                    {
+                        list = new ProductDAO().getAllProduct();
+                    }
                     break;
-                case CONSTANTS.GETHOME:
-                    url = "homeController";
+                case "2":
+                    if (search != null)
+                    {
+                        list = new AccountDAO().getAccountByPhone(search);
+                    } else
+                    {
+                        list = new AccountDAO().getAllAccount();
+                    }
                     break;
-                case CONSTANTS.GETPRODUCTS:
-                    url = "productController";
+                case "3":
+                    if (search != null)
+                    {
+                    } else
+                    {
+                        list = new RequestDAO().getAllRequest();
+                    }
                     break;
-                case CONSTANTS.VIEWPRODUCTS:
-                    url = "page/productPage/products.jsp";
-                    break;
-                case CONSTANTS.GETLOGINPAGE:
-                    url = "loginController";
-                    break;
-                case CONSTANTS.VIEWLOGINPAGE:
-                    url = "page/loginPage/login.jsp";
-                    break;
-                    
-//                    CALL GET => VIEW 
-//                    CALL FORM => GET => View 
-                case CONSTANTS.GETPRODUCT_ADMIN:
-                    url = "AdminController_Admin"; 
-                    break;
-                case CONSTANTS.VIEWPRODUCT_ADMIN:
-                    url = "page/adminPage/admin.jsp";
-                    break;
-                    //Lấy thông tin  ra formInput
-                case CONSTANTS.GETFORMINFOPRODUCT_ADMIN:
-                    url="ProductsFormController_Admin";
-                    break;
-                case CONSTANTS.UPDATEINFO_ADMIN:
-                    url="UpdateController_Admin";
-                    break;
-                case CONSTANTS.ADDINFO_ADMIN:
-                    url="AddController_Admin";
-                    break;
-                case CONSTANTS.BLOCK_ADMIN:
-                    url="BlockController_Admin";
-                    break;
-                default:
+                case "4":
                     break;
             }
 
-//            url="productController";
-//            out.print("action: "+ action);
-            request.getRequestDispatcher(url).forward(request, response);
+            request.setAttribute("sec", sec);
+            request.setAttribute("list", list);
 
+            //            Về view nè 
+            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
         }
     }
 

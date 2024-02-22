@@ -65,21 +65,23 @@
                     }
                 %>
 
-                <!--                        <div class="flex items-center flex-col cursor-pointer" onClick="() => setCompa()">
-                                            <div class="bg-gray-300 rounded-[50%] p-2"> <img class="w-[50px] text-white" src="/PrjProject/img/products/company.png"
-                                                                                             alt="b" /> </div>
-                                            <div class="font-bold text-xl">Cáp quang doanh nghiệp</div>
-                                        </div>-->
 
             </div>
-            <%
-                ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("productList");
-                if (list != null)
-                {
-                    for (Product item : list)
-                    {
-            %>
+
+            <!--ITEM FRAME--> 
             <div class="grid grid-cols-6 p-2 gap-10">
+
+                <%
+                    ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("productList");
+                    if (list != null)
+                    {
+                        for (Product item : list)
+                        {
+                            //Status hd moi render
+                            if (item.getStatus().equals("1"))
+                            {
+
+                %>
                 <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;"
                      class="rounded-2xl text-sm xl:col-span-2 md:col-span-3 col-span-6 py-4 px-8 text-center flex flex-col justify-center items-center gap-3">
                     <div class="text-green-500 text-2xl font-bold italic"> <%=       item.getName()%> </div>
@@ -119,15 +121,17 @@
                         tiền thuê thiết bị đầu cuối, phí thu tiền dịch vụ tại nhà và các dịch vụ gia tăng đi kèm khác
                     </div>
                 </div>
-            </div>
 
-            <%
+                <%
+                            }
+
+                        }
+
                     }
 
-                }
-
-            %>
-
+                %>
+            </div>
+            <!--END ITEM FRAME--> 
         </div>
 
         <script src="./productJS.js"></script>
