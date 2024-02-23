@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <filter>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+    <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+    </init-param>
+
+</filter>
+
+<filter-mapping>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+    
+    <servlet>
+        <servlet-name>mainController</servlet-name>
+        <servlet-class>controllers.mainController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>test</servlet-name>
+        <servlet-class>DTO.test</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>homeController</servlet-name>
+        <servlet-class>controllers.homeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>productController</servlet-name>
+        <servlet-class>controllers.productController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductController_Admin</servlet-name>
+        <servlet-class>controllers.ProductController_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <servlet-class>controllers.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>checkInfor</servlet-name>
+        <servlet-class>controllers.checkInfor</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>registerController</servlet-name>
+        <servlet-class>controllers.registerController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>mainController</servlet-name>
+        <url-pattern>/mainController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>test</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>homeController</servlet-name>
+        <url-pattern>/homeController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>productController</servlet-name>
+        <url-pattern>/productController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductController_Admin</servlet-name>
+        <url-pattern>/ProductController_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/loginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>checkInfor</servlet-name>
+        <url-pattern>/checkInfor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>registerController</servlet-name>
+        <url-pattern>/registerController</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>mainController</welcome-file>
+    </welcome-file-list>
+</web-app>
