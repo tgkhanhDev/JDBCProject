@@ -45,3 +45,12 @@ body::-webkit-scrollbar-thumb {
   background-clip: content-box;
   background-color: #37cbd8;
 }
+
+.pageTitle{
+    font-size: 30px;
+    padding: 30px 15px;
+    padding-left: 3rem;
+    color: #f6f6f6;
+    background-color:  #2475da;
+    width: 100%;
+}

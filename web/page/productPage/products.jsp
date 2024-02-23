@@ -4,6 +4,11 @@
     Author     : ACER
 --%>
 
+<%@page import="controllers.CONSTANTS"%>
+<%@page import="DTO.ProductCategories"%>
+<%@page import="DAO.ProductDAO"%>
+<%@page import="DTO.Product"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,44 +30,78 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
 
         <!-- css  -->
-        <link rel="../../utils.css">
+        <link rel="stylesheet" href="utils.css"/>
     </head>
     <body>
+        <jsp:include page="/components/navbar/navbar.jsp" />
+
+
         <div class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
+
+            <div class="pageTitle">Sản phẩm</div>
+
             <!-- Section -->
             <div class="flex justify-center gap-10 bg-gray-100 py-8">
-                <div class="flex items-center flex-col cursor-pointer" onClick="() => setIndi()">
-                    <div class="bg-gray-300 rounded-[50%] p-2"> <img class="w-[50px] text-white" src="/PrjProject/img/products/individual.png"
-                                                                     alt="a" /> </div>
-                    <div class="font-bold text-xl text-blue-500">Cáp quang cá nhân</div>
-                </div>
-                <div class="flex items-center flex-col cursor-pointer" onClick="() => setCompa()">
-                    <div class="bg-gray-300 rounded-[50%] p-2"> <img class="w-[50px] text-white" src="/PrjProject/img/products/company.png"
-                                                                     alt="b" /> </div>
-                    <div class="font-bold text-xl">Cáp quang doanh nghiệp</div>
-                </div>
+
+                <%
+                    ArrayList<ProductCategories> cateList = new ProductDAO().getAllCategories();
+                    if (cateList != null)
+                    {
+                        for (ProductCategories item : cateList)
+                        {
+                %>
+                <form action="mainController">
+                    <input type="hidden" name="action" value=<%=            CONSTANTS.GETPRODUCTS%>>
+                    <input type="hidden" name="cateID" value=<%=item.getCate_ID()%>> <!--  Lấy ID bỏ vào param  -->
+                    <button type="submit" class="flex items-center flex-col cursor-pointer"> 
+                        <div class="bg-gray-300 rounded-[50%] p-2"> 
+                            <img class="w-[50px] text-white" src= <%=        item.getIcon()%>  alt=<%=        item.getName()%>  />
+                        </div> 
+                        <div class="font-bold text-xl <%=(request.getParameter("cateID").equals(item.getCate_ID())) ? "text-blue-500" : ""%>"> <%=        item.getName()%>   </div> 
+                    </button>
+                </form>
+                <%
+                        }
+                    }
+                %>
+
+
             </div>
+
+            <!--ITEM FRAME--> 
             <div class="grid grid-cols-6 p-2 gap-10">
+
+                <%
+                    ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("productList");
+                    if (list != null)
+                    {
+                        for (Product item : list)
+                        {
+                            //Status hd moi render
+                            if (item.getStatus().equals("1"))
+                            {
+
+                %>
                 <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;"
                      class="rounded-2xl text-sm xl:col-span-2 md:col-span-3 col-span-6 py-4 px-8 text-center flex flex-col justify-center items-center gap-3">
-                    <div class="text-green-500 text-2xl font-bold italic"> prd.name </div> <img src="{prd.img}"
-                                                                                                class="w-1/2" alt="{prd.name}" />
+                    <div class="text-green-500 text-2xl font-bold italic"> <%=       item.getName()%> </div>
+                    <img src=<%=     item.getThumbnail()%> class="w-1/2" alt=<%=       item.getName()%> />
 
-                    Copy code
+
                     <!-- speed -->
-                    <span class="px-4 py-2 rounded-xl bg-blue-500 "> prd.speed Mbs </span>
+                    <span class="px-4 py-2 rounded-xl bg-blue-500 "> <%=       item.getSpeed()%> Mbps </span>
 
                     <!-- Speed commerce -->
                     <div class="">
-                        <p class="">Tốc độ Download {prd.speed} Mbps</p>
-                        <p class="">Tốc độ Upload {prd.speed} Mbps</p>
+                        <p class="">Tốc độ Download <%=       item.getSpeed()%>  Mbps</p>
+                        <p class="">Tốc độ Upload <%=       item.getSpeed()%>  Mbps</p>
                     </div>
 
                     <!-- linebreak -->
                     <div class="bg-black h-[1px] rounded-2xl my-2 w-[70%]"></div>
 
                     <!-- description -->
-                    <div class="">{prd.description}</div>
+                    <div class=""><%=       item.getDescription()%> </div>
 
                     <!-- linebreak -->
                     <div class="bg-black h-[1px] rounded-2xl my-2 w-[70%]"></div>
@@ -82,9 +121,19 @@
                         tiền thuê thiết bị đầu cuối, phí thu tiền dịch vụ tại nhà và các dịch vụ gia tăng đi kèm khác
                     </div>
                 </div>
+                <%
+                            }
+
+                        }
+
+                    }
+
+                %>
             </div>
+            <!--END ITEM FRAME--> 
         </div>
 
         <script src="./productJS.js"></script>
+        <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
     </body>
 </html>

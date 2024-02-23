@@ -1,6 +1,12 @@
+<%-- 
+    Document   : login
+    Created on : Feb 13, 2024, 3:55:22 PM
+    Author     : ACER
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Title</title>
     <!-- Required meta tags -->
@@ -23,11 +29,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
 
     <!-- Css  -->
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="../utils.css">
+    <link rel="stylesheet" href="page/loginPage/login.css">
+    <link rel="stylesheet" href="utils.css">
 </head>
 
-<body style="background-image: url('../img/login/login_background.png');
+<body style="background-image: url('img/login/login_background.png');
     background-repeat: no-repeat;
     background-size: cover ;
 ">
@@ -39,7 +45,7 @@
                 class="z-10 absolute w-[50%] h-[80vh] bg-[var(--secblue)] p-10 hidden md:flex items-center brLeft coverBg left:0 ">
                 <div class="layerBackground"></div>
                 <div class="w-full z-[1] ">
-                    <img src="../img/logo.png" alt="logo" class="h-64 w-64 m-auto">
+                    <img src="img/logo.png" alt="logo" class="h-64 w-64 m-auto">
                     <div class="flex flex-col items-center">
                         <div class="hidden lg:block text-3xl font-bold text-[var(--maingreen)]">
                             Welcome to F-Lightning
@@ -63,7 +69,7 @@
             <!-- QTV  -->
             <div class="w-[50%] h-[80vh]  p-10 flex items-center brLeft mainBgLeft relative overflow-hidden">
                 <div class="qtvBg">
-                    <img src="../img/login/admin.png" alt="">
+                    <img src="img/login/admin.png" alt="">
                 </div>
                 <div class="flex flex-col gap-7 w-full text-white z-[1]">
                     <div class="text-[2rem] font-bold m-auto">Chào mừng quản trị...</div>
@@ -90,7 +96,7 @@
                 <!-- RegisterPage -->
                 <div id="regPage" class="regPage brRight">
                     <div class="cusbg">
-                        <img src="../img/login/customer.png" alt="">
+                        <img src="img/login/customer.png" alt="">
                     </div>
                     <div class="absolute top-3 right-5 z-[1]">
                         <button class="underline italic" id="swapLoginBtn">Quay về đăng nhập?</button>
@@ -126,7 +132,7 @@
                 <!-- login Page  -->
                 <div class="w-full m-auto flex justify-center">
                     <div class="cusbg">
-                        <img src="../img/login/customer.png" alt="">
+                        <img src="img/login/customer.png" alt="">
                     </div>
                     <div class="absolute top-3 right-5 ">
                         <button class="underline italic" id="swapRegBtn">Chưa có tài khoản?</button>
@@ -163,7 +169,7 @@
                 class="z-10 absolute w-[100%] h-[50vh] bg-[var(--secblue)] p-10 flex items-center brTop coverBg left:0 ">
                 <div class="layerBackground"></div>
                 <div class="w-full z-[1]">
-                    <img src="../img/logo.png" alt="logo" class="h-36 w-36 m-auto">
+                    <img src="img/logo.png" alt="logo" class="h-36 w-36 m-auto">
                     <div class="flex flex-col items-center">
                         <div class="hidden lg:block text-3xl font-bold text-[var(--maingreen)]">
                             Welcome to F-Lightning
@@ -187,7 +193,7 @@
             <!-- QTV  -->
             <div class="w-[100%] h-[50vh] p-10 flex items-center brTop mainBgLeft relative overflow-hidden">
                 <div class="qtvBg">
-                    <img class="" src="../img/login/admin.png" alt="">
+                    <img class="" src="img/login/admin.png" alt="">
                 </div>
                 <div class="flex flex-col gap-7 w-full text-white z-[1]">
                     <div class="text-[1.5rem] font-bold m-auto">Chào mừng quản trị...</div>
@@ -212,9 +218,9 @@
                 class="relative w-[100%] h-[50vh] text-[#ffffffe2] flex items-center brBot mainBgRight overflow-hidden">
 
                 <!-- RegisterPage -->
-                <div id="regPage" class="regPage brBot">
+                <div id="regPage" class="regPage brBot swapPage">
                     <div class="cusbg">
-                        <img src="../img/login/customer.png" alt="">
+                        <img src="img/login/customer.png" alt="">
                     </div>
                     <div class="absolute top-3 right-5 z-[1]">
                         <button class="underline italic z-[2]" id="swapLoginBtn">Quay về đăng nhập?</button>
@@ -251,7 +257,7 @@
                 <!-- login Page  -->
                 <div class="w-full m-auto flex justify-center">
                     <div class="cusbg">
-                        <img src="../img/login/customer.png" alt="">
+                        <img src="img/login/customer.png" alt="">
                     </div>
                     <div class="absolute top-3 right-5 ">
                         <button class="underline italic" id="swapRegBtn">Chưa có tài khoản?</button>
@@ -283,7 +289,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
-    <script src="login.js"></script>
+    <script src="Javascript/Login/index.js"></script>
 </body>
 
 </html>

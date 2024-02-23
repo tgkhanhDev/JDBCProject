@@ -10,40 +10,72 @@ package DTO;
  * @author ACER
  */
 public class Account {
-    private int id;
-    private String fullname;
-    private String email;
+    private int AccountID;
+    private String LastName;
+    private String FirstName;
+    private String phone;
+    private String gmail;
     private String password;
+    private String status;
+    private String policyStatus;
+//    private int RoleID;
+    private String RoleName;
+    private String script;
 
-    public Account(int id, String fullname, String email, String password) {
-        this.id = id;
-        this.fullname = fullname;
-        this.email = email;
+    public Account() {
+    }
+
+    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, String RoleName, String script) {
+        this.AccountID = AccountID;
+        this.LastName = LastName;
+        this.FirstName = FirstName;
+        this.phone = phone;
+        this.gmail = gmail;
         this.password = password;
+        this.status = status;
+        this.policyStatus = policyStatus;
+        this.RoleName = RoleName;
+        this.script = script;
     }
 
-    public int getId() {
-        return id;
+    public int getAccountID() {
+        return AccountID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAccountID(int AccountID) {
+        this.AccountID = AccountID;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getLastName() {
+        return LastName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setLastName(String LastName) {
+        this.LastName = LastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return FirstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFirstName(String FirstName) {
+        this.FirstName = FirstName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getGmail() {
+        return gmail;
+    }
+
+    public void setGmail(String gmail) {
+        this.gmail = gmail;
     }
 
     public String getPassword() {
@@ -53,7 +85,36 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPolicyStatus() {
+        return policyStatus;
+    }
+
+    public void setPolicyStatus(String policyStatus) {
+        this.policyStatus = policyStatus;
+    }
+
+    public String getRoleName() {
+        return RoleName;
+    }
+
+    public void setRoleName(String RoleName) {
+        this.RoleName = RoleName;
+    }
+
+    public String getScript() {
+        return script;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+   
 }

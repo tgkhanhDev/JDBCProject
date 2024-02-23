@@ -5,8 +5,12 @@
  */
 package controllers;
 
+import DAO.AccountDAO;
+import DAO.ProductDAO;
+import DTO.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class testServlet extends HttpServlet {
+public class ProductsFormController_Admin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +36,34 @@ public class testServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet testServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet testServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            //INFO NEEDED: sec , itemID
+            //Result => form info
+            /* Xu Ly Form  */
+            Object formList = new Object();
+            String itemID = request.getParameter("itemID");
+            String sec = (String) request.getParameter("sec");
+
+
+            switch (sec)
+            {
+                case "1":
+                    formList = new ProductDAO().getProductByID(itemID);
+                    break;
+                case "2":
+                    formList =(Account) new AccountDAO().getAccountByID(itemID);
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+            }
+            request.setAttribute("sec", sec);
+            request.setAttribute("formList", formList);
+
+            //            Về view nè 
+            request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
+//                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN + "&sec=" + sec).forward(request, response);
+
         }
     }
 
