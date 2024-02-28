@@ -7,7 +7,6 @@ package DAO;
 
 import DTO.Account;
 import DTO.Role;
-import DTO.Service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +20,51 @@ import mylibs.DBUtils;
  */
 public class AccountDAO {
 
+    //dtb query function
+    public Role getRoleByID(int id) {
+        Role rs = null;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [RoleID], [RoleName]  FROM [dbo].[Role]\n"
+                        + "WHERE [RoleID] = ?  ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int roleid = table.getInt("RoleID");
+                        String roleName = table.getString("RoleName");
+                        rs = new Role(roleid, roleName);
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
     //getaccount:
     public ArrayList<Account> getAllAccount() {
         ArrayList<Account> list = new ArrayList<>();
@@ -30,7 +74,7 @@ public class AccountDAO {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].RoleName,[Script] FROM [dbo].[Account]\n"
+                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].[RoleID],[Script] FROM [dbo].[Account]\n"
                         + "JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID";
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
@@ -46,9 +90,12 @@ public class AccountDAO {
                         String password = table.getString("Password");
                         String status = (table.getBoolean("status")) ? "1" : "0";
                         String policyStatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
-                        String roleName = table.getString("RoleName");
+                        //Get ROLE
+                        int roleid = table.getInt("RoleID");
+                        Role role = getRoleByID(roleid);
+                        //=======
                         String script = table.getString("Script");
-                        list.add(new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, roleName, script));
+                        list.add(new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, role, script));
                     }
                 }
 
@@ -82,7 +129,7 @@ public class AccountDAO {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].RoleName,[Script] FROM [dbo].[Account]\n"
+                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].[RoleID],[Script] FROM [dbo].[Account]\n"
                         + "JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "WHERE [dbo].[Account].[Phone] like ?  ";
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -100,9 +147,12 @@ public class AccountDAO {
                         String password = table.getString("Password");
                         String status = (table.getBoolean("status")) ? "1" : "0";
                         String policyStatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
-                        String roleName = table.getString("RoleName");
+                        //Get ROLE
+                        int roleid = table.getInt("RoleID");
+                        Role role = getRoleByID(roleid);
+                        //=======
                         String script = table.getString("Script");
-                        list.add(new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, roleName, script));
+                        list.add(new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, role, script));
                     }
                 }
 
@@ -135,7 +185,7 @@ public class AccountDAO {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].RoleName,[Script] FROM [dbo].[Account]\n"
+                String sql = "SELECT [AccountID],[LastName],[FirstName], [Phone],[Gmail],[Password],[status], [PolicyStatus],[dbo].[Role].[RoleID],[Script] FROM [dbo].[Account]\n"
                         + "JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "WHERE [dbo].[Account].[AccountID] = ? ";
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -153,9 +203,12 @@ public class AccountDAO {
                         String password = table.getString("Password");
                         String status = (table.getBoolean("status")) ? "1" : "0";
                         String policyStatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
-                        String roleName = table.getString("RoleName");
+                        //Get ROLE
+                        int roleid = table.getInt("RoleID");
+                        Role role = getRoleByID(roleid);
+                        //=======
                         String script = table.getString("Script");
-                        list = (new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, roleName, script));
+                        list = (new Account(id, lastName, firstName, phone, gmail, password, status, policyStatus, role, script));
                     }
                 }
 
@@ -178,48 +231,6 @@ public class AccountDAO {
             }
         }
         return list;
-    }
-
-    public String getRoleByID(String idParam) {
-        String name = "";
-        Connection cn = null;
-        try
-        {
-            cn = DBUtils.makeConnection();
-            if (cn != null)
-            {
-                String sql = "SELECT [RoleName] FROM [dbo].[Role]\n"
-                        + "WHERE [RoleID]= ?";
-                PreparedStatement st = cn.prepareStatement(sql);
-                st.setString(1, idParam);
-                ResultSet table = st.executeQuery();
-                if (table != null)
-                {
-                    while (table.next())
-                    {
-                        name = table.getString("RoleName");
-                    }
-                }
-
-            }
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        } finally
-        {
-            try
-            {
-                if (cn != null)
-                {
-                    cn.close();
-                }
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return name;
     }
 
     public ArrayList<Role> getAllAccountRole() {
@@ -297,7 +308,7 @@ public class AccountDAO {
                 pst.setString(5, acc.getPassword());
                 pst.setString(6, acc.getStatus());
                 pst.setString(7, acc.getPolicyStatus());
-                pst.setString(8, acc.getRoleName());
+                pst.setString(8, acc.getRole().getRoleName());
                 pst.setString(9, acc.getScript());
                 pst.setInt(10, acc.getAccountID());
 
@@ -354,7 +365,7 @@ public class AccountDAO {
                 pst.setString(5, acc.getPassword());
                 pst.setString(6, acc.getStatus());
                 pst.setString(7, acc.getPolicyStatus());
-                pst.setString(8, acc.getRoleName());
+                pst.setString(8, acc.getRole().getRoleName());
                 pst.setString(9, acc.getScript());
 
                 //Tra ve 0/1

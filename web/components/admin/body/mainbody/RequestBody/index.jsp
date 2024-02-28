@@ -4,6 +4,10 @@
     Author     : ACER
 --%>
 
+<%@page import="DAO.ServiceDAO"%>
+<%@page import="DTO.Service"%>
+<%@page import="DTO.RequestType"%>
+<%@page import="DAO.RequestTypeDAO"%>
 <%@page import="DTO.Request"%>
 <%@page import="DAO.ProductDAO"%>
 <%@page import="mylibs.UtilsFunc"%>
@@ -28,25 +32,40 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-center">
-                            ReqID
+                            Request ID
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            AccountID
+                            Request Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            ContactID
+                            Register Date
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Block/Unblock (Status)
+                            Contact Phone
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Request Type ID
+                            Contact Gmail
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Admin Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Admin Role
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Edit
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Request Type 
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Sản Phẩm
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Description
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            <span class="">Other</span>
                         </th>
                     </tr>
                 </thead>
@@ -71,28 +90,56 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             <%=          item.getReqID()%>
                         </th>
-                        <td class="px-6 py-4">
-                            <%=          item.getAccountID()%>
+                        <td class="px-6 py-4 capitalize">
+                            <%=          item.getContact().getService().getServiceName()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getContactID()%>
+                            <%=          item.getContact().getTransaction().getDate().toLocaleString()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getStatus()%>
+                            <%=          item.getAcc().getPhone()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getReqTypeID()%>
+                            <%=          item.getAcc().getGmail()%>
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <%=          (item.getAdminAcc() != null) ? item.getAdminAcc().getLastName() : item.getAdminAcc()%>
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=         (item.getAdminAcc().getRole() != null) ? item.getAdminAcc().getRole().getRoleName() : item.getAdminAcc().getRole()%>
+                        </td>
+
+                        <td class="px-6 py-4 text-center">
+                            <button class="rounded text-white
+                                    <%
+                                        if (item.getStatusType().getStatusID() == 1)
+                                        {
+                                            out.print("bg-gray-500");
+                                        } else if (item.getStatusType().getStatusID() == 4)
+                                        {
+                                            out.print("bg-green-500");
+                                        } else if (item.getStatusType().getStatusID() == 5)
+                                        {
+                                            out.print("bg-red-500");
+                                        }
+                                    %>
+                                    ">
+                                <%=         item.getStatusType().getStatusName()%>
+                            </button>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <input type="checkbox" name="setStatus" value="<%=  item.getReqID()%>" />
+
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=          item.getRequestType().getRqTyName()%>
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=          item.getContact().getTransaction().getProduct().getName()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=          item.getDescription()%>
-                        </td>
-                        <td class="px-6 py-4 text-center cursor-pointer">
-                            <form action="mainController">
-                                <input type="hidden" name="action" value=<%=    CONSTANTS.GETFORMINFOPRODUCT_ADMIN%> />
-                                <input type="hidden" name="sec" value=<%= request.getAttribute("sec")%>  />
-                                <input type="hidden" name="itemID" value= <%=       item.getReqID()%> />
-                                <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                            </form>
                         </td>
                     </tr>
                     <%                            }
@@ -104,7 +151,7 @@
         <!--=============================-->
 
         <!--Add btn--> 
-        <button class="px-4 py-2 bg-green-500 rounded text-white" id="toggleForm">Thêm Sản Phẩm</button>
+        <button class="px-4 py-2 bg-green-500 rounded text-white" id="toggleForm">Tạo Request</button>
         <!--===========-->
 
         <!--form update--> 
@@ -112,9 +159,9 @@
 
         <div id="formUpdate" class="transition-all ease-in-out hidden">
             <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
-            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10">
+            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
                 <!--quit button--> 
-                <form action="mainController" class="z-100 cursor-pointer">
+                <form action="mainController" class="cursor-pointer">
                     <div>
                         <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
                         <input type="hidden" name="sec" value="<%=          request.getAttribute("sec")%>" />
@@ -128,37 +175,96 @@
                     <input type="hidden" name="action" value="<%=     CONSTANTS.UPDATEINFO_ADMIN%>" />
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
                     <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
-                    <input type="hidden" name="prd_ID" value="<%= "id"%>" />
+
+                    <!--//           Lấy từ session--> 
+                    <input type="hidden" name="Account" value="AccountObject" />   <!-- ra accID   --> 
+                    <input type="hidden" name="ManagerAccount" value="AccountObject" />  <!--  ra MangagerID do thg Admin tạo  --> 
+                    <input type="hidden" name="Account" value="AccountObject" />  <!--  ra Account  --> 
+                    <!-- end session  -->
+
                     <!--Khi khởi tạo, mặc định là true-->
                     <input type="hidden" name="status" value="" />
 
+                    <!--Service Type--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="%>" type="text" name="name"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product Name</label>
+                        <select name="SerID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <%
+                                ArrayList<Service> serList = new ServiceDAO().getAllService();
+                                if (serList != null)
+                                {
+                                    for (Service service : serList)
+                                    {
+                                        if (service.getStatus().matches("1"))
+                                        {
+                            %>
+                            <option value="<%=  service.getId()%>" > <%=   service.getServiceName()%></option>
+                            <%
+                                        }
+                                    }
+
+                                }
+                            %>
+                        </select>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Service Name</label>
                     </div>
+                    <!--End Service Type-->  
+
+                    <!--get Product--> 
+
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="" type="text" name="thumbnail" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Thumbnail</label>
+                        <select name="SerID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option value=null > Khác </option>
+                            <%
+                                ArrayList<Product> productList = new ProductDAO().getAllProduct();
+                                if (productList != null)
+                                {
+                                    for (Product prd : productList)
+                                        if (prd.getStatus().matches("1"))
+                                        {
+                            %>
+                            <option value="<%=     prd.getPrd_ID()%>" > <%=   prd.getName()%></option>
+                            <%
+                                        }
+                                    {
+
+                                    }
+
+                                }
+                            %>
+                        </select>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product Name</label>
                     </div>
+                    <!--End Get Product--> 
+
+                    <!--RequestType--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="" type="text" name="description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
+                        <select name="reqTypeID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <%
+                                ArrayList<RequestType> reqTypeList = new RequestTypeDAO().getAllRequestType();
+                                if (reqTypeList != null)
+                                {
+                                    for (RequestType reqType : reqTypeList)
+                                    //Đáng lý phải checkstatus trước render
+                                    {
+                            %>
+                            <option value="<%=  reqType.getRqTyID()%>" > <%=   reqType.getRqTyName()%></option>
+                            <%
+                                    }
+
+                                }
+                            %>
+                        </select>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Loại đơn</label>
                     </div>
-                    <!--1/2--> 
-                    <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input value="" type="text" name="price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price</label>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input value="" type="text" name="speed" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Speed</label>
-                        </div>
+                    <!--End Request Type--> 
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input value="" type="text" name="Description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mô tả</label>
                     </div>
 
                     <!--=============--> 
-                    <select name="cate_ID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                    </select>
+
 
                     <div class="flex justify-between">
                         <div></div>

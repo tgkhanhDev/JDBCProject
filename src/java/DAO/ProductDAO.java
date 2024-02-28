@@ -20,6 +20,54 @@ import mylibs.DBUtils;
  */
 public class ProductDAO {
 
+    //Dtb function
+    public ProductCategories getCateByID(int id) {
+        ProductCategories prdC = null;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [cate_ID],[Name],[icon],[status] FROM [dbo].[Category]\n"
+                        + "WHERE [cate_ID] = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int cateid = table.getInt("cate_ID");
+                        String cateName = table.getString("Name");
+                        String cateIcon = table.getString("icon");
+                        String status = (table.getBoolean("status")) ? "1" : "0";
+                        prdC = new ProductCategories(cateid, cateName, cateIcon, status);
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return prdC;
+    }
+
+    //======
     //Lấy toàn bộ category bên product
     public ArrayList<ProductCategories> getAllCategories() {
         ArrayList<ProductCategories> list = new ArrayList<>();
@@ -30,7 +78,7 @@ public class ProductDAO {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "SELECT [cate_ID], [Name], [Icon] FROM [dbo].[Category]";
+                String sql = "SELECT [cate_ID],[Name],[icon],[status] FROM [dbo].[Category]";
 
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
@@ -39,10 +87,11 @@ public class ProductDAO {
                 {
                     while (table.next())
                     {
-                        String cate_ID = table.getString("cate_ID");
+                        int cate_ID = table.getInt("cate_ID");
                         String name = table.getString("Name");
                         String icon = table.getString("Icon");
-                        list.add(new ProductCategories(cate_ID, name, icon));
+                        String status = (table.getBoolean("status")) ? "1" : "0";
+                        list.add(new ProductCategories(cate_ID, name, icon, status));
                     }
                 }
 
@@ -140,9 +189,12 @@ public class ProductDAO {
                         String description = table.getString("description");
                         int price = table.getInt("price");
                         int speed = table.getInt("speed");
+                        //get Cate
                         int cateid = table.getInt("cate_ID");
+                        ProductCategories prdC = getCateByID(cateid);
+                        //End GetCate
                         String status = table.getBoolean("status") ? "1" : "0";
-                        Product prd = new Product(id, name, thumbnail, description, price, speed, cateid, status);
+                        Product prd = new Product(id, name, thumbnail, description, price, speed, prdC, status);
                         list.add(prd);
                     }
                 }
@@ -194,9 +246,12 @@ public class ProductDAO {
                         String description = table.getString("description");
                         int price = table.getInt("price");
                         int speed = table.getInt("speed");
-                        int cate_ID = table.getInt("cate_ID");
+                        //get Cate
+                        int cateid = table.getInt("cate_ID");
+                        ProductCategories prdC = getCateByID(cateid);
+                        //End GetCate
                         String status = table.getBoolean("status") ? "1" : "0";
-                        list.add(new Product(prd_ID, name, thumbnail, description, price, speed, cate_ID, status));
+                        list.add(new Product(prd_ID, name, thumbnail, description, price, speed, prdC, status));
                     }
                 }
 
@@ -248,9 +303,12 @@ public class ProductDAO {
                         String description = table.getString("description");
                         int price = table.getInt("price");
                         int speed = table.getInt("speed");
+                        //get Cate
                         int cateid = table.getInt("cate_ID");
+                        ProductCategories prdC = getCateByID(cateid);
+                        //End GetCate
                         String status = table.getBoolean("status") ? "1" : "0";
-                        Product prd = new Product(id, name, thumbnail, description, price, speed, cateid, status);
+                        Product prd = new Product(id, name, thumbnail, description, price, speed, prdC, status);
                         list.add(prd);
                     }
                 }
@@ -304,9 +362,12 @@ public class ProductDAO {
                         String description = table.getString("description");
                         int price = table.getInt("price");
                         int speed = table.getInt("speed");
+                        //get Cate
                         int cateid = table.getInt("cate_ID");
+                        ProductCategories prdC = getCateByID(cateid);
+                        //End GetCate
                         String status = table.getBoolean("status") ? "1" : "0";
-                        list = new Product(id, name, thumbnail, description, price, speed, cateid, status);
+                        list = new Product(id, name, thumbnail, description, price, speed, prdC, status);
                     }
                 }
 
@@ -358,7 +419,7 @@ public class ProductDAO {
                 pst.setString(3, prd.getDescription());
                 pst.setInt(4, prd.getPrice());
                 pst.setInt(5, prd.getSpeed());
-                pst.setInt(6, prd.getCate_ID());
+                pst.setInt(6, prd.getCategory().getCate_ID());
                 pst.setInt(7, prd.getPrd_ID());
 
                 //Tra ve 0/1
@@ -404,7 +465,7 @@ public class ProductDAO {
                 pst.setString(3, prd.getDescription());
                 pst.setInt(4, prd.getPrice());
                 pst.setInt(5, prd.getSpeed());
-                pst.setInt(6, prd.getCate_ID());
+                pst.setInt(6, prd.getCategory().getCate_ID());
                 pst.setString(7, prd.getStatus());
 
                 //Tra ve 0/1

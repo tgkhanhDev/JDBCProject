@@ -11,24 +11,26 @@ package DTO;
  */
 public class ProductCategories {
 
-    private String cate_ID;
+    private int cate_ID;
     private String name;
     private String icon;
-
+    private String status;
+    
     public ProductCategories() {
     }
 
-    public ProductCategories(String cate_ID, String name, String icon) {
+    public ProductCategories(int cate_ID, String name, String icon, String status) {
         this.cate_ID = cate_ID;
         this.name = name;
         this.icon = icon;
+        this.status = status;
     }
 
-    public String getCate_ID() {
+    public int getCate_ID() {
         return cate_ID;
     }
 
-    public void setCate_ID(String cate_ID) {
+    public void setCate_ID(int cate_ID) {
         this.cate_ID = cate_ID;
     }
 
@@ -47,7 +49,14 @@ public class ProductCategories {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    
-    
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    
 }

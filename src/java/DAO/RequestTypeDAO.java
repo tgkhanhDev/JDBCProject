@@ -5,7 +5,10 @@
  */
 package DAO;
 
+import DTO.Contact;
+import DTO.RequestType;
 import DTO.Service;
+import DTO.Transaction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,19 +20,19 @@ import mylibs.DBUtils;
  *
  * @author ACER
  */
-public class ServiceDAO {
+public class RequestTypeDAO {
 
     //dtb function
-    public Service getServiceByID(int id) {
-        Service rs = null;
+    public RequestType getRequestTypeByID(int id) {
+        RequestType rs = null;
         Connection cn = null;
         try
         {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "select [SerID], [SerName], [Status] ,[Price] from [dbo].[Service]\n"
-                        + "WHERE [SerID] = ?  ";
+                String sql = "SELECT [reqTypeID],[ReqTypeName]  FROM [dbo].[RequestType] \n"
+                        + "WHERE [reqTypeID] = ?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setInt(1, id);
                 ResultSet table = st.executeQuery();
@@ -37,16 +40,13 @@ public class ServiceDAO {
                 {
                     while (table.next())
                     {
-                        int serID = table.getInt("SerID");
-                        String name = table.getString("SerName");
-                        String status = (table.getBoolean("Status")) ? "1" : "0";
-                        int price = table.getInt("Price");
-                        rs = new Service(id, name, status, price);
+                        int reqTypeID = table.getInt("reqTypeID");
+                        String rqTypename = table.getString("ReqTypeName");
+                        rs = new RequestType(reqTypeID, rqTypename);
                     }
                 }
 
             }
-
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -66,28 +66,25 @@ public class ServiceDAO {
         return rs;
     }
 
-    //==============
-    public ArrayList<Service> getAllService() {
-        ArrayList<Service> rs = new ArrayList<Service>();
+    //end dtb===============
+    public ArrayList<RequestType> getAllRequestType() {
+        ArrayList<RequestType> rs = new ArrayList<RequestType>();
         Connection cn = null;
         try
         {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "select [SerID], [SerName], [Status] ,[Price] from [dbo].[Service]";
+                String sql = "SELECT [reqTypeID],[ReqTypeName]  FROM [dbo].[RequestType]";
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
                 if (table != null)
                 {
                     while (table.next())
                     {
-                        int id = table.getInt("SerID");
-                        String name = table.getString("SerName");
-                        String status = (table.getBoolean("Status")) ? "1" : "0";
-                        int price = table.getInt("Price");
-                        Service ser = new Service(id, name, status, price);
-                        rs.add(ser);
+                        int reqTypeID = table.getInt("reqTypeID");
+                        String rqTypename = table.getString("ReqTypeName");
+                        rs.add( new RequestType(reqTypeID, rqTypename) );
                     }
                 }
 
@@ -112,4 +109,5 @@ public class ServiceDAO {
 
         return rs;
     }
+
 }

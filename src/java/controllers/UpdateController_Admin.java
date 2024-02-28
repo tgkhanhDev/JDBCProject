@@ -9,6 +9,8 @@ import DAO.AccountDAO;
 import DAO.ProductDAO;
 import DTO.Account;
 import DTO.Product;
+import DTO.ProductCategories;
+import DTO.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -52,9 +54,10 @@ public class UpdateController_Admin extends HttpServlet {
                     int price = Integer.parseInt(request.getParameter("price"));
                     int speed = Integer.parseInt(request.getParameter("speed"));
                     int cate_ID = Integer.parseInt(request.getParameter("cate_ID"));
+                    ProductCategories prdC = new ProductDAO().getCateByID(cate_ID);
                     String status = (String) request.getParameter("status");
 
-                    result = new ProductDAO().updateProductInfo(new Product(prd_ID, name, thumbnail, description, price, speed, cate_ID, status));
+                    result = new ProductDAO().updateProductInfo(new Product(prd_ID, name, thumbnail, description, price, speed, prdC, status));
                     break;
                 case "2":
                     int acc_ID = Integer.parseInt(request.getParameter("AccountID"));
@@ -68,11 +71,12 @@ public class UpdateController_Admin extends HttpServlet {
                     String policyStatus = (String) request.getParameter("policyStatus");
                     //convert thanh RoleName
                     String RoleID = (String) request.getParameter("RoleID");
-                    String RoleName = new AccountDAO().getRoleByID(RoleID);
+//                    String RoleName = new AccountDAO().getRoleByID(RoleID);
+                    Role role = new AccountDAO().getRoleByID(Integer.parseInt(RoleID));
 //                    //==============
                     String script = (String) request.getParameter("script");
 
-                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, status_Acc, policyStatus, RoleName, script));
+                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, status_Acc, policyStatus, role, script));
                     //=================
 //                    DEBUG 
 //                    int acc_ID = 1;

@@ -12,18 +12,23 @@ package DTO;
 public class Request {
 
     private int ReqID;
-    private int AccountID;
-    private int ContactID;
-    private String Status;
-    private int reqTypeID;
+    private Account Acc; //FK
+    private Account adminAcc; //FK
+    private Contact Contact; //FK
+    private StatusType StatusType;
+    private RequestType requestType; //FK
     private String Description;
 
-    public Request(int ReqID, int AccountID, int ContactID , String Status, int reqTypeID, String Description) {
+    public Request() {
+    }
+
+    public Request(int ReqID, Account Acc, Account adminAcc, Contact Contact, StatusType StatusType, RequestType requestType, String Description) {
         this.ReqID = ReqID;
-        this.AccountID = AccountID;
-        this.ContactID = ContactID;
-        this.Status = Status;
-        this.reqTypeID = reqTypeID;
+        this.Acc = Acc;
+        this.adminAcc = adminAcc;
+        this.Contact = Contact;
+        this.StatusType = StatusType;
+        this.requestType = requestType;
         this.Description = Description;
     }
 
@@ -35,28 +40,44 @@ public class Request {
         this.ReqID = ReqID;
     }
 
-    public int getAccountID() {
-        return AccountID;
+    public Account getAcc() {
+        return Acc;
     }
 
-    public void setAccountID(int AccountID) {
-        this.AccountID = AccountID;
+    public void setAcc(Account Acc) {
+        this.Acc = Acc;
     }
 
-    public String getStatus() {
-        return Status;
+    public Account getAdminAcc() {
+        return adminAcc;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setAdminAcc(Account adminAcc) {
+        this.adminAcc = adminAcc;
     }
 
-    public int getReqTypeID() {
-        return reqTypeID;
+    public Contact getContact() {
+        return Contact;
     }
 
-    public void setReqTypeID(int reqTypeID) {
-        this.reqTypeID = reqTypeID;
+    public void setContact(Contact Contact) {
+        this.Contact = Contact;
+    }
+
+    public StatusType getStatusType() {
+        return StatusType;
+    }
+
+    public void setStatusType(StatusType StatusType) {
+        this.StatusType = StatusType;
+    }
+
+    public RequestType getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
     }
 
     public String getDescription() {
@@ -67,12 +88,6 @@ public class Request {
         this.Description = Description;
     }
 
-    public int getContactID() {
-        return ContactID;
-    }
-
-    public void setContactID(int ContactID) {
-        this.ContactID = ContactID;
-    }
-
+    
+    
 }

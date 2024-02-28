@@ -18,14 +18,13 @@ public class Account {
     private String password;
     private String status;
     private String policyStatus;
-//    private int RoleID;
-    private String RoleName;
+    private Role role; //FK
     private String script;
 
     public Account() {
     }
 
-    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, String RoleName, String script) {
+    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, Role role, String script) {
         this.AccountID = AccountID;
         this.LastName = LastName;
         this.FirstName = FirstName;
@@ -34,7 +33,7 @@ public class Account {
         this.password = password;
         this.status = status;
         this.policyStatus = policyStatus;
-        this.RoleName = RoleName;
+        this.role = role;
         this.script = script;
     }
 
@@ -85,6 +84,7 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getStatus() {
         return status;
     }
@@ -101,12 +101,12 @@ public class Account {
         this.policyStatus = policyStatus;
     }
 
-    public String getRoleName() {
-        return RoleName;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleName(String RoleName) {
-        this.RoleName = RoleName;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getScript() {
@@ -116,5 +116,7 @@ public class Account {
     public void setScript(String script) {
         this.script = script;
     }
-   
+
+    
 }
+
