@@ -269,8 +269,6 @@
                     <div class="flex justify-between">
                         <div></div>
                         <div class="flex gap-2">
-
-                            <button type="submit" class="text-white bg-cyan-500 hover:bg-cyan-600 rounded  px-5 py-2 text-center">Update</button>
                             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 rounded  px-5 py-2 text-center">Submit</button>
                         </div>
                     </div>
