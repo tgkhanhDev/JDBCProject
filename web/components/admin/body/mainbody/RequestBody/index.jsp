@@ -172,13 +172,12 @@
                     </button>
                 </form>
                 <form action="mainController" class="max-w-md mx-auto" method="post">
-                    <input type="hidden" name="action" value="<%=     CONSTANTS.UPDATEINFO_ADMIN%>" />
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
                     <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
 
                     <!--//           Lấy từ session--> 
-                    <input type="hidden" name="Account" value="AccountObject" />   <!-- ra accID   --> 
-                    <input type="hidden" name="ManagerAccount" value="AccountObject" />  <!--  ra MangagerID do thg Admin tạo  --> 
+                    <input type="hidden" name="AccountID" value="1" />   <!-- ra accID   --> 
+                    <input type="hidden" name="ManagerID" value="2" />  <!--  ra MangagerID do thg Admin tạo  --> 
                     <input type="hidden" name="Account" value="AccountObject" />  <!--  ra Account  --> 
                     <!-- end session  -->
 
@@ -212,8 +211,8 @@
                     <!--get Product--> 
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <select name="SerID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                            <option value=null > Khác </option>
+                        <select name="PrdID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option value="0" > Khác </option>
                             <%
                                 ArrayList<Product> productList = new ProductDAO().getAllProduct();
                                 if (productList != null)
@@ -259,7 +258,7 @@
                     <!--End Request Type--> 
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="" type="text" name="Description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <textarea value="" type="text" name="Description" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required ></textarea>
                         <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mô tả</label>
                     </div>
 

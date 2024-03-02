@@ -43,7 +43,6 @@ public class AddController_Admin extends HttpServlet {
         {
             /*Update trong ADMIN*/
             String sec = (String) request.getParameter("sec");
-            sec = "2";
             int result = 0;
             switch (sec)
             {
@@ -85,7 +84,16 @@ public class AddController_Admin extends HttpServlet {
                     break;
                 case "3":
                     //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
-                    
+                    int accID= Integer.parseInt(request.getParameter("AccountID"));
+                    int serID=Integer.parseInt(request.getParameter("SerID"));
+                    int prdID=Integer.parseInt(request.getParameter("PrdID"));
+                    int reqTypeID=Integer.parseInt(request.getParameter("reqTypeID"));
+                    String descriptionData=  request.getParameter("Description");
+                    out.print("<h3>AccID: "+ accID+"</h3>");
+                    out.print("<h3>SerID: "+ serID+"</h3>");
+                    out.print("<h3>ProductID: "+ prdID+"</h3>");
+                    out.print("<h3>reqTypeID: "+ reqTypeID+"</h3>");
+                    out.print("<h3>Description: "+ descriptionData+"</h3>");
                     break;
             }
 
@@ -95,7 +103,7 @@ public class AddController_Admin extends HttpServlet {
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
             } else
             {
-                out.print("Some thing Wrong");
+                out.print("Some thing Wronggggggggggg");
             }
         }
     }
