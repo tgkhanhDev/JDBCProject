@@ -16,6 +16,7 @@ public class Account {
     private String phone;
     private String gmail;
     private String password;
+    private String sex;
     private String status;
     private String policyStatus;
     private Role role; //FK
@@ -24,13 +25,14 @@ public class Account {
     public Account() {
     }
 
-    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String status, String policyStatus, Role role, String script) {
+    public Account(int AccountID, String LastName, String FirstName, String phone, String gmail, String password, String sex, String status, String policyStatus, Role role, String script) {
         this.AccountID = AccountID;
         this.LastName = LastName;
         this.FirstName = FirstName;
         this.phone = phone;
         this.gmail = gmail;
         this.password = password;
+        this.sex = sex;
         this.status = status;
         this.policyStatus = policyStatus;
         this.role = role;
@@ -85,6 +87,14 @@ public class Account {
         this.password = password;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -116,7 +126,5 @@ public class Account {
     public void setScript(String script) {
         this.script = script;
     }
-
-    
 }
 

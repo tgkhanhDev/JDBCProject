@@ -12,7 +12,6 @@ import java.util.Date;
  * @author ACER
  */
 public class Transaction {
-
     private int TranID;
     private Date date; //Ngay giao dich
 //    private Date time;// TG 

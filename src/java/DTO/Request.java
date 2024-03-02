@@ -87,7 +87,4 @@ public class Request {
     public void setDescription(String Description) {
         this.Description = Description;
     }
-
-    
-    
 }

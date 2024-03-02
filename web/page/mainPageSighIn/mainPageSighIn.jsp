@@ -1,12 +1,11 @@
+    <%@page import="controllers.CONSTANTS"%>
+<%@page import="DTO.Account"%>
 <%-- 
     Document   : index
     Created on : Feb 1, 2024, 4:36:17 AM
     Author     : ACER
 --%>
 
-
-<%@page import="controllers.CONSTANTS"%>
-<%@page import="DTO.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,21 +29,22 @@
 
         <!-- css  -->
         <link rel="stylesheet" href="utils.css"/>
-
-
+        <link rel="stylesheet" href="/PrjProject/components/navbarsignin/stylenavbar.css"/>
     </head>
     <body>
- 
-
-        <jsp:include page="/components/navbar/navbar.jsp" />
-
+     
+ <jsp:include page="/components/navbarsignin/navbarSignin.jsp" /> 
+    <!--navbar khi login dc--> 
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
+           
             <jsp:include page="/components/carousel/carousel.jsp" />
             <jsp:include page="/components/navigate/navigate.jsp" />
             <jsp:include page="/components/news/news.jsp" />
             <jsp:include page="/components/countUp/countUp.jsp" />
             <%--<jsp:include page="/components/sponsor/sponsor.jsp" />--%>
             <jsp:include page="/components/footer//footer.jsp" />
+
+
 
 
         </div> 
@@ -99,9 +99,10 @@
 
 
         <!--Component's JS--> 
-        <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
-        <script type="text/javascript"  src="Javascript/News/index.js"></script> <!--For NEWS -->
-        <script type="text/javascript"  src="Javascript/Footer/index.js"></script>
+        <script type="text/javascript" src="/PrjProject/Javascript/Navbar/index.js"></script> <!-- For Navbar -->
+        <script type="text/javascript" src="/PrjProject/Javascript/NavbarSignin/index.js"></script>
+        <script type="text/javascript"  src="/PrjProject/Javascript/News/index.js"></script> <!--For NEWS -->
+        <script type="text/javascript"  src="/PrjProject/Javascript/Footer/index.js"></script>
 
 
     </body>

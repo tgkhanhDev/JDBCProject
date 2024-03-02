@@ -10,7 +10,6 @@ package DTO;
  * @author ACER
  */
 public class Service {
-
     private int id;
     private String serviceName;
     private String status;
@@ -58,5 +57,4 @@ public class Service {
         this.servicePrice = servicePrice;
     }
 
-    
 }

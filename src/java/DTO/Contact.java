@@ -10,7 +10,6 @@ package DTO;
  * @author ACER
  */
 public class Contact {
-
     private int contactID;
     private Service service;//FK
     private Transaction transaction;//FK

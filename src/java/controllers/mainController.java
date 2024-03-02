@@ -32,19 +32,16 @@ public class mainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             String url = "";
-            
+
             String action = request.getParameter("action");
-            
-            if (action == null)
-            {
+
+            if (action == null) {
                 action = CONSTANTS.GETHOME;
             }
 
-            switch (action)
-            {
+            switch (action) {
                 case CONSTANTS.VIEWHOME:
                     url = "page/index.jsp";
                     break;
@@ -57,34 +54,71 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.VIEWPRODUCTS:
                     url = "page/productPage/products.jsp";
                     break;
+
                 case CONSTANTS.GETLOGINPAGE:
                     url = "loginController";
                     break;
+                // sua lai
                 case CONSTANTS.VIEWLOGINPAGE:
                     url = "page/loginPage/login.jsp";
                     break;
+
+                case CONSTANTS.GETSIGNUP:
+                    url = "registerController";
+                    break;
+                case CONSTANTS.GETSIGNIN:
+                    url = "loginController";
+                    break;
+
+                case CONSTANTS.GETHOMEPAGELOGIN:
+                    url = "homePageLoginController";
+                    break;
+
+                case CONSTANTS.VIEWHOMEPAGELOGIN:
+                    url = "page/mainPageSighIn/mainPageSighIn.jsp";
+                    break;
+
+                case CONSTANTS.GETPROFILE:
+                    url = "profileController";
+                    break;
+                case CONSTANTS.VIEWPROFILE:
+                    url = "page/profilePage/profilePage.jsp";
+                    break;
+                    
+                    
+                case CONSTANTS.GETUPDATEPRO:
+                    url="updateProfileController";
+                    break;
+                case CONSTANTS.VIEWUPDATEPRO:
+                    url="page/profilePage/updateProfilePage.jsp";
+                    break;
+                    
                     
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:
-                    url = "AdminController_Admin"; 
+                    url = "AdminController_Admin";
                     break;
                 case CONSTANTS.VIEWPRODUCT_ADMIN:
                     url = "page/adminPage/admin.jsp";
                     break;
-                    //Lấy thông tin  ra formInput
+                //Lấy thông tin  ra formInput
                 case CONSTANTS.GETFORMINFOPRODUCT_ADMIN:
-                    url="ProductsFormController_Admin";
+                    url = "ProductsFormController_Admin";
                     break;
                 case CONSTANTS.UPDATEINFO_ADMIN:
-                    url="UpdateController_Admin";
+                    url = "UpdateController_Admin";
                     break;
                 case CONSTANTS.ADDINFO_ADMIN:
-                    url="AddController_Admin";
+                    url = "AddController_Admin";
                     break;
                 case CONSTANTS.BLOCK_ADMIN:
-                    url="BlockController_Admin";
+                    url = "BlockController_Admin";
                     break;
+                case CONSTANTS.LOGOUT:
+                    url = "logoutController";
+                    break;
+                
                 default:
                     break;
             }

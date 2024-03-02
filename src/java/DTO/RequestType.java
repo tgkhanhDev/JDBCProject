@@ -16,7 +16,7 @@ public class RequestType {
 
     public RequestType() {
     }
-    
+
     public RequestType(int rqTyID, String rqTyName) {
         this.rqTyID = rqTyID;
         this.rqTyName = rqTyName;
