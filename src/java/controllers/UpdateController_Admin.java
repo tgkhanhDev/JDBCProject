@@ -78,7 +78,6 @@ public class UpdateController_Admin extends HttpServlet {
 
                     //BUG
                     String sex = "Male";
-                    //Test branch
                     result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, sex , status_Acc, policyStatus, role, script));
                 //=================
 //                    DEBUG 
