@@ -10,24 +10,21 @@ package DTO;
  * @author ACER
  */
 public class Service {
- private String id; 
+ private int id; 
     private String serviceName;
     private int servicePrice;
 
-    public Service() {
-    }
-
-    public Service(String id, String serviceName, int servicePrice) {
+    public Service(int id, String serviceName, int servicePrice) {
         this.id = id;
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,6 +44,7 @@ public class Service {
         this.servicePrice = servicePrice;
     }
 
+   
     
 
 }

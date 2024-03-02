@@ -16,20 +16,20 @@ public class Product {
     private String description;
     private int price;
     private int speed;
-    private int cate_ID;
+    private ProductCategories category; //FK
     private String status;
 
     public Product() {
     }
 
-    public Product(int prd_ID, String name, String thumbnail, String description, int price, int speed, int cate_ID, String status) {
+    public Product(int prd_ID, String name, String thumbnail, String description, int price, int speed, ProductCategories category, String status) {
         this.prd_ID = prd_ID;
         this.name = name;
         this.thumbnail = thumbnail;
         this.description = description;
         this.price = price;
         this.speed = speed;
-        this.cate_ID = cate_ID;
+        this.category = category;
         this.status = status;
     }
 
@@ -81,12 +81,12 @@ public class Product {
         this.speed = speed;
     }
 
-    public int getCate_ID() {
-        return cate_ID;
+    public ProductCategories getCategory() {
+        return category;
     }
 
-    public void setCate_ID(int cate_ID) {
-        this.cate_ID = cate_ID;
+    public void setCategory(ProductCategories category) {
+        this.category = category;
     }
 
     public String getStatus() {
@@ -97,5 +97,6 @@ public class Product {
         this.status = status;
     }
 
+    
     
 }

@@ -3,21 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DTO;
+package controllers;
 
+import DAO.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author ACER
+ * @author Lenovo
  */
-public class test extends HttpServlet {
+public class registerController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,14 +32,38 @@ public class test extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-          HttpSession session =request.getSession();
-           Account  acc =(Account) session.getAttribute("loginUser");
-           Employee em =(Employee) session.getAttribute("emInfor");
-            out.print("brith:"+em.getWorkingDay());
-           out.print("working:"+em.getIdentify_ID());
+
+            String lastName = URLDecoder.decode(request.getParameter("txtlastname"), "UTF-8");
+
+            String firstName = URLDecoder.decode(request.getParameter("txtfirstname"), "UTF-8");
+            String phone = request.getParameter("txtphone");
+            String gmail = request.getParameter("txtgmail");
+            String pass = request.getParameter("txtpass");
+            String rePass = request.getParameter("txtpassagain");
+            AccountDAO acc = new AccountDAO();
+            if (rePass.equals(pass)) {
+                if (acc.checkMail(gmail) != 0) {
+                    //chek gmail
+                    response.sendRedirect("mainController?action=loginpage&sec=2&renotify=2");
+                } else if (acc.checkPhone(phone) != 0) {
+                    //check phone
+                    response.sendRedirect("mainController?action=loginpage&sec=2&renotify=3");
+                } else {
+                    if (acc.registerAccount(lastName, firstName, phone, gmail, pass) != 0) {
+                        request.setAttribute("ERROR", "Đăng kí thành công");
+                        request.getRequestDispatcher("mainController?action=loginpage&renotify=0&sec=1").forward(request, response);
+                    } else {
+                        response.sendRedirect("mainController?action=loginpage&sec=2&renotify=4");
+                    }
+                }
+                // goi hma dang ki dong thoi neu !=0 thi dang ki thanh cong
+
+            } else {
+                //check thu pass co khop k
+                response.sendRedirect("mainController?action=loginpage&sec=2&renotify=1");
+            }
         }
     }
 

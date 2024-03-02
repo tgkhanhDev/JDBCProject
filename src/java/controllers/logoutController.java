@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DTO;
+package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,9 +15,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author ACER
+ * @author Lenovo
  */
-public class test extends HttpServlet {
+public class logoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,14 +31,19 @@ public class test extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-          HttpSession session =request.getSession();
-           Account  acc =(Account) session.getAttribute("loginUser");
-           Employee em =(Employee) session.getAttribute("emInfor");
-            out.print("brith:"+em.getWorkingDay());
-           out.print("working:"+em.getIdentify_ID());
+            HttpSession session = request.getSession();
+// xoa tat ca nhung data cua ng dung khi goi cai trang nay
+            session.invalidate();
+          
+            request.getRequestDispatcher("mainController?action=" +CONSTANTS.VIEWHOME).forward(request, response);
+            
+
+//        response.addHeader("Cache-Control", "no-cache,no-store,private,must-revalidate");  //http1.1
+//        response.addHeader("Pragma", "no-cache");  //http1.0
+//        response.addDateHeader("Expires", 0); // profixe
+//        session.invalidate();
         }
     }
 
@@ -55,6 +60,7 @@ public class test extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+     
     }
 
     /**
@@ -69,6 +75,7 @@ public class test extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+     
     }
 
     /**

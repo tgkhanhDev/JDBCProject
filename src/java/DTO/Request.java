@@ -12,18 +12,22 @@ package DTO;
 public class Request {
 
     private int ReqID;
-    private int AccountID;
-    private int ContactID;
+    private Account Acc; //FK
+    private Contact Contact; //FK
     private String Status;
-    private int reqTypeID;
+    private RequestType requestType; //FK
     private String Description;
 
-    public Request(int ReqID, int AccountID, int ContactID , String Status, int reqTypeID, String Description) {
+    public Request() {
+    }
+
+    
+    public Request(int ReqID, Account Acc, Contact Contact, String Status, RequestType requestType, String Description) {
         this.ReqID = ReqID;
-        this.AccountID = AccountID;
-        this.ContactID = ContactID;
+        this.Acc = Acc;
+        this.Contact = Contact;
         this.Status = Status;
-        this.reqTypeID = reqTypeID;
+        this.requestType = requestType;
         this.Description = Description;
     }
 
@@ -35,12 +39,20 @@ public class Request {
         this.ReqID = ReqID;
     }
 
-    public int getAccountID() {
-        return AccountID;
+    public Account getAcc() {
+        return Acc;
     }
 
-    public void setAccountID(int AccountID) {
-        this.AccountID = AccountID;
+    public void setAcc(Account Acc) {
+        this.Acc = Acc;
+    }
+
+    public Contact getContact() {
+        return Contact;
+    }
+
+    public void setContact(Contact Contact) {
+        this.Contact = Contact;
     }
 
     public String getStatus() {
@@ -51,12 +63,12 @@ public class Request {
         this.Status = Status;
     }
 
-    public int getReqTypeID() {
-        return reqTypeID;
+    public RequestType getRequestType() {
+        return requestType;
     }
 
-    public void setReqTypeID(int reqTypeID) {
-        this.reqTypeID = reqTypeID;
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
     }
 
     public String getDescription() {
@@ -67,12 +79,6 @@ public class Request {
         this.Description = Description;
     }
 
-    public int getContactID() {
-        return ContactID;
-    }
-
-    public void setContactID(int ContactID) {
-        this.ContactID = ContactID;
-    }
-
+    
+    
 }

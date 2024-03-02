@@ -48,6 +48,30 @@
         <servlet-name>BlockController_Admin</servlet-name>
         <servlet-class>controllers.BlockController_Admin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>registerController</servlet-name>
+        <servlet-class>controllers.registerController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loginController</servlet-name>
+        <servlet-class>controllers.loginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>logoutController</servlet-name>
+        <servlet-class>controllers.logoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>homePageLoginController</servlet-name>
+        <servlet-class>controllers.homePageLoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>profileController</servlet-name>
+        <servlet-class>controllers.profileController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateProfileController</servlet-name>
+        <servlet-class>controllers.updateProfileController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -84,6 +108,30 @@
         <servlet-name>BlockController_Admin</servlet-name>
         <url-pattern>/BlockController_Admin</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>registerController</servlet-name>
+        <url-pattern>/registerController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loginController</servlet-name>
+        <url-pattern>/loginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutController</servlet-name>
+        <url-pattern>/logoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>homePageLoginController</servlet-name>
+        <url-pattern>/homePageLoginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>profileController</servlet-name>
+        <url-pattern>/profileController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateProfileController</servlet-name>
+        <url-pattern>/updateProfileController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -91,6 +139,5 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>mainController</welcome-file>
-
     </welcome-file-list>
 </web-app>

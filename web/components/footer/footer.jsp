@@ -127,7 +127,7 @@
 
 
   <div
-    class="footer grid grid-cols-12  md:mt-[108px] bg-gray-100/50  md:pl-[65px] md:pr-[73px] mt-[30px] md:pt-[25px] pl-[15px] pr-[15px] pb-[30px] ">
+    class="footer grid grid-cols-12  md:mt-[0px] bg-gray-100/50  md:pl-[65px] md:pr-[73px] mt-[30px] md:pt-[25px] pl-[15px] pr-[15px] pb-[30px] ">
     <div class="md:col-span-3 flex">
       <img class="h-[50px] md:-[60px] md:block hidden" src="/PrjProject/img/footer/services.png" alt="">
 

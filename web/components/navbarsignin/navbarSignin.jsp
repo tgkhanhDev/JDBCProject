@@ -4,7 +4,8 @@
     Author     : ACER
 --%>
 
-<%@page import="com.sun.java.swing.plaf.windows.resources.windows"%>
+<%@page import="DTO.Account"%>
+
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Service"%>
 <%@page import="java.util.ArrayList"%>
@@ -12,15 +13,26 @@
 <!doctype html>
 <html lang="en">
 
+
+
     <head>
         <title>Title</title>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="/PrjProject/components/navbarsignin/stylenavbar.css"/>
     </head>
 
     <body class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
         <!-- navbar  ------>
+        
+            <%
+            
+            Account  acc =(Account) session.getAttribute("loginUser");
+            
+            
+        %>
         <div class=" sticky top-0 z-40">
             <nav class="relative max-w-[var(--maxWidth)] h-[var(--minNavHeight)] px-4 py-4 flex justify-between items-center bg-white z-40"
                  id="navbar">
@@ -37,9 +49,9 @@
                 </div>
                 <div class="flex flex-col">
                     <ul
-                        class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+                        class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2  lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
                         <li>
-                            <a class="text-sm activeNav" href="#">Home</a>
+                            <a class="text-sm activeNav" href="mainController?action=home">Home</a>
                         </li>
                         <li class="text-gray-300">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
@@ -71,7 +83,7 @@
                             </svg>
                         </li>
                         <li id="supportNav">
-                            <a class="text-sm text-gray-400 hover:text-gray-500" href="#">Application</a>
+                            <a class="text-sm text-gray-400 hover:text-gray-500" href="#">Support</a>
                             <i class="fa fa-caret-down"></i>
                         </li>
                         <li class="text-gray-300">
@@ -85,14 +97,12 @@
                             <a class="text-sm text-gray-400 hover:text-gray-500" href="#">Liên hệ</a>
                         </li>
                     </ul>
+
                 </div>
-                <form  action="mainController" >
-                    <input type="hidden" name="action" value= "<%=         CONSTANTS.VIEWLOGINPAGE          %>"  />
-                    <input type="hidden" name="renotify" value= "0"  />
-                    <button type="submit" name="sec" value="1" class=" lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200">Sign In</button>
-                    <button type="submit" name="sec" value="2"  class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
-                            href="#">Sign up</button>
-                </form>
+
+                <img class="w-[45px] cursor-pointer" onclick="toggleMenu()" src="/PrjProject/img/navbarSignin/img_profile.png" alt="">
+
+
             </nav>
             <div class="navbar-menu relative  hidden">
                 <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
@@ -138,15 +148,14 @@
                         </ul>
                     </div>
                     <div class="mt-auto">
-                        <form class="pt-6"  action="mainController" >
-                            
-                            <button type="submit" name="login" value="1" class="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
-                                    >Sign in</button>
-                            <button  type="submit" name="register" value="2"class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700 rounded-xl"
-                                     >
-                                  
-                                Sign Up</button>
-                        </form>
+                        <div class="pt-6">
+                            <button
+                                class="block px-4 py-3 mb-3  text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl">Sign
+                                in</button>
+                            <button
+                                class="block px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700 rounded-xl">Sign
+                                Up</button>
+                        </div>
                         <p class="my-4 text-xs text-center text-gray-400">
                             <span>Copyright © 2021</span>
                         </p>
@@ -156,54 +165,32 @@
             <!-- <div class="invisibleHeader "></div> -->
             <div class="absolute w-screen flex justify-center">
                 <div id="servicePop"
-                     class="absolute top-0 w-[30vw] bg-white  z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
-
+                     class="absolute top-0 w-[30vw] bg-blue-500 z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
                     <div class="w-full h-full p-3 grid grid-cols-3">
-                        <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
-                        <%
-                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
-                            if (serList != null && serList.size() > 0)
-                            {
-                                for (Service item : serList)
-                                {
-                        %>
-                        <div class="col-span-1 ">
-                            <form action="mainController">
-                                <%
-                                    if (item.getServicePrice() == 0)
-                                    {
-                                %>
-                                <input type="hidden" name="action" value=<%=CONSTANTS.GETPRODUCTS%>>
-                                <%
-                                } else
-                                {
-                                %>
-                                <input type="hidden" name="action" value=<%=CONSTANTS.APPLICATION%>>
-                                <input type="hidden" name="applicationID" value=<%=    item.getId()%>>
-                                <%
-                                    }
-                                %>
-                                <button class="" type="submit">
-                                    <span class="capitalize"><%=         item.getServiceName()%></span>
-
-                                    <!--<input type="hidden" name="prdSection"  value="<%%>"  />--> 
-
-                                </button>
-                            </form>
-
+                        <div class="col-span-1">
+                            <div class="">Internet</div>
+                            <div class="">Internet1...</div>
+                            <div class="">Internet khác...</div>
                         </div>
-                        <%
-                                }
-
-                            }
-
-                        %>
+                        <div class="col-span-1">
+                            <div class="">Camera</div>
+                            <div class="">Camera1...</div>
+                            <div class="">Camera khác...</div>
+                        </div>
+                        <div class="col-span-1">
+                            <div class="">TV</div>
+                            <div class="">TV1...</div>
+                            <div class="">TV khác...</div>
+                        </div>
+                        <div class="col-span-1">
+                            <div class="">Robot</div>
+                            <div class="">Robot1...</div>
+                            <div class="">Robot khác...</div>
+                        </div>
                     </div>
-
-
                 </div>
                 <div id="memPop"
-                     class="absolute top-0 w-[30vw] bg-white z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
+                     class="absolute top-0 w-[30vw] bg-red-500 z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
                     <div class="w-full h-full p-3 grid grid-cols-3">
                         <div class="col-span-1">
                             <div class="font-bold">Thanh toán</div>
@@ -224,21 +211,105 @@
                     </div>
                 </div>
                 <div id="supportPop"
-                     class="absolute top-0 w-[30vw] bg-white z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
-                    <div class="w-full h-full p-3 grid grid-cols-4 font-bold">
-                        <a href="" class="col-span-2">
-                            Xem đơn
+                     class="absolute top-0 w-[30vw] bg-green-500 z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
+                    <div class="w-full h-full p-3 grid grid-cols-3">
+                        <div class="col-span-1">
+                            <div class="font-bold">Thanh toán</div>
+                            <div class="">Xem giỏ hàng...</div>
+                            <div class="">Xem giỏ khác...</div>
+                        </div>
+                        <div class="col-span-1">
+                            <div class="font-bold">Giới thiệu</div>
+                            <div class="">Giới thiệu bạn bè</div>
+                            <div class="">Chính sách và hướng dẫn...</div>
+                            <div class="">Lịch sử giới thiệu</div>
+                        </div>
+                        <div class="col-span-1">
+                            <div class="font-bold">Hỗ trợ</div>
+                            <div class="">Gửi yêu cầu</div>
+                            <div class="">Liên hệ...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-menu-wrap " id="subMenu">
+                    <div class="sub-menu" >
+                        <div class="user-infor">
+                            <img class="" src="/PrjProject/img/navbarSignin/img_profile.png" alt="">
+                            <!-- cai ten o day -->
+                            <h3 class="text-lg font-bold">
+                                <%= acc.getLastName().trim() + " " + acc.getFirstName().trim()  %>
+
+                            </h3>
+                        </div>
+                        <hr>
+                        <a class="sub-menu-link" href="mainController?action=getpro">
+                            <img src="/PrjProject/img/navbarSignin/icon_proflie.png" alt="">
+                            <p>Hồ sơ</p>
                         </a>
-                        <a href="" class="col-span-2">
-                            Tạo đơn
+
+                        <%if (acc.getRole().getRoleID() == 1) {%>
+                        <a class="sub-menu-link" href="">
+                            <img src="/PrjProject/img/navbarSignin/shopping.png" alt="">
+                            <p>Giỏ hàng</p>
                         </a>
+
+
+                      
+                        <%}%>
+
+
+                        <!-- yều càu là bên trong sẽ chia ra my request và history -->
+                        <a class="sub-menu-link" href="#">
+                            <img src="/PrjProject/img/navbarSignin/request.png" alt="">
+                            <p>Yêu cầu</p> 
+                        </a>
+                        <%if(acc.getRole().getRoleID()!=2){%>
+                        
+                        <!-- xem thu thg technician co can hien dang ki ko -->
+                        
+                        <a class="sub-menu-link" href="#">
+                            <img src="/PrjProject/img/navbarSignin/register.png" alt="">
+                            <p>Đăng kí</p>
+                            
+                            
+                        </a>
+
+
+                        <a class="sub-menu-link" href="#">
+                            <img src="/PrjProject/img/navbarSignin/contract.png" alt="">
+                            <p>Hợp đồng</p>
+                        </a>
+
+                        <a class="sub-menu-link" href="test">
+                            <img src="/PrjProject/img/navbarSignin/payment.png" alt="">
+                            <p>Giao dịch</p>
+                        </a>
+                        <%}%>
+                        <a class="sub-menu-link" href="mainController?action=getLogout">
+                            <img src="/PrjProject/img/navbarSignin/logout.png" alt="">
+                            <p>Đăng xuất</p>
+                        </a>
+                        <hr>
+                        <% if (acc.getRole().getRoleID() == 2) { %>
+                        <!-- admin only -->
+
+                        <a class="sub-menu-link mb-[2px] " id="sub-menu-link-admin" href="#">
+                            <img id="imgAdmin" class="w-[45px]" src="/PrjProject/img/navbarSignin/admin.png" alt="">
+                            <p class="text-lg">Quản lí của Amin</p> 
+                        </a>
+                        <%}%>
+
+
                     </div>
                 </div>
             </div>
         </div>
 
+
+
         <!-- Optional JavaScript -->
-        <!--PUT IN index.jsp--> 
+        <!--PUT IN index.jsp-->
+
     </body>
 
 </html>

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DTO;
+package controllers;
 
+import DTO.Account;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author ACER
+ * @author Lenovo
  */
-public class test extends HttpServlet {
+public class profileController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,14 +32,15 @@ public class test extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-          HttpSession session =request.getSession();
-           Account  acc =(Account) session.getAttribute("loginUser");
-           Employee em =(Employee) session.getAttribute("emInfor");
-            out.print("brith:"+em.getWorkingDay());
-           out.print("working:"+em.getIdentify_ID());
+           HttpSession session = request.getSession();
+            Account acc =(Account) session.getAttribute("loginUser");
+            if(acc!=null){
+                request.getRequestDispatcher("mainController?action=viewpro").forward(request, response);           
+            }else{
+                request.getRequestDispatcher("mainController?action=home").forward(request, response);
+            }
         }
     }
 
