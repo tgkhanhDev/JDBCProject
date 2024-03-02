@@ -76,8 +76,11 @@ public class UpdateController_Admin extends HttpServlet {
 //                    //==============
                     String script = (String) request.getParameter("script");
 
-                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, status_Acc, policyStatus, role, script));
-                    //=================
+                    //BUG
+                    String sex = "Male";
+
+                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, sex , status_Acc, policyStatus, role, script));
+                //=================
 //                    DEBUG 
 //                    int acc_ID = 1;
 //                    String FirstName = "An";
@@ -91,7 +94,6 @@ public class UpdateController_Admin extends HttpServlet {
 //                    String script = "1";
 //
 //                    Account acc = new Account(acc_ID, LastName, FirstName, phone, gmail, password, status_Acc, policyStatus, RoleName, script);
-
 
                 //END=========================
             }

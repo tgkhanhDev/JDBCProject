@@ -69,6 +69,9 @@ public class AddController_Admin extends HttpServlet {
                     String RoleID = (String) request.getParameter("RoleID");
                     Role role = new AccountDAO().getRoleByID(Integer.parseInt(RoleID));
                     String script = (String) request.getParameter("script");
+
+                    //BUG
+                    String sex="Male";
                     //                    int acc_ID = 1;
 //                    String firstName = "Shelby";
 //                    String lastName = "Tommy";
@@ -79,24 +82,23 @@ public class AddController_Admin extends HttpServlet {
 //                    String policyStatus = "1";
 //                    String RoleName = "Client";
 //                    String script = "Tao bắn mày á";
-                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, status_acc, policyStatus, role, script);
+                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, sex ,status_acc, policyStatus, role, script);
                     result = new AccountDAO().AddAccount(acc);
                     break;
                 case "3":
                     //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
-                    int accID= Integer.parseInt(request.getParameter("AccountID"));
-                    int serID=Integer.parseInt(request.getParameter("SerID"));
-                    int prdID=Integer.parseInt(request.getParameter("PrdID"));
-                    int reqTypeID=Integer.parseInt(request.getParameter("reqTypeID"));
-                    String descriptionData=  request.getParameter("Description");
-                    out.print("<h3>AccID: "+ accID+"</h3>");
-                    out.print("<h3>SerID: "+ serID+"</h3>");
-                    out.print("<h3>ProductID: "+ prdID+"</h3>");
-                    out.print("<h3>reqTypeID: "+ reqTypeID+"</h3>");
-                    out.print("<h3>Description: "+ descriptionData+"</h3>");
+                    int accID = Integer.parseInt(request.getParameter("AccountID"));
+                    int serID = Integer.parseInt(request.getParameter("SerID"));
+                    int prdID = Integer.parseInt(request.getParameter("PrdID"));
+                    int reqTypeID = Integer.parseInt(request.getParameter("reqTypeID"));
+                    String descriptionData = request.getParameter("Description");
+                    out.print("<h3>AccID: " + accID + "</h3>");
+                    out.print("<h3>SerID: " + serID + "</h3>");
+                    out.print("<h3>ProductID: " + prdID + "</h3>");
+                    out.print("<h3>reqTypeID: " + reqTypeID + "</h3>");
+                    out.print("<h3>Description: " + descriptionData + "</h3>");
                     break;
             }
-
 
             if (result >= 1)
             {
