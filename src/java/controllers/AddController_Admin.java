@@ -9,6 +9,8 @@ import DAO.AccountDAO;
 import DAO.ProductDAO;
 import DTO.Account;
 import DTO.Product;
+import DTO.ProductCategories;
+import DTO.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -41,7 +43,6 @@ public class AddController_Admin extends HttpServlet {
         {
             /*Update trong ADMIN*/
             String sec = (String) request.getParameter("sec");
-            sec = "2";
             int result = 0;
             switch (sec)
             {
@@ -52,8 +53,9 @@ public class AddController_Admin extends HttpServlet {
                     int price = Integer.parseInt(request.getParameter("price"));
                     int speed = Integer.parseInt(request.getParameter("speed"));
                     int cate_ID = Integer.parseInt(request.getParameter("cate_ID"));
+                    ProductCategories prdC = new ProductDAO().getCateByID(cate_ID);
                     String status = (String) request.getParameter("status");
-                    Product prd = new Product(0, name, thumbnail, description, price, speed, cate_ID, status);
+                    Product prd = new Product(0, name, thumbnail, description, price, speed, prdC, status);
                     result = new ProductDAO().addProduct(prd);
                     break;
                 case "2":
@@ -65,7 +67,7 @@ public class AddController_Admin extends HttpServlet {
                     String status_acc = (String) request.getParameter("status");
                     String policyStatus = (String) request.getParameter("policyStatus");
                     String RoleID = (String) request.getParameter("RoleID");
-                    String RoleName = new AccountDAO().getRoleByID(RoleID);
+                    Role role = new AccountDAO().getRoleByID(Integer.parseInt(RoleID));
                     String script = (String) request.getParameter("script");
                     //                    int acc_ID = 1;
 //                    String firstName = "Shelby";
@@ -77,80 +79,31 @@ public class AddController_Admin extends HttpServlet {
 //                    String policyStatus = "1";
 //                    String RoleName = "Client";
 //                    String script = "Tao bắn mày á";
-                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, status_acc, policyStatus, RoleName, script);
-//                    result = new AccountDAO().AddAccount(acc);
-                    //======================
-                    //Tại sao mk bị truncated?
-                    Connection cn = null;
-                    try
-                    {
-                        cn = DBUtils.makeConnection();
-                        if (cn != null)
-                        {
-                            String sql
-                                    = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[status],[PolicyStatus],[RoleID],[Script])\n"
-                                    + "VALUES ("
-                                    + "?" //1
-                                    + ",?" //2
-                                    + ",?"//3
-                                    + ",?"//4
-                                    + ",?"//5
-                                    + ",?"//6
-                                    + ",?"//7
-                                    + ",(SELECT [dbo].[Role].[RoleID] FROM [dbo].[Role]\n"
-                                    + "Where [dbo].[Role].RoleName = ? )" //8
-                                    + ",?)"; //9
-
-                            PreparedStatement pst = cn.prepareStatement(sql);
-                            pst.setString(1, acc.getLastName());
-                            pst.setString(2, acc.getFirstName());
-                            pst.setString(3, acc.getPhone());
-                            pst.setString(4, acc.getGmail());
-                            pst.setString(5, acc.getPassword());
-                            pst.setString(6, acc.getStatus());
-                            pst.setString(7, acc.getPolicyStatus());
-                            pst.setString(8, acc.getRoleName());
-                            pst.setString(9, acc.getScript());
-
-                            //Tra ve 0/1
-                            result = pst.executeUpdate();
-                        }
-                    } catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    } finally
-                    {
-                        try
-                        {
-                            if (cn != null)
-                            {
-                                cn.close();
-                            }
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                    //======================
-
+                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, status_acc, policyStatus, role, script);
+                    result = new AccountDAO().AddAccount(acc);
+                    break;
+                case "3":
+                    //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
+                    int accID= Integer.parseInt(request.getParameter("AccountID"));
+                    int serID=Integer.parseInt(request.getParameter("SerID"));
+                    int prdID=Integer.parseInt(request.getParameter("PrdID"));
+                    int reqTypeID=Integer.parseInt(request.getParameter("reqTypeID"));
+                    String descriptionData=  request.getParameter("Description");
+                    out.print("<h3>AccID: "+ accID+"</h3>");
+                    out.print("<h3>SerID: "+ serID+"</h3>");
+                    out.print("<h3>ProductID: "+ prdID+"</h3>");
+                    out.print("<h3>reqTypeID: "+ reqTypeID+"</h3>");
+                    out.print("<h3>Description: "+ descriptionData+"</h3>");
                     break;
             }
 
-//            int prd_ID = Integer.parseInt(request.getParameter("prd_ID"));
-//            out.print("<div>"+prd_ID+"</div>");
-//            out.print("<div>" + name + "</div>");
-//            out.print("<div>" + thumbnail + "</div>");
-//            out.print("<div>" + description + "</div>");
-//            out.print("<div>" + price + "</div>");
-//            out.print("<div>" + speed + "</div>");
-//            out.print("<div>" + cate_ID + "</div>");
-//            out.print("<div>" + status + "</div>");
+
             if (result >= 1)
             {
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
             } else
             {
-                out.print("Some thing Wrong");
+                out.print("Some thing Wronggggggggggg");
             }
         }
     }

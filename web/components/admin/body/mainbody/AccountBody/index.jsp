@@ -193,7 +193,7 @@
         %>
         <div id="formUpdate" class="transition-all ease-in-out <%= (prd != null) ? "" : "hidden"%>">
             <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
-            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10">
+            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
                 <!--quit button--> 
                 <form action="mainController" class="z-100 cursor-pointer">
                     <div>
@@ -264,22 +264,18 @@
                             {
                                 if (prd != null)
                                 {
-                                    if (prd.getRoleName().equals(item.getRoleName()))
+                                    if (prd.getRole().getRoleName().equals(item.getRoleName()))
                                     {
                         %>
                         <option value=<%=         item.getRoleID()%> selected  ><%=              item.getRoleName()%>*</option>
                         <%
-                        } else
-                        {
-                        %>
-                        <option value=<%=         item.getRoleID()%>  ><%=              item.getRoleName()%></option>
-                        <%
                             }
-
-                        } else
+                        %>
+                        <%
+                        } else if (item.getRoleName().matches("Client"))
                         {
                         %>
-                        <option value=<%=         item.getRoleID()%>  ><%=              item.getRoleName()%></option>
+                        <option value=<%=     item.getRoleID()    %>  ><%=              item.getRoleName()%></option>
                         <%
                                 }
                             }

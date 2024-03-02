@@ -6,16 +6,26 @@ package controllers;
  * and open the template in the editor.
  */
 import DAO.AccountDAO;
+import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
+import DAO.RequestTypeDAO;
+import DTO.Account;
+import DTO.Contact;
+import DTO.Request;
+import DTO.RequestType;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import mylibs.DBUtils;
 
 /**
  *
@@ -40,6 +50,7 @@ public class AdminController_Admin extends HttpServlet {
             ArrayList list = new ArrayList();
             String sec = request.getParameter("sec");
             String search = request.getParameter("search");
+
             if (sec == null)
             {
                 sec = "1";
@@ -71,8 +82,12 @@ public class AdminController_Admin extends HttpServlet {
                     } else
                     {
                         list = new RequestDAO().getAllRequest();
+                        //========================================
+                        
+                        //========================================
                     }
                     break;
+
                 case "4":
                     break;
             }
@@ -85,7 +100,7 @@ public class AdminController_Admin extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

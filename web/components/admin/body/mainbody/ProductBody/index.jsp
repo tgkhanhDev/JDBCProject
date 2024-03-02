@@ -115,7 +115,7 @@
                         <%=          item.getSpeed()%>
                     </td>
                     <td class="px-6 py-4 text-center capitalize">
-                        <%=          new ProductDAO().getCatenameByID(item.getCate_ID())%>
+                        <%=          new ProductDAO().getCatenameByID(item.getCategory().getCate_ID())%>
                     </td>
                     <td class="px-6 py-4 flex justify-center items-center">
                         <form action="mainController" />
@@ -163,7 +163,7 @@
     %>
     <div id="formUpdate" class="transition-all ease-in-out <%= (prd != null) ? "" : "hidden"%>">
         <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
-        <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10">
+        <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
             <!--quit button--> 
             <form action="mainController" class="z-100 cursor-pointer">
                 <div>
@@ -236,7 +236,7 @@
                             {
                                 if (prd != null)
                                 {
-                                    if (item.getCate_ID().equals(prd.getCate_ID() + ""))
+                                    if (item.getCate_ID() == prd.getCategory().getCate_ID() )
                                     {
                     %>
                     <option value=<%=      item.getCate_ID()%> selected>
