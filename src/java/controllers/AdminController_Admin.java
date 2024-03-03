@@ -6,26 +6,17 @@ package controllers;
  * and open the template in the editor.
  */
 import DAO.AccountDAO;
-import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
-import DAO.RequestTypeDAO;
-import DTO.Account;
-import DTO.Contact;
-import DTO.Request;
-import DTO.RequestType;
+import DAO.StatusTypeDAO;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mylibs.DBUtils;
 
 /**
  *
@@ -81,9 +72,17 @@ public class AdminController_Admin extends HttpServlet {
                     {
                     } else
                     {
+                        
+                        request.setAttribute("statusList", new StatusTypeDAO().getAllStatusType() ); 
                         list = new RequestDAO().getAllRequest();
                         //========================================
+                        String cate = request.getParameter("cate");
+                        String status = request.getParameter("status");
+                        cate=(cate == null)? cate="all": cate;
+                        status = (status == null)? "all" :status;
                         
+                        out.print("<h3>Cate: "+cate+"</h3>");
+                        out.print("<h3>Status: "+status+"</h3>");
                         //========================================
                     }
                     break;

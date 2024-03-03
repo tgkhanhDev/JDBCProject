@@ -22,7 +22,7 @@
                 param = "1";
             }
         %>
-        <form id="sider" class="fixed w-[200px] text-white h-[calc(100vh-56px)] top-[56px] left-0 bg-[#323232]" action="mainController">
+        <form id="sider" class="fixed w-[200px] text-white h-[calc(100vh-56px)] top-[56px] left-0 bg-[#323232]" action="mainController" method="post">
             <input type="hidden" name="action" value=<%=         CONSTANTS.GETPRODUCT_ADMIN%> /> 
             <!--<input id="siderInput" type="hidden" name="sec" value="" />-->
             <!--Quan Ly--> 

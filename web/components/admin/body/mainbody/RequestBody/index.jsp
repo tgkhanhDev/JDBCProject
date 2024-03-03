@@ -23,16 +23,38 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="mainController" class="flex items-center gap-10 my-5">
+            <input type="hidden" name="action" value="test" />
+            <input type="hidden" name="sec" value="<%=         request.getAttribute("sec")         %>" />
+            <!--Theo sdt--> 
+            <div class="flex gap-2">
+                <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
+                <input class="border-2" name="search" value="<%=(request.getParameter("search") != null) ? request.getParameter("search") : ""%>" placeholder="Enter product name..." />
+                <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
+            </div>
 
-         <div class="flex gap-2" >
-            <div class="">Danh mục đang hiển thị: </div>
-            <select name="sort" class="capitalize rounded">
-                <option value="all" selected>Tất cả</option>
-                <option value="date">Theo ngày gần nhất</option>
-                <option value="status">Theo trạng thái</option>
-            </select>
-        </div>
+            <!--Theo danh mục--> 
+            <div class="flex gap-2" >
+                <div class="">Danh mục đang hiển thị: </div>
+                <select name="date" class="capitalize rounded">
+                    <option value="asc" selected>Mặc định</option>
+                    <option value="desc">Theo ngày gần nhất</option>
+                </select>
+            </div>
 
+            <!--Theo trạng thái:--> 
+            <div class="flex gap-2" >
+                <div class="">Theo trạng thái: </div>
+                <select name="status" class="capitalize rounded">
+                    <option value="all" selected>Mặc định</option>
+                    <jstl:set  var="sttList" value="${requestScope.statusList}" />
+                    <jstl:forEach var="stt" items="${sttList}" >
+                        <option value="${stt.statusID}">${stt.statusName}</option>
+                    </jstl:forEach>
+                </select>
+            </div>
+
+        </form>
         <!--TABLE--> 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

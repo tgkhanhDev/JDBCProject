@@ -9,6 +9,7 @@ import DTO.Account;
 import DTO.Contact;
 import DTO.Request;
 import DTO.RequestType;
+import DTO.Role;
 import DTO.StatusType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -91,7 +92,59 @@ public class RequestDAO {
         return list;
     }
 
+    public ArrayList<Request> getSortRequest(String dateSort, String phoneSearch, String status) {
+        ArrayList<Request> list = new ArrayList<>();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "DECLARE @SortOrder varchar = ?\n"
+                        + "SELECT [ReqID], R.[AccountID],[ManagerAccountID] , R.[ContactID] ,R.[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] as R\n"
+                        + "JOIN [dbo].[Account] as A ON R.[AccountID] = A.[AccountID]\n"
+                        + "JOIN [dbo].[StatusType] as ST ON R.[StatusID] = ST.[StatusID]\n"
+                        + "JOIN [dbo].[Contact] as C ON R.[ContactID] = C.[ContactID]\n"
+                        + "JOIN [dbo].[Transaction_infor] as T ON C.[TranID] =  T.[TranID]\n"
+                        + "WHERE A.Phone like ?\n"
+                        + "AND ST.[StatusID] like ?\n"
+                        + "ORDER BY\n"
+                        + "    CASE WHEN @SortOrder = 'asc' THEN T.Date END ASC,\n"
+                        + "    CASE WHEN @SortOrder = 'desc' THEN T.Date END DESC;";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, dateSort);
+                pst.setString(2, "%" + phoneSearch + "%");
+                pst.setString(3, "%" + status + "%");
+                ResultSet table = pst.executeQuery();
+
+                if (table != null && table.next())
+                {
+
+                };
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return list;
+    }
     //POST UPDATE=======================================================================:
+
     public int addRequest(Request request) {
         int result = 0;
         Connection cn = null;
