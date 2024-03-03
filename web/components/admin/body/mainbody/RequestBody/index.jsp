@@ -3,7 +3,7 @@
     Created on : Feb 13, 2024, 3:04:59 PM
     Author     : ACER
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page import="DAO.ServiceDAO"%>
 <%@page import="DTO.Service"%>
 <%@page import="DTO.RequestType"%>
@@ -24,9 +24,16 @@
     </head>
     <body>
 
+         <div class="flex gap-2" >
+            <div class="">Danh mục đang hiển thị: </div>
+            <select name="sort" class="capitalize rounded">
+                <option value="all" selected>Tất cả</option>
+                <option value="date">Theo ngày gần nhất</option>
+                <option value="status">Theo trạng thái</option>
+            </select>
+        </div>
+
         <!--TABLE--> 
-
-
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -65,14 +72,17 @@
                             Sản Phẩm
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Price
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Description
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        ArrayList<Request> list = (ArrayList<Request>) request.getAttribute("list");
-                        if (list != null)
+                        ArrayList<Request> listReq = (ArrayList<Request>) request.getAttribute("list");
+                        if (listReq != null)
                         {
                             String currentPage = (String) request.getParameter("page");
                             if (currentPage == null)
@@ -80,21 +90,23 @@
                                 currentPage = "1";
                             }
 
-                            ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN));
+                            ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(listReq, CONSTANTS.MAXPAGE_ADMIN));
 
                             ArrayList<Request> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
-                            for (Request item : list)
+                            for (Request item : currList)
                             {
                     %>
+
+
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                            <%=          item.getReqID()%>
+                            <%=             item.getReqID()%>
                         </th>
                         <td class="px-6 py-4 capitalize">
                             <%=          item.getContact().getService().getServiceName()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getContact().getTransaction().getDate().toLocaleString()%>
+                            <%=          (item.getContact().getTransaction().getDate() == null) ? "NULL" : item.getContact().getTransaction().getDate().toLocaleString()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=          item.getAcc().getPhone()%>
@@ -122,6 +134,9 @@
                                         } else if (item.getStatusType().getStatusID() == 5)
                                         {
                                             out.print("bg-red-500");
+                                        } else
+                                        {
+                                            out.print("bg-yellow-500");
                                         }
                                     %>
                                     ">
@@ -139,12 +154,16 @@
                             <%=          item.getContact().getTransaction().getProduct().getName()%>
                         </td>
                         <td class="px-6 py-4">
+                            <%=          item.getContact().getService().getServicePrice() + item.getContact().getTransaction().getMoney()%>
+                        </td>
+                        <td class="px-6 py-4">
                             <%=          item.getDescription()%>
                         </td>
                     </tr>
                     <%                            }
                         }
                     %>
+
                 </tbody>
             </table>
         </div>
@@ -176,9 +195,9 @@
                     <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
 
                     <!--//           Lấy từ session--> 
-                    <input type="hidden" name="AccountID" value="1" />   <!-- ra accID   --> 
-                    <input type="hidden" name="ManagerID" value="2" />  <!--  ra MangagerID do thg Admin tạo  --> 
-                    <input type="hidden" name="Account" value="AccountObject" />  <!--  ra Account  --> 
+                    <jstl:set var="accSes" value="${sessionScope.loginUser}" />
+                    <input type="hidden" name="AccountID" value="${accSes.accountID}" />   <!-- ra accID   --> 
+                    <input type="hidden" name="ManagerID" value="${accSes.accountID}" />  <!-- Client tạo sẽ ra null, nhưng trường hợp này do thg Admin tạo => accSes)  --> 
                     <!-- end session  -->
 
                     <!--Khi khởi tạo, mặc định là true-->

@@ -11,6 +11,7 @@ import DTO.Request;
 import DTO.RequestType;
 import DTO.StatusType;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import mylibs.DBUtils;
  * @author ACER
  */
 public class RequestDAO {
-    
+
     //Get Req:
     public ArrayList<Request> getAllRequest() {
         ArrayList<Request> list = new ArrayList<>();
@@ -89,4 +90,50 @@ public class RequestDAO {
         }
         return list;
     }
+
+    //POST UPDATE=======================================================================:
+    public int addRequest(Request request) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "INSERT INTO [dbo].[Request]([AccountID],[ManagerAccountID],[ContactID],[StatusID],[reqTypeID],[Description])\n"
+                        + "VALUES (?,?,(SELECT Max([ContactID]) FROM [dbo].[Contact]),?,?,?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, request.getAcc().getAccountID());
+                pst.setInt(2, request.getAdminAcc().getAccountID());
+                pst.setInt(3, request.getStatusType().getStatusID());
+                pst.setInt(4, request.getRequestType().getRqTyID());
+                pst.setString(5, request.getDescription());
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
 }

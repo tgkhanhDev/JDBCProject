@@ -6,15 +6,28 @@
 package controllers;
 
 import DAO.AccountDAO;
+import DAO.ContactDAO;
 import DAO.ProductDAO;
+import DAO.RequestDAO;
+import DAO.RequestTypeDAO;
+import DAO.ServiceDAO;
+import DAO.StatusTypeDAO;
+import DAO.TransactionDAO;
 import DTO.Account;
+import DTO.Contact;
 import DTO.Product;
 import DTO.ProductCategories;
+import DTO.Request;
+import DTO.RequestType;
 import DTO.Role;
+import DTO.Service;
+import DTO.StatusType;
+import DTO.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +84,7 @@ public class AddController_Admin extends HttpServlet {
                     String script = (String) request.getParameter("script");
 
                     //BUG
-                    String sex="Male";
+                    String sex = "Male";
                     //                    int acc_ID = 1;
 //                    String firstName = "Shelby";
 //                    String lastName = "Tommy";
@@ -82,21 +95,63 @@ public class AddController_Admin extends HttpServlet {
 //                    String policyStatus = "1";
 //                    String RoleName = "Client";
 //                    String script = "Tao bắn mày á";
-                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, sex ,status_acc, policyStatus, role, script);
+                    Account acc = new Account(0, lastName, firstName, phone, gmail, password, sex, status_acc, policyStatus, role, script);
                     result = new AccountDAO().AddAccount(acc);
                     break;
                 case "3":
                     //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
                     int accID = Integer.parseInt(request.getParameter("AccountID"));
-                    int serID = Integer.parseInt(request.getParameter("SerID"));
-                    int prdID = Integer.parseInt(request.getParameter("PrdID"));
+                    int managerID = Integer.parseInt(request.getParameter("ManagerID"));
+                    Account acc_3 = new AccountDAO().getAccountByID(accID + "");
+                    Account managerAcc_3 = new AccountDAO().getAccountByID(managerID + "");
+
+                    //Product &ReqType & Des
+                    int prdID_3 = Integer.parseInt(request.getParameter("PrdID"));
+                    Product prd_3 = new ProductDAO().getProductByID(prdID_3 + "");
                     int reqTypeID = Integer.parseInt(request.getParameter("reqTypeID"));
+                    RequestType rqType_3 = new RequestTypeDAO().getRequestTypeByID(reqTypeID);
                     String descriptionData = request.getParameter("Description");
-                    out.print("<h3>AccID: " + accID + "</h3>");
-                    out.print("<h3>SerID: " + serID + "</h3>");
-                    out.print("<h3>ProductID: " + prdID + "</h3>");
-                    out.print("<h3>reqTypeID: " + reqTypeID + "</h3>");
-                    out.print("<h3>Description: " + descriptionData + "</h3>");
+
+                    //Contact==========
+                    //=====Service
+                    int serID = Integer.parseInt(request.getParameter("SerID"));
+                    Service service_3 = new ServiceDAO().getServiceByID(serID);
+                    //=====End Service
+
+                    //=====Transaction
+                    Date transDate_3 = new Date();
+//                    out.print("<h3>newDate:     " + transDate_3 + "</h3>");
+//                    out.print("<h3>GETTIME:    " + transDate_3.toString() + "</h3>");
+                    double transMoney = prd_3.getPrice() + service_3.getServicePrice();
+                    String transStatus_3 = "0"; //false
+                    Product transProduct_3 = prd_3;
+                    Transaction transaction_3 = new Transaction(0, transDate_3, transMoney, transStatus_3, transProduct_3);
+                    int addTrans = new TransactionDAO().addNewTransaction(transaction_3);
+
+//                    out.print("<h3>TransDate:     " + transaction_3.getDate() + "</h3>");
+
+                    //=====End Transaction
+                    //=====Status
+                    String status_3 = "0"; //false
+                    //=====End Status
+                    Contact contact = new Contact(0, service_3, transaction_3, status_3);
+                    int addContact = new ContactDAO().addContact(contact);
+
+                    //End Contact========
+                    int stt = 2; //// Da Xac Nhan,   1 neu la Client Tao
+                    StatusType sttType = new StatusTypeDAO().getStatusTypeByID(stt);
+
+                    Request request_3 = new Request(0, acc_3, managerAcc_3, contact, sttType, rqType_3, descriptionData);
+
+                    //Adding...
+                    if (addTrans >= 1 && addContact >= 1)
+                    {
+                        result=new RequestDAO().addRequest(request_3);
+                    } else
+                    {
+                        out.print("Thêm Thất bại");
+                    }
+
                     break;
             }
 

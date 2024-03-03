@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Transaction {
     private int TranID;
-    private Date date; //Ngay giao dich
+    private Date date; //Ngay giao dich //Deafault là null => Set ngày khi đổi status True
 //    private Date time;// TG 
     private double money;
     private String status;

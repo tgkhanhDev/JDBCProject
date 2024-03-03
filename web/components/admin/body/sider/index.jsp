@@ -1,3 +1,4 @@
+<%@page import="DTO.Account"%>
 <%@page import="controllers.CONSTANTS"%>
 <%-- 
     Document   : SIDER/index
@@ -6,6 +7,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +16,7 @@
     </head>
     <body>
         <%
-            String param =  (String) request.getAttribute("sec");
+            String param = (String) request.getAttribute("sec");
             if (param == null)
             {
                 param = "1";
@@ -27,7 +29,13 @@
             <div>
                 <div class="text-2xl border-b-2 mr-2">Quản Lý</div>
                 <div class="flex flex-col">
-                    <div><%=param%></div>
+                    <div>Page: <%=param%></div>
+
+                    <%--<jsp:useBean id="loginUser" class="DTO.Account" scope="session" />--%> 
+                    <jstl:set  var="loginUser" value="${sessionScope.loginUser}"/>
+                    <div><jstl:out value="${loginUser.lastName} ${loginUser.firstName}" /></div>
+                    <div><jstl:out value="${loginUser.role.roleName}" /></div>
+
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("1")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="1" data-sider >Sản phẩm</button></div>
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("2")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="2" data-sider >Người dùng</button></div>
                 </div>
