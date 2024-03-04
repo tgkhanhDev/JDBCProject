@@ -68,23 +68,19 @@ public class AdminController_Admin extends HttpServlet {
                     }
                     break;
                 case "3":
-                    if (search != null)
-                    {
-                    } else
-                    {
-                        
-                        request.setAttribute("statusList", new StatusTypeDAO().getAllStatusType() ); 
-                        list = new RequestDAO().getAllRequest();
+
+                        request.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
                         //========================================
-                        String cate = request.getParameter("cate");
+                        String date = request.getParameter("date");
                         String status = request.getParameter("status");
-                        cate=(cate == null)? cate="all": cate;
-                        status = (status == null)? "all" :status;
-                        
-                        out.print("<h3>Cate: "+cate+"</h3>");
-                        out.print("<h3>Status: "+status+"</h3>");
+                        date = (date == null) ? date = "1" : date;
+                        status = (status == null) ? "" : status;
+                        search = (search == null) ? "" : search;
+
+                        list = new RequestDAO().getSortRequest(date, search, status);
+                        request.setAttribute("date", date);
+                        request.setAttribute("status", status);
                         //========================================
-                    }
                     break;
 
                 case "4":

@@ -7,6 +7,7 @@ package controllers;
 
 import DAO.AccountDAO;
 import DAO.ProductDAO;
+import DAO.RequestDAO;
 import DTO.Account;
 import DTO.Product;
 import DTO.ProductCategories;
@@ -78,8 +79,8 @@ public class UpdateController_Admin extends HttpServlet {
 
                     //BUG
                     String sex = "Male";
-                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, sex , status_Acc, policyStatus, role, script));
-                //=================
+                    result = new AccountDAO().updateAccountInfo(new Account(acc_ID, LastName, FirstName, phone, gmail, password, sex, status_Acc, policyStatus, role, script));
+                    //=================
 //                    DEBUG 
 //                    int acc_ID = 1;
 //                    String FirstName = "An";
@@ -94,7 +95,13 @@ public class UpdateController_Admin extends HttpServlet {
 //
 //                    Account acc = new Account(acc_ID, LastName, FirstName, phone, gmail, password, status_Acc, policyStatus, RoleName, script);
 
-                //END=========================
+                    //END=========================
+                    break;
+                case "3":
+                    String sttType = request.getParameter("sttType");
+                    String reqID = request.getParameter("reqID");
+                    result = new RequestDAO().updateRequestStatus(sttType, reqID);
+                    break;
             }
 
             if (result >= 1)

@@ -34,16 +34,10 @@ public class testController extends HttpServlet {
         {
             /* TODO output your page here. You may use following sample code. */
             String sec = request.getParameter("sec");
-            String search = request.getParameter("search");
-            String date = request.getParameter("date");
-            String status = request.getParameter("status");
-            date = (date == null) ? "asc" : date;
-            status = (status == null) ? "all" : status;
-
-            out.print("<h3>Sec: " + sec + "</h3>");
-            out.print("<h3>Search: " + search + "</h3>");
-            out.print("<h3>date: " + date + "</h3>");
-            out.print("<h3>Status: " + status + "</h3>");
+            String sttType = request.getParameter("sttType");
+            String reqID = request.getParameter("reqID");
+            out.print("<h3>StatusType: " + sttType + "</h3>");
+            out.print("<h3>reqID: " + reqID + "</h3>");
 
             out.print("<form action='mainController'>");
             out.print("<input type='hidden'  name='action' value='getProductAdmin' >");

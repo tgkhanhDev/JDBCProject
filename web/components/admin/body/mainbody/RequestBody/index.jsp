@@ -3,6 +3,7 @@
     Created on : Feb 13, 2024, 3:04:59 PM
     Author     : ACER
 --%>
+<%@page import="DTO.StatusType"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page import="DAO.ServiceDAO"%>
 <%@page import="DTO.Service"%>
@@ -24,8 +25,8 @@
     </head>
     <body>
         <form action="mainController" class="flex items-center gap-10 my-5">
-            <input type="hidden" name="action" value="test" />
-            <input type="hidden" name="sec" value="<%=         request.getAttribute("sec")         %>" />
+            <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
+            <input type="hidden" name="sec" value="<%=         request.getAttribute("sec")%>" />
             <!--Theo sdt--> 
             <div class="flex gap-2">
                 <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
@@ -34,22 +35,24 @@
             </div>
 
             <!--Theo danh mục--> 
+            <jstl:set var="date" value="${requestScope.date}" />
             <div class="flex gap-2" >
-                <div class="">Danh mục đang hiển thị: </div>
+                <div class="">Danh mục đang hiển thị:</div>
                 <select name="date" class="capitalize rounded">
-                    <option value="asc" selected>Mặc định</option>
-                    <option value="desc">Theo ngày gần nhất</option>
+                    <option value="1" >Mặc định</option>
+                    <option value="2" ${(date==2)? "selected":""}>Theo ngày gần nhất</option>
                 </select>
             </div>
 
             <!--Theo trạng thái:--> 
+            <jstl:set var="status" value="${requestScope.status}" />
             <div class="flex gap-2" >
                 <div class="">Theo trạng thái: </div>
                 <select name="status" class="capitalize rounded">
-                    <option value="all" selected>Mặc định</option>
+                    <option value="" >Mặc định</option>
                     <jstl:set  var="sttList" value="${requestScope.statusList}" />
                     <jstl:forEach var="stt" items="${sttList}" >
-                        <option value="${stt.statusID}">${stt.statusName}</option>
+                        <option value="${stt.statusID}" ${(status==stt.statusID)?"selected":""}>${stt.statusName}</option>
                     </jstl:forEach>
                 </select>
             </div>
@@ -83,9 +86,6 @@
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            Edit
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Request Type 
@@ -144,29 +144,44 @@
                             <%=         (item.getAdminAcc().getRole() != null) ? item.getAdminAcc().getRole().getRoleName() : item.getAdminAcc().getRole()%>
                         </td>
 
-                        <td class="px-6 py-4 text-center">
-                            <button class="rounded text-white
-                                    <%
-                                        if (item.getStatusType().getStatusID() == 1)
-                                        {
-                                            out.print("bg-gray-500");
-                                        } else if (item.getStatusType().getStatusID() == 4)
-                                        {
-                                            out.print("bg-green-500");
-                                        } else if (item.getStatusType().getStatusID() == 5)
-                                        {
-                                            out.print("bg-red-500");
-                                        } else
-                                        {
-                                            out.print("bg-yellow-500");
-                                        }
-                                    %>
-                                    ">
-                                <%=         item.getStatusType().getStatusName()%>
-                            </button>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <input type="checkbox" name="setStatus" value="<%=  item.getReqID()%>" />
+                        <td class="px-6 py-4 text-center ">
+                            <!-- 148 --> 
+                            <details class="dropdown w-[150px]">
+                                <summary class="m-1 btn rounded  py-1 text-[20px] text-white
+                                         <%
+                                             if (item.getStatusType().getStatusID() == 1)
+                                             {
+                                                 out.print("bg-gray-500");
+                                             } else if (item.getStatusType().getStatusID() == 4)
+                                             {
+                                                 out.print("bg-green-500");
+                                             } else if (item.getStatusType().getStatusID() == 5)
+                                             {
+                                                 out.print("bg-red-500");
+                                             } else
+                                             {
+                                                 out.print("bg-yellow-500");
+                                             }
+                                         %>
+                                         "><%=      item.getStatusType().getStatusName()%></summary>
+                                <ul class="menu dropdown-content z-[1] rounded  absolute w-[150px]  bg-gray-100">
+                                    <form action="mainController">
+                                        <input type="hidden" name="sec" value="<%= request.getAttribute("sec")  %>"/>
+                                        <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN   %>"/>
+                                        <input type="hidden" name="reqID" value="<%=   item.getReqID()   %>"/>
+                                        <%
+                                            ArrayList<StatusType> sttType = (ArrayList<StatusType>) request.getAttribute("statusList");
+                                            for (StatusType stt : sttType)
+                                            {
+                                        %>
+                                        <li class=""><button class="py-2 hover:bg-gray-200 h-full w-full
+                                                             <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>
+                                                             " type="submit" name="sttType" value="<%=stt.getStatusID()%>" ><%=      stt.getStatusName()%></button></li>
+                                            <%
+                                            }%>
+                                    </form>
+                                </ul>
+                            </details>
 
                         </td>
                         <td class="px-6 py-4">
@@ -325,6 +340,8 @@
                 });
             });
 
+
         </script>
+
     </body>
 </html>
