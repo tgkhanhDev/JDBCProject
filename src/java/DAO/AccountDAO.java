@@ -484,7 +484,7 @@ public java.util.Date convertStringToDate(String dateString) throws ParseExcepti
                     String s_password = table.getString("Password");
                     String s_sex = table.getString("sex");
                     String s_status = (table.getBoolean("status")) ? "1" : "0";
-                    String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                    String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                     Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                     String s_script = table.getString("Script");
                     list.add(new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script));
@@ -539,7 +539,7 @@ public java.util.Date convertStringToDate(String dateString) throws ParseExcepti
                         String s_password = table.getString("Password");
                         String s_sex = table.getString("sex");
                         String s_status = (table.getBoolean("status")) ? "1" : "0";
-                        String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                         Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                         String s_script = table.getString("Script");
                         list.add(new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script));
@@ -593,7 +593,7 @@ public java.util.Date convertStringToDate(String dateString) throws ParseExcepti
                         String s_password = table.getString("Password");
                         String s_sex = table.getString("sex");
                         String s_status = (table.getBoolean("status")) ? "1" : "0";
-                        String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                         Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                         String s_script = table.getString("Script");
                         list = new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script);

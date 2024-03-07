@@ -87,7 +87,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%                        ArrayList<Account> list = (ArrayList<Account>) request.getAttribute("list");
+                    <%
+                        ArrayList<Account> list = (ArrayList<Account>) session.getAttribute("list");
                         if (list != null)
                         {
                             String currentPage = (String) request.getParameter("page");
@@ -125,22 +126,22 @@
                             <form action="mainController" />
                             <input type="hidden" name="action" value="<%=  CONSTANTS.BLOCK_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=  request.getParameter("sec")%>" />
-                            <input type="hidden" name="type" value="P" />
+                            <input type="hidden" name="type" value="changePolicy" />
                             <input type="hidden" name="itemID" value="<%=   item.getAccountID()%>" />
                             <%
                                 if (item.getPolicyStatus().equals("1"))
                                 {
                             %>
-                            <button class="bg-yellow-700 rounded py-1 px-2 text-white ">Legal</button>
+                            <button class="bg-yellow-700 rounded py-1 px-2 text-white ">Legal <%= item.getPolicyStatus()%></button>
                             <%
                             } else
                             {
                             %>
-                            <button class="bg-red-500 rounded py-1 px-2 text-white">Illegal</button>
+                            <button class="bg-red-500 rounded py-1 px-2 text-white">Illegal <%= item.getPolicyStatus()%></button>
                             <%
                                 }
 
-                            %>
+                            %>                           
                             </form>
                         </td>
                         <td class="px-6 py-4">
@@ -275,7 +276,7 @@
                         } else if (item.getRoleName().matches("Client"))
                         {
                         %>
-                        <option value=<%=     item.getRoleID()    %>  ><%=              item.getRoleName()%></option>
+                        <option value=<%=     item.getRoleID()%>  ><%=              item.getRoleName()%></option>
                         <%
                                 }
                             }

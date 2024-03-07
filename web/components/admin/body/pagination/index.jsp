@@ -4,6 +4,7 @@
     Author     : ACER
 --%>
 
+<%@page import="DTO.Request"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,8 +16,12 @@
     </head>
     <body>
         <%
-            ArrayList list = (ArrayList) request.getAttribute("list");
-            int maxPage = (int) Math.ceil((list.size() * 1.0) / CONSTANTS.MAXPAGE_ADMIN);
+            ArrayList list = (ArrayList) session.getAttribute("list");
+            int maxPage =0;
+            if (list != null)
+            {
+                maxPage = (int) Math.ceil((list.size() * 1.0) / CONSTANTS.MAXPAGE_ADMIN);
+            }
             String currPage = (String) request.getParameter("page");
             if (currPage == null || (Integer.parseInt(currPage) <= 0))
             {
@@ -34,7 +39,7 @@
                 <ul class="list-style-none flex">
                     <li class= "<%=          (Integer.parseInt(currPage) == 1) ? "hidden" : ""%>">
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.GETPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=       CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
                             <button name="page" value="<%=   (Integer.parseInt(currPage) > 1) ? (Integer.parseInt(currPage) - 1) : (Integer.parseInt(currPage))%>"
                                     class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Previous</button>
@@ -43,7 +48,7 @@
                     <!--3 button--> 
                     <li>
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.GETPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
                             <button
                                 class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
@@ -55,7 +60,7 @@
                     </li>
                     <li aria-current="page">
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.GETPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
                             <button
                                 class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-primary-700 transition-all duration-300"
@@ -70,7 +75,7 @@
                     </li>
                     <li>
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.GETPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
                             <button
                                 class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
@@ -82,14 +87,18 @@
                     <!--End 3 Button--> 
                     <li class= "<%=          (Integer.parseInt(currPage) == maxPage) ? "hidden" : ""%>"   >
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.GETPRODUCT_ADMIN%>" />
+                            <!--    CONSTANTS.VIEWPRODUCT_ADMIN -->    
+                            <input type="hidden" name="action" value="<%= CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+
                             <button name="page" value="<%=   (Integer.parseInt(currPage) < maxPage) ? (Integer.parseInt(currPage) + 1) : (Integer.parseInt(currPage))%>" 
                                     class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Next</button>
                         </form>
+
                     </li>
                 </ul>
             </nav>
         </div>
+
     </body>
 </html>

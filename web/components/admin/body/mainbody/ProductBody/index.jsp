@@ -83,16 +83,20 @@
             </thead>
             <tbody>
                 <%
-                    ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("list");
+
+                    ArrayList<Product> list = (ArrayList<Product>)session.getAttribute("list");
                     if (list != null)
                     {
-                        String currentPage= (String) request.getParameter("page");
-                        if(currentPage == null) currentPage="1";
-                        
-                        ArrayList<ArrayList> pagingList = ( new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN) ) ;
-                        
-                        ArrayList<Product> currList = pagingList.get(Integer.parseInt(currentPage)-1);
-                        for (Product item : currList ) 
+                        String currentPage = (String) request.getParameter("page");
+                        if (currentPage == null)
+                        {
+                            currentPage = "1";
+                        }
+
+                        ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN));
+
+                        ArrayList<Product> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
+                        for (Product item : currList)
                         {
                 %>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -236,7 +240,7 @@
                             {
                                 if (prd != null)
                                 {
-                                    if (item.getCate_ID() == prd.getCategory().getCate_ID() )
+                                    if (item.getCate_ID() == prd.getCategory().getCate_ID())
                                     {
                     %>
                     <option value=<%=      item.getCate_ID()%> selected>

@@ -13,10 +13,13 @@ import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 /**
  *
@@ -39,6 +42,8 @@ public class AdminController_Admin extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             ArrayList list = new ArrayList();
+            HttpSession session = request.getSession();
+
             String sec = request.getParameter("sec");
             String search = request.getParameter("search");
 
@@ -69,18 +74,19 @@ public class AdminController_Admin extends HttpServlet {
                     break;
                 case "3":
 
-                        request.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
-                        //========================================
-                        String date = request.getParameter("date");
-                        String status = request.getParameter("status");
-                        date = (date == null) ? date = "1" : date;
-                        status = (status == null) ? "" : status;
-                        search = (search == null) ? "" : search;
+                     session.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
+                    //========================================
+                    String date = request.getParameter("date");
+                    String status = request.getParameter("status");
+                    date = (date == null) ? date = "1" : date;
+                    status = (status == null) ? "" : status;
+                    search = (search == null) ? "" : search;
 
-                        list = new RequestDAO().getSortRequest(date, search, status);
-                        request.setAttribute("date", date);
-                        request.setAttribute("status", status);
-                        //========================================
+                    list = new RequestDAO().getSortRequest(date, search, status);
+//                        list= new RequestDAO().getAllRequest();
+                    request.setAttribute("date", date);
+                    request.setAttribute("status", status);
+                    //========================================
                     break;
 
                 case "4":
@@ -88,7 +94,8 @@ public class AdminController_Admin extends HttpServlet {
             }
 
             request.setAttribute("sec", sec);
-            request.setAttribute("list", list);
+            session.setAttribute("list", list);
+//            request.setAttribute("list", list);
 
             //            Về view nè 
             request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);

@@ -5,8 +5,10 @@
  */
 package controllers;
 
+import DTO.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +40,25 @@ public class testController extends HttpServlet {
             String reqID = request.getParameter("reqID");
             out.print("<h3>StatusType: " + sttType + "</h3>");
             out.print("<h3>reqID: " + reqID + "</h3>");
+            out.print("<h3> TEST" + "</h3>");
+            out.print("<h3> sec: " + sec + "</h3>");
+
+            ArrayList<Request> list = (ArrayList<Request>) request.getSession().getAttribute("list");
+            if (list != null)
+            {
+                out.print("Ngon: ");
+                for (Request request1 : list)
+                {
+                    out.print(request1.getReqID()+", ");
+                }
+            } else
+            {
+                out.print("CC");
+            }
 
             out.print("<form action='mainController'>");
             out.print("<input type='hidden'  name='action' value='getProductAdmin' >");
-            out.print("<input type='hidden'  name='sec' value=' "+sec+">");
+            out.print("<input type='hidden'  name='sec' value=' " + sec + ">");
             out.print("<div><button type='submit' class='bg-yellow-500 px-4 py-2 rounded'>Letsgooooo</button></div>");
             out.print("</form>");
 

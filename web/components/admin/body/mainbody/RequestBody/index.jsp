@@ -103,7 +103,7 @@
                 </thead>
                 <tbody>
                     <%
-                        ArrayList<Request> listReq = (ArrayList<Request>) request.getAttribute("list");
+                        ArrayList<Request> listReq = (ArrayList<Request>) session.getAttribute("list");
                         if (listReq != null)
                         {
                             String currentPage = (String) request.getParameter("page");
@@ -166,19 +166,23 @@
                                          "><%=      item.getStatusType().getStatusName()%></summary>
                                 <ul class="menu dropdown-content z-[1] rounded  absolute w-[150px]  bg-gray-100">
                                     <form action="mainController">
-                                        <input type="hidden" name="sec" value="<%= request.getAttribute("sec")  %>"/>
-                                        <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN   %>"/>
-                                        <input type="hidden" name="reqID" value="<%=   item.getReqID()   %>"/>
+                                        <input type="hidden" name="sec" value="<%= request.getAttribute("sec")%>"/>
+                                        <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN%>"/>
+                                        <input type="hidden" name="reqID" value="<%=   item.getReqID()%>"/>
                                         <%
-                                            ArrayList<StatusType> sttType = (ArrayList<StatusType>) request.getAttribute("statusList");
-                                            for (StatusType stt : sttType)
+                                            ArrayList<StatusType> sttType = (ArrayList<StatusType>) session.getAttribute("statusList");
+                                            if (sttType != null)
                                             {
+
+                                                for (StatusType stt : sttType)
+                                                {
                                         %>
                                         <li class=""><button class="py-2 hover:bg-gray-200 h-full w-full
                                                              <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>
                                                              " type="submit" name="sttType" value="<%=stt.getStatusID()%>" ><%=      stt.getStatusName()%></button></li>
                                             <%
-                                            }%>
+                                                    }
+                                                }%>
                                     </form>
                                 </ul>
                             </details>
