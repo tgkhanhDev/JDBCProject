@@ -24,9 +24,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <!--//           Lấy từ session--> 
+        <jstl:set var="accSes" value="${sessionScope.loginUser}" />
+
         <form action="mainController" class="flex items-center gap-10 my-5">
             <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
-            <input type="hidden" name="sec" value="<%=         request.getAttribute("sec")%>" />
+            <input type="hidden" name="sec" value="<%=         request.getParameter("sec")%>" />
             <!--Theo sdt--> 
             <div class="flex gap-2">
                 <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
@@ -35,25 +38,50 @@
             </div>
 
             <!--Theo danh mục--> 
-            <jstl:set var="date" value="${requestScope.date}" />
+            <%
+                String date = (String) request.getAttribute("date");
+                String datePar = (String) request.getParameter("date");
+                datePar = (datePar == null) ? "1" : datePar;
+                date = (date == null) ? datePar : date;
+
+
+            %>
             <div class="flex gap-2" >
-                <div class="">Danh mục đang hiển thị:</div>
                 <select name="date" class="capitalize rounded">
                     <option value="1" >Mặc định</option>
-                    <option value="2" ${(date==2)? "selected":""}>Theo ngày gần nhất</option>
+                    <%                        if (date != null)
+                        {
+                    %>
+                    <option value="2"  <%=     (date.equals("2")) ? "selected" : ""%>>Theo ngày gần nhất</option>
+                    <%
+                        }
+                    %>
                 </select>
             </div>
 
             <!--Theo trạng thái:--> 
-            <jstl:set var="status" value="${requestScope.status}" />
+            <%
+                String status = (String) request.getAttribute("status");
+                String statusPar = (String) request.getParameter("status");
+                statusPar = (statusPar == null) ? "" : statusPar;
+                status = (status == null) ? statusPar : status;
+            %>
             <div class="flex gap-2" >
                 <div class="">Theo trạng thái: </div>
                 <select name="status" class="capitalize rounded">
                     <option value="" >Mặc định</option>
-                    <jstl:set  var="sttList" value="${requestScope.statusList}" />
-                    <jstl:forEach var="stt" items="${sttList}" >
-                        <option value="${stt.statusID}" ${(status==stt.statusID)?"selected":""}>${stt.statusName}</option>
-                    </jstl:forEach>
+                    <%
+                        ArrayList<StatusType> sttList = (ArrayList<StatusType>) session.getAttribute("statusList");
+                        if (sttList != null)
+                        {
+                            for (StatusType stt : sttList)
+                            {
+                    %>
+                    <option value="<%=    stt.getStatusID()%>"  <%=  ((status + "").equals(stt.getStatusID() + "")) ? "selected" : ""%> ><%=    stt.getStatusName()%></option>
+                    <%
+                            }
+                        }
+                    %>
                 </select>
             </div>
 
@@ -152,6 +180,9 @@
                                              if (item.getStatusType().getStatusID() == 1)
                                              {
                                                  out.print("bg-gray-500");
+                                             } else if (item.getStatusType().getStatusID() == 3)
+                                             {
+                                                 out.print("bg-cyan-500");
                                              } else if (item.getStatusType().getStatusID() == 4)
                                              {
                                                  out.print("bg-green-500");
@@ -166,9 +197,18 @@
                                          "><%=      item.getStatusType().getStatusName()%></summary>
                                 <ul class="menu dropdown-content z-[1] rounded  absolute w-[150px]  bg-gray-100">
                                     <form action="mainController">
-                                        <input type="hidden" name="sec" value="<%= request.getAttribute("sec")%>"/>
+                                        <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>"/>
                                         <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN%>"/>
                                         <input type="hidden" name="reqID" value="<%=   item.getReqID()%>"/>
+                                        <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                                        <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                                        <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
+                                        <input type="hidden" name="page" value="<%=          request.getParameter("page")%>" />
+
+                                        <!--input để xem nếu chưa đc gắn managerID thì sẽ tự gắn--> 
+                                        <input type="hidden" name="isAttach" value="<%=    (item.getAdminAcc() != null)%>"/>
+                                        <input type="hidden" name="managerID" value="${accSes.accountID}"/>
+
                                         <%
                                             ArrayList<StatusType> sttType = (ArrayList<StatusType>) session.getAttribute("statusList");
                                             if (sttType != null)
@@ -177,12 +217,33 @@
                                                 for (StatusType stt : sttType)
                                                 {
                                         %>
-                                        <li class=""><button class="py-2 hover:bg-gray-200 h-full w-full
-                                                             <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>
-                                                             " type="submit" name="sttType" value="<%=stt.getStatusID()%>" ><%=      stt.getStatusName()%></button></li>
-                                            <%
-                                                    }
-                                                }%>
+                                        <li class="">
+                                            <button class="py-2 h-full w-full <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>   
+                                                    <%
+                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
+                                                        {
+                                                            out.print("opacity-30 ");
+                                                        } else
+                                                        {
+                                                            out.print("hover:bg-gray-200 cursor-pointer");
+                                                        }
+                                                    %>
+                                                    " 
+                                                    type="submit" name="sttType" value="<%=stt.getStatusID()%>" 
+                                                    <%
+                                                        //Neu id dang >3 thi kh the ve chua xu ly
+                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
+                                                        {
+                                                            out.print("disabled");
+                                                        }
+                                                    %>
+                                                    >
+                                                <%=      stt.getStatusName()%>
+                                            </button>
+                                        </li>
+                                        <%
+                                                }
+                                            }%>
                                     </form>
                                 </ul>
                             </details>
@@ -204,7 +265,6 @@
                     <%                            }
                         }
                     %>
-
                 </tbody>
             </table>
         </div>
@@ -235,8 +295,7 @@
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
                     <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
 
-                    <!--//           Lấy từ session--> 
-                    <jstl:set var="accSes" value="${sessionScope.loginUser}" />
+
                     <input type="hidden" name="AccountID" value="${accSes.accountID}" />   <!-- ra accID   --> 
                     <input type="hidden" name="ManagerID" value="${accSes.accountID}" />  <!-- Client tạo sẽ ra null, nhưng trường hợp này do thg Admin tạo => accSes)  --> 
                     <!-- end session  -->

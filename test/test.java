@@ -42,6 +42,9 @@ public class test {
     public static void main(String[] args) {
     
         System.out.println("DATE: "+  new Date() );
+        int a=2;
+        int b=3;
+
         
     }
 

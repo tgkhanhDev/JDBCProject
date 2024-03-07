@@ -9,6 +9,7 @@ import DAO.AccountDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
 import DAO.StatusTypeDAO;
+import DTO.Account;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -90,6 +91,10 @@ public class AdminController_Admin extends HttpServlet {
                     break;
 
                 case "4":
+                     Account acc = (Account) session.getAttribute("loginUser");
+                     if(acc != null){
+                         
+                     }
                     break;
             }
 

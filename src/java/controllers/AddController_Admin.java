@@ -56,6 +56,8 @@ public class AddController_Admin extends HttpServlet {
         {
             /*Update trong ADMIN*/
             String sec = (String) request.getParameter("sec");
+            out.print("<h1>sec: " + sec + "</h1>");
+
             int result = 0;
             switch (sec)
             {
@@ -102,6 +104,10 @@ public class AddController_Admin extends HttpServlet {
                     //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
                     int accID = Integer.parseInt(request.getParameter("AccountID"));
                     int managerID = Integer.parseInt(request.getParameter("ManagerID"));
+
+                    out.print("<h1>accID: " + accID + "</h1>");
+                    out.print("<h1>managerID: " + managerID + "</h1>");
+
                     Account acc_3 = new AccountDAO().getAccountByID(accID + "");
                     Account managerAcc_3 = new AccountDAO().getAccountByID(managerID + "");
 
@@ -129,7 +135,6 @@ public class AddController_Admin extends HttpServlet {
                     int addTrans = new TransactionDAO().addNewTransaction(transaction_3);
 
 //                    out.print("<h3>TransDate:     " + transaction_3.getDate() + "</h3>");
-
                     //=====End Transaction
                     //=====Status
                     String status_3 = "0"; //false
@@ -146,7 +151,7 @@ public class AddController_Admin extends HttpServlet {
                     //Adding...
                     if (addTrans >= 1 && addContact >= 1)
                     {
-                        result=new RequestDAO().addRequest(request_3);
+                        result = new RequestDAO().addRequest(request_3);
                     } else
                     {
                         out.print("Thêm Thất bại");

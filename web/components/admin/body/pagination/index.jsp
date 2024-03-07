@@ -17,7 +17,7 @@
     <body>
         <%
             ArrayList list = (ArrayList) session.getAttribute("list");
-            int maxPage =0;
+            int maxPage = 0;
             if (list != null)
             {
                 maxPage = (int) Math.ceil((list.size() * 1.0) / CONSTANTS.MAXPAGE_ADMIN);
@@ -41,6 +41,9 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=       CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                            <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button name="page" value="<%=   (Integer.parseInt(currPage) > 1) ? (Integer.parseInt(currPage) - 1) : (Integer.parseInt(currPage))%>"
                                     class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Previous</button>
                         </form>
@@ -50,6 +53,9 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                            <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
                                 class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                                 name="page"
@@ -62,6 +68,9 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                            <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
                                 class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-primary-700 transition-all duration-300"
                                 name="page" value="<%=        (Integer.parseInt(currPage))%>"
@@ -77,6 +86,9 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                            <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
                                 class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                                 name="page" value="<%=        (Integer.parseInt(currPage) + 1)%>"
@@ -90,6 +102,9 @@
                             <!--    CONSTANTS.VIEWPRODUCT_ADMIN -->    
                             <input type="hidden" name="action" value="<%= CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                            <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
 
                             <button name="page" value="<%=   (Integer.parseInt(currPage) < maxPage) ? (Integer.parseInt(currPage) + 1) : (Integer.parseInt(currPage))%>" 
                                     class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">Next</button>

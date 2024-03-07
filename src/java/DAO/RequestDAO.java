@@ -256,4 +256,159 @@ public class RequestDAO {
         return result;
     }
 
+    public int detachManagerID(String reqID) {
+        Connection cn = null;
+        int result = 0;
+
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "UPDATE [dbo].[Request]\n"
+                        + "SET [dbo].[Request].[ManagerAccountID] = null\n"
+                        + "WHERE [ReqID]=?";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, reqID);
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+    
+    
+    public int attachManagerID(String accID, String reqID) {
+        Connection cn = null;
+        int result = 0;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "UPDATE [dbo].[Request]\n"
+                        + "SET [dbo].[Request].[ManagerAccountID] = ? \n"
+                        + "WHERE [ReqID]=?";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, accID);
+                pst.setString(2, reqID);
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+
+    public ArrayList<Request> getSortRequestByManagerID(String dateSort, String phoneSearch, String status) {
+        ArrayList<Request> list = new ArrayList<>();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "DECLARE @SortOrder varchar = ?  \n"
+                        + "SELECT [ReqID], R.[AccountID],[ManagerAccountID] , R.[ContactID] ,R.[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] as R\n"
+                        + "JOIN [dbo].[Account] as A ON R.[AccountID] = A.[AccountID]\n"
+                        + "JOIN [dbo].[StatusType] as ST ON R.[StatusID] = ST.[StatusID]\n"
+                        + "JOIN [dbo].[Contact] as C ON R.[ContactID] = C.[ContactID]\n"
+                        + "JOIN [dbo].[Transaction_infor] as T ON C.[TranID] =  T.[TranID]\n"
+                        + "WHERE A.Phone like ?  \n"
+                        + "AND ST.[StatusID] like ?    \n"
+                        + "ORDER BY\n"
+                        + "    CASE WHEN @SortOrder = '1' THEN T.Date END ASC,  \n"
+                        + "    CASE WHEN @SortOrder = '2' THEN T.Date END DESC ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, dateSort);
+                st.setString(2, "%" + phoneSearch + "%");
+                st.setString(3, "%" + status + "%");
+                ResultSet table = st.executeQuery();
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int ReqID = table.getInt("ReqID");
+                        //getAccObj
+                        int accID = table.getInt("AccountID");
+                        Account account = new AccountDAO().getAccountByID(accID + "");
+                        //end accobj
+
+                        //getAdminAccObj
+                        int adminAccID = table.getInt("ManagerAccountID");
+                        Account adminAcc = new AccountDAO().getAccountByID(adminAccID + "");
+                        //end accobj
+
+                        //getContactObj
+                        int contactID = table.getInt("ContactID");
+                        Contact contact = new ContactDAO().getContactByID(contactID);
+                        //end contactobj
+
+                        int statusID = table.getInt("StatusID");
+                        StatusType statusType = new StatusTypeDAO().getStatusTypeByID(statusID);
+
+                        //getReqObj
+                        int reqTypeID = table.getInt("reqTypeID");
+                        RequestType rqt = new RequestTypeDAO().getRequestTypeByID(reqTypeID);
+                        //=========
+
+                        String Description = table.getString("Description");
+
+                        list.add(new Request(ReqID, account, adminAcc, contact, statusType, rqt, Description));
+
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
 }

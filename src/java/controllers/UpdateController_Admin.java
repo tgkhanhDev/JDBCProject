@@ -100,7 +100,14 @@ public class UpdateController_Admin extends HttpServlet {
                 case "3":
                     String sttType = request.getParameter("sttType");
                     String reqID = request.getParameter("reqID");
+                    String managerID = request.getParameter("managerID");
+                    boolean isAttach = Boolean.getBoolean(request.getParameter("isAttach"));
                     result = new RequestDAO().updateRequestStatus(sttType, reqID);
+                    if(sttType.equals("1")){
+                        new RequestDAO().detachManagerID(reqID);
+                    }else if(sttType.equals("1")==false && isAttach==false) {
+                        new RequestDAO().attachManagerID( managerID , reqID);
+                    }
                     break;
             }
 
