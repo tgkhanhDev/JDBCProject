@@ -166,7 +166,7 @@
                         </td>
 
                         <td class="px-6 py-4">
-                            <%=          (item.getAdminAcc() != null) ? item.getAdminAcc().getLastName() : item.getAdminAcc()%>
+                            <%=          (item.getAdminAcc() != null) ? (item.getAdminAcc().getFirstName() + " " + item.getAdminAcc().getLastName()) : item.getAdminAcc()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=         (item.getAdminAcc().getRole() != null) ? item.getAdminAcc().getRole().getRoleName() : item.getAdminAcc().getRole()%>

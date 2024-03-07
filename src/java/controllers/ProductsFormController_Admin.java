@@ -43,18 +43,20 @@ public class ProductsFormController_Admin extends HttpServlet {
             String itemID = request.getParameter("itemID");
             String sec = (String) request.getParameter("sec");
 
-
             switch (sec)
             {
                 case "1":
                     formList = new ProductDAO().getProductByID(itemID);
                     break;
                 case "2":
-                    formList =(Account) new AccountDAO().getAccountByID(itemID);
+                    formList = (Account) new AccountDAO().getAccountByID(itemID);
                     break;
                 case "3":
                     break;
                 case "4":
+                    String managerID4 = request.getParameter("newManagerID");
+                    Account managerAcc= new AccountDAO().getAccountByID(managerID4+""); 
+                    request.setAttribute("formAccount", managerAcc);
                     break;
             }
             request.setAttribute("sec", sec);

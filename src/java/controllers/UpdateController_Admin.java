@@ -109,11 +109,14 @@ public class UpdateController_Admin extends HttpServlet {
                         new RequestDAO().attachManagerID( managerID , reqID);
                     }
                     break;
+                case "4":
+                    out.print("Hello 4");
+                    break;
             }
 
             if (result >= 1)
             {
-                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
+//                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
 
             } else
             {

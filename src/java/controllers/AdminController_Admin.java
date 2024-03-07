@@ -75,7 +75,7 @@ public class AdminController_Admin extends HttpServlet {
                     break;
                 case "3":
 
-                     session.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
+                    session.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
                     //========================================
                     String date = request.getParameter("date");
                     String status = request.getParameter("status");
@@ -91,10 +91,18 @@ public class AdminController_Admin extends HttpServlet {
                     break;
 
                 case "4":
-                     Account acc = (Account) session.getAttribute("loginUser");
-                     if(acc != null){
-                         
-                     }
+                    Account acc = (Account) session.getAttribute("loginUser");
+                    if (acc != null)
+                    {
+                        String date4 = request.getParameter("date");
+                        String status4 = request.getParameter("status");
+                        date4 = (date4 == null) ? date = "1" : date4;
+                        status4 = (status4 == null) ? "" : status4;
+                        search = (search == null) ? "" : search;
+                        list = new RequestDAO().getSortRequestByManagerID(date4, search, status4, acc.getAccountID());
+                    }
+                    ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();
+                    session.setAttribute("technicianList", technicianList);
                     break;
             }
 
