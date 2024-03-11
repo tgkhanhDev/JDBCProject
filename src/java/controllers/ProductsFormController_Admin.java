@@ -6,8 +6,10 @@
 package controllers;
 
 import DAO.AccountDAO;
+import DAO.EmployeeDAO;
 import DAO.ProductDAO;
 import DTO.Account;
+import DTO.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class ProductsFormController_Admin extends HttpServlet {
                     break;
                 case "4":
                     String managerID4 = request.getParameter("newManagerID");
-                    Account managerAcc= new AccountDAO().getAccountByID(managerID4+""); 
+                    Employee managerAcc= new EmployeeDAO().getEmployeeByID(Integer.parseInt(managerID4)); 
                     request.setAttribute("formAccount", managerAcc);
                     break;
             }
@@ -63,7 +65,7 @@ public class ProductsFormController_Admin extends HttpServlet {
             request.setAttribute("formList", formList);
 
             //            Về view nè 
-            request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
+            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
 //                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN + "&sec=" + sec).forward(request, response);
 
         }

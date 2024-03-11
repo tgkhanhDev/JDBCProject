@@ -18,6 +18,9 @@
         <%
             ArrayList list = (ArrayList) session.getAttribute("list");
             int maxPage = 0;
+            
+            String search = (request.getParameter("search") == null)? "": request.getParameter("search");
+            
             if (list != null)
             {
                 maxPage = (int) Math.ceil((list.size() * 1.0) / CONSTANTS.MAXPAGE_ADMIN);
@@ -34,6 +37,7 @@
             //Pagination
 
         %>
+        
         <div class="flex justify-center">
             <nav>
                 <ul class="list-style-none flex">
@@ -41,7 +45,7 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=       CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="search" value="<%=     search     %>" />
                             <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                             <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button name="page" value="<%=   (Integer.parseInt(currPage) > 1) ? (Integer.parseInt(currPage) - 1) : (Integer.parseInt(currPage))%>"
@@ -53,7 +57,7 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="search" value="<%=          search  %>" />
                             <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                             <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
@@ -68,7 +72,7 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="search" value="<%=      search   %>" />
                             <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                             <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
@@ -86,7 +90,7 @@
                         <form action="mainController">
                             <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="search" value="<%=     search    %>" />
                             <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                             <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                             <button
@@ -102,7 +106,7 @@
                             <!--    CONSTANTS.VIEWPRODUCT_ADMIN -->    
                             <input type="hidden" name="action" value="<%= CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                            <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                            <input type="hidden" name="search" value="<%=        search   %>" />
                             <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                             <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
 
