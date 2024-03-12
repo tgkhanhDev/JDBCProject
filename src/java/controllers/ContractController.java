@@ -5,9 +5,9 @@
  */
 package controllers;
 
-import DAO.RequestDAO;
+import DAO.ServiceDAO;
 import DTO.Account;
-import DTO.Request;
+import DTO.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Lenovo
  */
-public class profileController extends HttpServlet {
+public class ContractController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,24 +39,14 @@ public class profileController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             Account acc = (Account) session.getAttribute("loginUser");
-            if (acc != null) {
-                String msgSuccesUpdatePro = (String) request.getAttribute("NOTIFYPRO");
-                if (msgSuccesUpdatePro != null) {
-                    request.setAttribute("NOTIFYPRO", "Cập nhật thành công");
-                }
-                if (acc.getRole().getRoleID() == 1) {
-                    RequestDAO rq = new RequestDAO();
-                    ArrayList<Request> myDevice = rq.getMyDeviceInfor(acc, 1);
-                    // tim xem thu account ton tai may san pham no da mua
-                    int totalListDevice = rq.getTotalRequest(acc.getAccountID());
-                    request.setAttribute("totalListDevice", totalListDevice);
-                    request.setAttribute("indexList", 1);
-                    request.setAttribute("listDevice", myDevice);
-                }
+            ServiceDAO ser = new ServiceDAO();
+            ArrayList<Service> serList = ser.getAllService();
 
-                request.getRequestDispatcher("mainController?action=viewpro").forward(request, response);
+            request.setAttribute("serviceList", serList);
+            if (acc != null) {
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
             } else {
-                request.getRequestDispatcher("mainController?action=home").forward(request, response);
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWHOME).forward(request, response);
             }
         }
     }

@@ -4,6 +4,7 @@
     Author     : Lenovo
 --%>
 
+<%@page import="DAO.AccountDAO"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.util.Calendar"%>
@@ -14,13 +15,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cập nhật nhật hồ sơ</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="/PrjProject/components/profile/style.css">
     </head>
     <body class="max-w-[var(--maxWidth)] w-[100vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
         <%
-
+            AccountDAO d =new AccountDAO();
             Account acc = (Account) session.getAttribute("loginUser");
             Employee em = null;
             if (acc.getRole().getRoleID() != 1) {
@@ -60,14 +61,11 @@
                 class="infor_content grid md:grid-cols-2 p-[16px] pb-[60px]  bg-sky-700 rounded-lg border-2 border-sky-700  col-span-12 xl:col-span-8 ">
                 <div
                     class=" col-span-2 grid grid-cols-2  rounded-lg border-2 mt-[10px] mb-[20px] ml-[50px] mr-[50px]  xl:ml-[150px] xl:mr-[150px] bg-white">
-                    <div class="h-[20px] col-span-1 flex justify-center  lg:gap-6 mt-[14px] mb-[14px] ml-[20px] mr-[20px] pl-[15px] pr-[15px]">
+                    <div class="h-[20px] col-span-2 flex justify-center  lg:gap-6 mt-[14px] mb-[14px] ml-[20px] mr-[20px] pl-[15px] pr-[15px]">
                         <img src="/PrjProject/img/profile/icon_proflie.png" alt="">
-                        <p>Profile</p>
+                        <p>Chỉnh sửa hồ sơ</p>
                     </div>
-                    <div class="h-[20px] col-span-1 flex justify-center  lg:gap-6 mt-[14px] mb-[14px] ml-[20px] mr-[20px]">
-                        <img src="/PrjProject/img/profile/icon_proflie.png" alt="">
-                        <p>Profile</p>
-                    </div>
+                   
 
                 </div>
                 <!-- account detail -->
@@ -110,7 +108,7 @@
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
                             <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/personIcon.png" alt="">
                             <input type="text"  class="bg-gray-100 p-[8px] w-full outline-none " name="firstnametxt" value="<%= acc.getFirstName().trim()%>">
-                        </div>
+                        </div> 
 
                         <p class="mt-[20px] ">Phone number</p>
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
@@ -143,6 +141,7 @@
                     <div
                         class="col-span-2 lg:col-span-1   email_infor ml-[25px] mr-[25px] md:ml-[150px] md:mr-[150px]   lg:ml-0 lg:mr-0  p-[16px] mb-[16px]">
                         <p class="lg:hidden text-lg mb-[10px]">Other informations</p>
+                        
                         <%if (acc.getRole().getRoleID() != 1) {%>
                         <p>Day of birth</p>
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
@@ -155,7 +154,7 @@
                             %>
 
 
-                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="birthtxt" max="<%= verifyYear%>-12-31" value="<%= em.getDayOfBirth()%>" >
+                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="birthtxt" max="<%= verifyYear%>-12-31" value="<%= d.convertDateToString(em.getDayOfBirth()) %>" >
                         </div>
                         <%}%>
 
@@ -169,16 +168,11 @@
                             %>
 
 
-                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" max="<%= formattedDate %>" value="<%= em.getWorkingDay()%>">
+                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" max="<%= formattedDate %>" value="<%= d.convertDateToString(em.getWorkingDay()) %>">
                         </div>
-                        <%}%>
-                        
-                        <%
-                            // vi working day o ben role ==3 bi disable nen phai lay gia tri tu db len
-                            if(acc.getRole().getRoleID()==3){%>
-                        
-                        <input type="hidden"  name="workingtxt" value="<%= em.getWorkingDay()%>">
-                        <%}%>
+                        <%}else if(acc.getRole().getRoleID() == 3){%>
+                              <input type="hidden"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" value="<%= d.convertDateToString(em.getWorkingDay()) %>">
+                       <%}%>
                         
                         <p class="mt-[20px] ">Sex</p>
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">

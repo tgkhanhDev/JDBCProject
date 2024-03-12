@@ -38,6 +38,10 @@ public interface CONSTANTS {
     public final String GETUPDATEPRO ="getuppro";
     public final String  VIEWUPDATEPRO ="viewuppro";
     
+    public final String GETMYDEVICE = "getdevi"; // show ra phần my device bên profile bằng cách qua my device controller
+
+    public final String  GETCONTRACT="getContract" ;
+    public final String VIEWCONTRACT="viewContract"; 
     
     
     public final String APPLICATION = "application"; // qua trang viết đơn

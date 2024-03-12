@@ -13,15 +13,18 @@ import java.util.Date;
  */
 public class Transaction {
     private int TranID;
-    private Date date; //Ngay giao dich //Deafault là null => Set ngày khi đổi status True
+    private Date date; //Ngay giao dich
+    private int quantity;
 //    private Date time;// TG 
     private double money;
+    
     private String status;
     private Product product; //FK
 
-    public Transaction(int TranID, Date date, double money, String status, Product product) {
+    public Transaction(int TranID, Date date, int quantity, double money, String status, Product product) {
         this.TranID = TranID;
         this.date = date;
+        this.quantity = quantity;
         this.money = money;
         this.status = status;
         this.product = product;
@@ -41,6 +44,14 @@ public class Transaction {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public double getMoney() {
@@ -66,5 +77,8 @@ public class Transaction {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+ 
+
 
 }

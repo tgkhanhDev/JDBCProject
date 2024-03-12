@@ -69,8 +69,12 @@
         <servlet-class>controllers.updateProfileController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>testController</servlet-name>
-        <servlet-class>controllers.testController</servlet-class>
+        <servlet-name>MyDeviceController</servlet-name>
+        <servlet-class>controllers.MyDeviceController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ContractController</servlet-name>
+        <servlet-class>controllers.ContractController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
@@ -129,8 +133,12 @@
         <url-pattern>/updateProfileController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>testController</servlet-name>
-        <url-pattern>/testController</url-pattern>
+        <servlet-name>MyDeviceController</servlet-name>
+        <url-pattern>/MyDeviceController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContractController</servlet-name>
+        <url-pattern>/ContractController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
