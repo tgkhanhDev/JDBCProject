@@ -84,19 +84,7 @@ public class AddController_Admin extends HttpServlet {
                     String RoleID = (String) request.getParameter("RoleID");
                     Role role = new AccountDAO().getRoleByID(Integer.parseInt(RoleID));
                     String script = (String) request.getParameter("script");
-
-                    //BUG
-                    String sex = "Male";
-                    //                    int acc_ID = 1;
-//                    String firstName = "Shelby";
-//                    String lastName = "Tommy";
-//                    String phone = "093213214";
-//                    String gmail = "bongmaanhquoc@gmail.com";
-//                    String password = "peakyblinder";
-//                    String status_acc = "1";
-//                    String policyStatus = "1";
-//                    String RoleName = "Client";
-//                    String script = "Tao bắn mày á";
+                    String sex = (String) request.getParameter("sex");
                     Account acc = new Account(0, lastName, firstName, phone, gmail, password, sex, status_acc, policyStatus, role, script);
                     result = new AccountDAO().AddAccount(acc);
                     break;

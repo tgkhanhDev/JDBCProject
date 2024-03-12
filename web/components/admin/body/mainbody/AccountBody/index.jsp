@@ -3,7 +3,7 @@
     Created on : Feb 13, 2024, 3:04:24 PM
     Author     : ACER
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page import="mylibs.UtilsFunc"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -25,6 +25,8 @@
         <title>JSP Page</title>
     </head>
     <body>
+
+
 
         <!--Dropdown--> 
         <div class="flex gap-2" >
@@ -70,6 +72,9 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Password
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Gender
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                             Policy status
@@ -122,6 +127,9 @@
                         <td class="px-6 py-4">
                             <%=          item.getPassword()%>
                         </td>
+                        <td class="px-6 py-4">
+                            <%=          item.getSex()%>
+                        </td>
                         <td class="px-6 py-4 flex justify-center items-center">
                             <form action="mainController" />
                             <input type="hidden" name="action" value="<%=  CONSTANTS.BLOCK_ADMIN%>" />
@@ -171,7 +179,7 @@
                         <td class="px-6 py-4 text-center cursor-pointer">
                             <form action="mainController">
                                 <input type="hidden" name="action" value=<%=    CONSTANTS.GETFORMINFOPRODUCT_ADMIN%> />
-                                <input type="hidden" name="sec" value=<%= request.getAttribute("sec")%>  />
+                                <input type="hidden" name="sec" value=<%= request.getParameter("sec")%>  />
                                 <input type="hidden" name="itemID" value= <%=       item.getAccountID()%> />
                                 <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                             </form>
@@ -185,7 +193,7 @@
         </div>
 
         <!--Add btn--> 
-        <button class="px-4 py-2 bg-green-500 rounded text-white" id="toggleForm">Thêm Sản Phẩm</button>
+        <button class="px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Người Dùng</button>
         <!--===========-->
 
         <!--form update--> 
@@ -236,16 +244,26 @@
                             <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
                         </div>
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getPhone() : ""%>" type="text" name="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
+                    <div class="grid md:grid-cols-2 md:gap-6">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <input value="<%=      (prd != null) ? prd.getPhone() : ""%>" type="text" name="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_gender" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gender</label>
+                            <select name="sex" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                                <option class="capitalize" value="Male"  <%= (prd != null) ? (prd.getSex().equals("Male") ? "selected" : "") : ""%>  >male</option>
+                                <option class="capitalize" value="Female"  <%= (prd != null) ? (prd.getSex().equals("Female") ? "selected" : "") : ""%> >female</option>
+                            </select>
+                        </div>
                     </div>
+
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getGmail() : ""%>" type="text" name="gmail" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value="<%=      (prd != null) ? prd.getGmail() : ""%>" type="email" name="gmail" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gmail</label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getPassword() : ""%>" type="text" name="password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value="<%=      (prd != null) ? prd.getPassword() : ""%>" type="password" name="password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
                     </div>
                     <!--Khi khởi tạo, mặc định là true-->

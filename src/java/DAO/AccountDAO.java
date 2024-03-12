@@ -866,13 +866,14 @@ public class AccountDAO {
             if (cn != null)
             {
                 String sql
-                        = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[status],[PolicyStatus],[RoleID],[Script])\n"
+                        = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[sex], [status],[PolicyStatus],[RoleID],[Script])\n"
                         + "VALUES ("
                         + "?" //1
                         + ",?" //2
                         + ",?"//3
                         + ",?"//4
                         + ",?"//5
+                        + ",?"//sex
                         + ",?"//6
                         + ",?"//7
                         + ",(SELECT [dbo].[Role].[RoleID] FROM [dbo].[Role]\n"
@@ -885,10 +886,11 @@ public class AccountDAO {
                 pst.setString(3, acc.getPhone());
                 pst.setString(4, acc.getGmail());
                 pst.setString(5, acc.getPassword());
-                pst.setString(6, acc.getStatus());
-                pst.setString(7, acc.getPolicyStatus());
-                pst.setString(8, acc.getRole().getRoleName());
-                pst.setString(9, acc.getScript());
+                pst.setString(6, acc.getSex());
+                pst.setString(7, acc.getStatus());
+                pst.setString(8, acc.getPolicyStatus());
+                pst.setString(9, acc.getRole().getRoleName());
+                pst.setString(10, acc.getScript());
 
                 //Tra ve 0/1
                 result = pst.executeUpdate();

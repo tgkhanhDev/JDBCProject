@@ -103,6 +103,9 @@ public class AdminController_Admin extends HttpServlet {
                     ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();
                     session.setAttribute("technicianList", technicianList);
                     break;
+                case "5":
+                    out.print("Case 5: ");
+                    break;
             }
 
             request.setAttribute("sec", sec);
