@@ -1,5 +1,7 @@
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -38,23 +40,12 @@ public class test {
     }
 
     public static void main(String[] args) {
-        ArrayList arr = new ArrayList();
-        arr.add("MOT");
-        arr.add("HAI");
-        arr.add("BA");
-        arr.add("BON");
-        arr.add("NAM");
-        arr.add("SAU");
-        arr.add("BAY");
-        arr.add("TAM");
-        ArrayList<ArrayList> list = pagination(arr, 5);
-        ArrayList currList = list.get(1);
-        for (Object obj : currList)
-        {
-            System.out.println(obj);
-            
-        }
+    
+        System.out.println("DATE: "+  new Date() );
+        int a=2;
+        int b=3;
 
+        
     }
 
 }

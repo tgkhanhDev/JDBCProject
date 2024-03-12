@@ -5,11 +5,12 @@
  */
 package DAO;
 
-import DTO.Service;
 import DTO.StatusType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import mylibs.DBUtils;
 
 /**
@@ -59,6 +60,49 @@ public class StatusTypeDAO {
                 e.printStackTrace();
             }
         }
+        return rs;
+    }
+    
+    public ArrayList getAllStatusType(){
+          ArrayList<StatusType> rs = new ArrayList();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [StatusID],[StatusName] FROM [dbo].[StatusType]";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int statusID = table.getInt("StatusID");
+                        String name = table.getString("StatusName");
+                        rs.add(new StatusType(statusID, name));
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
         return rs;
     }
 }

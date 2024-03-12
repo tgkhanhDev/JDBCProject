@@ -5,6 +5,8 @@
  */
 package mylibs;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -37,5 +39,39 @@ public class UtilsFunc {
         result.add(index);
 
         return result;
+    }
+    
+     //Add Utils
+    public java.util.Date convertStringToDate(String dateString) throws ParseException {
+        java.util.Date date;
+        // validation  
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            date = sdf.parse(dateString);
+            return date;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    //====
+    
+    public java.util.Date convertStringToBirthDate(String dateString) throws ParseException {
+        java.util.Date date;
+        // validation  
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            date = sdf.parse(dateString);
+            return date;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

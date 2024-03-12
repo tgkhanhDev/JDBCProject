@@ -26,12 +26,12 @@
 
     <body class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
         <!-- navbar  ------>
-        
-            <%
-            
-            Account  acc =(Account) session.getAttribute("loginUser");
-            
-            
+
+        <%
+
+            Account acc = (Account) session.getAttribute("loginUser");
+
+
         %>
         <div class=" sticky top-0 z-40">
             <nav class="relative max-w-[var(--maxWidth)] h-[var(--minNavHeight)] px-4 py-4 flex justify-between items-center bg-white z-40"
@@ -256,7 +256,7 @@
                             <img class="" src="/PrjProject/img/navbarSignin/img_profile.png" alt="">
                             <!-- cai ten o day -->
                             <h3 class="text-lg font-bold">
-                                <%= acc.getLastName().trim() + " " + acc.getFirstName().trim()  %>
+                                <%= acc.getLastName().trim() + " " + acc.getFirstName().trim()%>
 
                             </h3>
                         </div>
@@ -266,14 +266,15 @@
                             <p>Hồ sơ</p>
                         </a>
 
-                        <%if (acc.getRole().getRoleID() == 1) {%>
+                        <%if (acc.getRole().getRoleID() == 1)
+                            {%>
                         <a class="sub-menu-link" href="">
                             <img src="/PrjProject/img/navbarSignin/shopping.png" alt="">
                             <p>Giỏ hàng</p>
                         </a>
 
 
-                      
+
                         <%}%>
 
 
@@ -282,15 +283,16 @@
                             <img src="/PrjProject/img/navbarSignin/request.png" alt="">
                             <p>Yêu cầu</p> 
                         </a>
-                        <%if(acc.getRole().getRoleID()!=2){%>
-                        
+                        <%if (acc.getRole().getRoleID() != 2)
+                            {%>
+
                         <!-- xem thu thg technician co can hien dang ki ko -->
-                        
+
                         <a class="sub-menu-link" href="#">
                             <img src="/PrjProject/img/navbarSignin/register.png" alt="">
                             <p>Đăng kí</p>
-                            
-                            
+
+
                         </a>
 
 
@@ -309,13 +311,15 @@
                             <p>Đăng xuất</p>
                         </a>
                         <hr>
-                        <% if (acc.getRole().getRoleID() == 2) { %>
+                        <% if (acc.getRole().getRoleID() == 2)
+                            {%>
                         <!-- admin only -->
-
-                        <a class="sub-menu-link mb-[2px] " id="sub-menu-link-admin" href="#">
-                            <img id="imgAdmin" class="w-[45px]" src="/PrjProject/img/navbarSignin/admin.png" alt="">
-                            <p class="text-lg">Quản lí của Amin</p> 
-                        </a>
+                        <form action="mainController" method="post">
+                            <button class="sub-menu-link mb-[2px] " id="sub-menu-link-admin"  type="submit" name="action" value="<%=     CONSTANTS.GETPRODUCT_ADMIN%>">
+                                <img id="imgAdmin" class="w-[45px]" src="/PrjProject/img/navbarSignin/admin.png" alt="">
+                                <p class="text-lg">Quản lí của Amin</p> 
+                            </button>
+                        </form>
                         <%}%>
 
 

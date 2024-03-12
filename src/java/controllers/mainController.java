@@ -128,8 +128,8 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.LOGOUT:
                     url = "logoutController";
                     break;
-                
                 default:
+                    url="testController";
                     break;
             }
 

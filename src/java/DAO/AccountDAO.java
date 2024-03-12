@@ -30,12 +30,14 @@ public class AccountDAO {
     public java.util.Date convertStringToDate(String dateString) throws ParseException {
         java.util.Date date;
         // validation  
-        try {
+        try
+        {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             date = sdf.parse(dateString);
             return date;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
@@ -52,9 +54,11 @@ public class AccountDAO {
     public Account getClientAccount(String phone, String gmail, String pass) {
         Account rs = null;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String s = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus], Account.[RoleID],Role.RoleName ,[Script] FROM\n"
                         + "[dbo].[Account] JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "where (Account.Phone = ? and  Account.Password like  ? COLLATE Latin1_General_CS_AS  and Account.RoleID =1) or (Account.Gmail like ? and  Account.Password = ? COLLATE Latin1_General_CS_AS and Account.RoleID != 1) ";
@@ -65,7 +69,8 @@ public class AccountDAO {
                 pst.setString(4, pass);
                 ResultSet table = pst.executeQuery();
 
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     int s_accid = table.getInt("AccountID");
                     String s_lastName = table.getString("LastName");
                     String s_firstName = table.getString("FirstName");
@@ -81,15 +86,20 @@ public class AccountDAO {
                 };
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
+        } finally
+        {
 
-            try {
-                if (cn != null) {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -116,16 +126,20 @@ public class AccountDAO {
                     Major s_major = new Major(table.getInt("MajorID"), table.getString("MajorName"));
                     em = new Employee(accountID, s_birthdate, s_identifyID, s_workdate, s_salary, s_major);
                 }
-
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -139,7 +153,8 @@ public class AccountDAO {
         Connection cn = null;
         int count = 0;
 
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = "SELECT COUNT(*) as [count] from [dbo].[Account] where [Gmail] =?";
@@ -150,14 +165,19 @@ public class AccountDAO {
                     count = table.getInt("count");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -180,21 +200,25 @@ public class AccountDAO {
                     count = table.getInt("count");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
 
         return count;
     }
-
     // kiem tra thu phone co ton tai ko neu co !=0 neu ko thi =0
     public int checkIdentifyID(String identify) {
         Connection cn = null;
@@ -219,13 +243,14 @@ public class AccountDAO {
                     cn.close();
                 }
             } catch (Exception e) {
+
                 e.printStackTrace();
             }
         }
 
         return count;
     }
-
+  
     public int registerAccount(String lastName, String firstName, String phone, String gmail, String pass) {
         Connection cn = null;
         int result = 0;
@@ -312,7 +337,6 @@ public class AccountDAO {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return result;
     }
@@ -454,7 +478,7 @@ public class AccountDAO {
                         String s_password = table.getString("Password");
                         String s_sex = table.getString("sex");
                         String s_status = (table.getBoolean("status")) ? "1" : "0";
-                        String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                         Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                         String s_script = table.getString("Script");
                         list.add(new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script));
@@ -500,7 +524,7 @@ public class AccountDAO {
                         String s_password = table.getString("Password");
                         String s_sex = table.getString("sex");
                         String s_status = (table.getBoolean("status")) ? "1" : "0";
-                        String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                         Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                         String s_script = table.getString("Script");
                         list.add(new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script));
@@ -545,7 +569,7 @@ public class AccountDAO {
                         String s_password = table.getString("Password");
                         String s_sex = table.getString("sex");
                         String s_status = (table.getBoolean("status")) ? "1" : "0";
-                        String s_policystatus = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("PolicyStatus")) ? "1" : "0";
                         Role role = new Role(table.getInt("RoleID"), table.getString("RoleName"));
                         String s_script = table.getString("Script");
                         list = new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script);
@@ -596,6 +620,60 @@ public class AccountDAO {
                     cn.close();
                 }
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return list;
+    }
+
+    public ArrayList<Account> getAllTechnician() {
+        ArrayList<Account> list = new ArrayList<>();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus],[RoleID] ,[Script] FROM Account\n"
+                        + "WHERE RoleID = 3";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int s_accid = table.getInt("AccountID");
+                        String s_lastName = table.getString("LastName");
+                        String s_firstName = table.getString("FirstName");
+                        String s_phone = table.getString("Phone");
+                        String s_gmail = table.getString("Gmail");
+                        String s_password = table.getString("Password");
+                        String s_sex = table.getString("sex");
+                        String s_status = (table.getBoolean("status")) ? "1" : "0";
+                        String s_policystatus = (table.getBoolean("policystatus")) ? "1" : "0";
+                        int s_roleID = table.getInt("RoleID");
+                        Role role = getRoleByID(s_roleID);
+                        String s_script = table.getString("Script");
+                        list.add(new Account(s_accid, s_lastName, s_firstName, s_phone, s_gmail, s_password, s_sex, s_status, s_policystatus, role, s_script));
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -662,13 +740,14 @@ public class AccountDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql
-                        = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[status],[PolicyStatus],[RoleID],[Script])\n"
+                        = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[sex], [status],[PolicyStatus],[RoleID],[Script])\n"
                         + "VALUES ("
                         + "?" //1
                         + ",?" //2
                         + ",?"//3
                         + ",?"//4
                         + ",?"//5
+                        + ",?"//sex
                         + ",?"//6
                         + ",?"//7
                         + ",(SELECT [dbo].[Role].[RoleID] FROM [dbo].[Role]\n"
@@ -681,10 +760,11 @@ public class AccountDAO {
                 pst.setString(3, acc.getPhone());
                 pst.setString(4, acc.getGmail());
                 pst.setString(5, acc.getPassword());
-                pst.setString(6, acc.getStatus());
-                pst.setString(7, acc.getPolicyStatus());
-                pst.setString(8, acc.getRole().getRoleName());
-                pst.setString(9, acc.getScript());
+                pst.setString(6, acc.getSex());
+                pst.setString(7, acc.getStatus());
+                pst.setString(8, acc.getPolicyStatus());
+                pst.setString(9, acc.getRole().getRoleName());
+                pst.setString(10, acc.getScript());
 
                 //Tra ve 0/1
                 result = pst.executeUpdate();

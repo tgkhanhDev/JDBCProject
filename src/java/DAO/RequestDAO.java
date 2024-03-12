@@ -287,19 +287,344 @@ public class RequestDAO {
     public static void main(String[] args) {
 
     }
-
     //Get Req:
-    public ArrayList<Request> getAllRequest() {
+    public Request getRequestByID(int id) {
+        Request rs = null;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [ReqID], [AccountID],[ManagerAccountID] ,[ContactID],[StatusID], [reqTypeID], [Description] FROM [dbo].[Request]"
+                        + "WHERE [ReqID] = ? ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int ReqID = table.getInt("ReqID");
+                        //getAccObj
+                        int accID = table.getInt("AccountID");
+                        Account account = new AccountDAO().getAccountByID(accID + "");
+                        //end accobj
+
+                        //getAdminAccObj
+                        int adminAccID = table.getInt("ManagerAccountID");
+                        Account adminAcc = new AccountDAO().getAccountByID(adminAccID + "");
+                        //end accobj
+
+                        //getContactObj
+                        int contactID = table.getInt("ContactID");
+                        Contact contact = new ContactDAO().getContactByID(contactID);
+                        //end contactobj
+
+                        int statusID = table.getInt("StatusID");
+                        StatusType statusType = new StatusTypeDAO().getStatusTypeByID(statusID);
+
+                        //getReqObj
+                        int reqTypeID = table.getInt("reqTypeID");
+                        RequestType rqt = new RequestTypeDAO().getRequestTypeByID(reqTypeID);
+                        //=========
+
+                        String Description = table.getString("Description");
+
+                        rs = new Request(ReqID, account, adminAcc, contact, statusType, rqt, Description);
+
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return rs;
+    }
+
+    public ArrayList<Request> getSortRequest(String dateSort, String phoneSearch, String status) {
+        ArrayList<Request> list = new ArrayList<>();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "DECLARE @SortOrder varchar = ?  \n"
+                        + "SELECT [ReqID], R.[AccountID],[ManagerAccountID] , R.[ContactID] ,R.[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] as R\n"
+                        + "JOIN [dbo].[Account] as A ON R.[AccountID] = A.[AccountID]\n"
+                        + "JOIN [dbo].[StatusType] as ST ON R.[StatusID] = ST.[StatusID]\n"
+                        + "JOIN [dbo].[Contact] as C ON R.[ContactID] = C.[ContactID]\n"
+                        + "JOIN [dbo].[Transaction_infor] as T ON C.[TranID] =  T.[TranID]\n"
+                        + "WHERE A.Phone like ?  \n"
+                        + "AND ST.[StatusID] like ?    \n"
+                        + "ORDER BY\n"
+                        + "    CASE WHEN @SortOrder = '1' THEN T.Date END ASC,  \n"
+                        + "    CASE WHEN @SortOrder = '2' THEN T.Date END DESC ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, dateSort);
+                st.setString(2, "%" + phoneSearch + "%");
+                st.setString(3, "%" + status + "%");
+                ResultSet table = st.executeQuery();
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int ReqID = table.getInt("ReqID");
+                        //getAccObj
+                        int accID = table.getInt("AccountID");
+                        Account account = new AccountDAO().getAccountByID(accID + "");
+                        //end accobj
+
+                        //getAdminAccObj
+                        int adminAccID = table.getInt("ManagerAccountID");
+                        Account adminAcc = new AccountDAO().getAccountByID(adminAccID + "");
+                        //end accobj
+
+                        //getContactObj
+                        int contactID = table.getInt("ContactID");
+                        Contact contact = new ContactDAO().getContactByID(contactID);
+                        //end contactobj
+
+                        int statusID = table.getInt("StatusID");
+                        StatusType statusType = new StatusTypeDAO().getStatusTypeByID(statusID);
+
+                        //getReqObj
+                        int reqTypeID = table.getInt("reqTypeID");
+                        RequestType rqt = new RequestTypeDAO().getRequestTypeByID(reqTypeID);
+                        //=========
+
+                        String Description = table.getString("Description");
+
+                        list.add(new Request(ReqID, account, adminAcc, contact, statusType, rqt, Description));
+
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+//POST UPDATE=======================================================================:
+
+    public int addRequest(Request request) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "INSERT INTO [dbo].[Request]([AccountID],[ManagerAccountID],[ContactID],[StatusID],[reqTypeID],[Description])\n"
+                        + "VALUES (?,?,(SELECT Max([ContactID]) FROM [dbo].[Contact]),?,?,?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, request.getAcc().getAccountID());
+                pst.setInt(2, request.getAdminAcc().getAccountID());
+                pst.setInt(3, request.getStatusType().getStatusID());
+                pst.setInt(4, request.getRequestType().getRqTyID());
+                pst.setString(5, request.getDescription());
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    public int updateRequestStatus(String statusID, String reqID) {
+        Connection cn = null;
+        int result = 0;
+
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "UPDATE [dbo].[Request]\n"
+                        + "SET [StatusID] =? \n"
+                        + "WHERE [ReqID]=? ";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, statusID);
+                pst.setString(2, reqID);
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+
+    public int detachManagerID(String reqID) {
+        Connection cn = null;
+        int result = 0;
+
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "UPDATE [dbo].[Request]\n"
+                        + "SET [dbo].[Request].[ManagerAccountID] = null\n"
+                        + "WHERE [ReqID]=?";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, reqID);
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+
+    public int attachManagerID(String accID, String reqID) {
+        Connection cn = null;
+        int result = 0;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String s = "UPDATE [dbo].[Request]\n"
+                        + "SET [dbo].[Request].[ManagerAccountID] = ? \n"
+                        + "WHERE [ReqID]=?";
+                PreparedStatement pst = cn.prepareStatement(s);
+                pst.setString(1, accID);
+                pst.setString(2, reqID);
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+
+    public ArrayList<Request> getSortRequestByManagerID(String dateSort, String phoneSearch, String status, int managerID) {
         ArrayList<Request> list = new ArrayList<>();
         Connection cn = null;
         try {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
-                String sql = "SELECT [ReqID], [AccountID],[ManagerAccountID] ,[ContactID],[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] ";
-                Statement st = cn.createStatement();
-                ResultSet table = st.executeQuery(sql);
-                if (table != null) {
-                    while (table.next()) {
+            if (cn != null)
+            {
+                String sql = "DECLARE @SortOrder varchar = ?\n"
+                        + "SELECT [ReqID], R.[AccountID],[ManagerAccountID] , R.[ContactID] ,R.[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] as R\n"
+                        + "JOIN [dbo].[Account] as A ON R.[AccountID] = A.[AccountID]\n"
+                        + "JOIN [dbo].[StatusType] as ST ON R.[StatusID] = ST.[StatusID]\n"
+                        + "JOIN [dbo].[Contact] as C ON R.[ContactID] = C.[ContactID]\n"
+                        + "JOIN [dbo].[Transaction_infor] as T ON C.[TranID] =  T.[TranID]\n"
+                        + "WHERE A.Phone like ?\n"
+                        + "AND ST.[StatusID] like ?  \n"
+                        + "AND [ManagerAccountID] like ?\n"
+                        + "ORDER BY\n"
+                        + "CASE WHEN @SortOrder = '1' THEN T.Date END ASC, \n"
+                        + "CASE WHEN @SortOrder = '2' THEN T.Date END DESC ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, dateSort);
+                st.setString(2, "%" + phoneSearch + "%");
+                st.setString(3, "%" + status + "%");
+                st.setInt(4, managerID);
+                ResultSet table = st.executeQuery();
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int ReqID = table.getInt("ReqID");
                         //getAccObj
                         int accID = table.getInt("AccountID");
@@ -347,3 +672,4 @@ public class RequestDAO {
         return list;
     }
 }
+

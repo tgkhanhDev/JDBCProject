@@ -83,16 +83,20 @@
             </thead>
             <tbody>
                 <%
-                    ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("list");
+
+                    ArrayList<Product> list = (ArrayList<Product>)session.getAttribute("list");
                     if (list != null)
                     {
-                        String currentPage= (String) request.getParameter("page");
-                        if(currentPage == null) currentPage="1";
-                        
-                        ArrayList<ArrayList> pagingList = ( new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN) ) ;
-                        
-                        ArrayList<Product> currList = pagingList.get(Integer.parseInt(currentPage)-1);
-                        for (Product item : currList ) 
+                        String currentPage = (String) request.getParameter("page");
+                        if (currentPage == null)
+                        {
+                            currentPage = "1";
+                        }
+
+                        ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN));
+
+                        ArrayList<Product> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
+                        for (Product item : currList)
                         {
                 %>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -141,7 +145,7 @@
                     <td class="px-6 py-4 text-center cursor-pointer">
                         <form action="mainController">
                             <input type="hidden" name="action" value=<%=    CONSTANTS.GETFORMINFOPRODUCT_ADMIN%> />
-                            <input type="hidden" name="sec" value=<%= request.getAttribute("sec")%>  />
+                            <input type="hidden" name="sec" value=<%= request.getParameter("sec")%>  />
                             <input type="hidden" name="itemID" value= <%=       item.getPrd_ID()%> />
                             <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
                         </form>
@@ -168,7 +172,7 @@
             <form action="mainController" class="z-100 cursor-pointer">
                 <div>
                     <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
-                    <input type="hidden" name="sec" value="<%=          request.getAttribute("sec")%>" />
+                    <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
 
                 </div>
                 <button id="toggleForm" class="absolute top-3 right-3">
@@ -190,7 +194,7 @@
                     }
                 %>
 
-                <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
+                <input type="hidden" name="sec" value="<%=      request.getParameter("sec")%>" />
                 <!--form--> 
                 <%if (prd != null)
                     {
@@ -217,11 +221,11 @@
                 <!--1/2--> 
                 <div class="grid md:grid-cols-2 md:gap-6">
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getPrice() : ""%>" type="text" name="price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value="<%=      (prd != null) ? prd.getPrice() : ""%>" type="number" name="price" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price</label>
                     </div>
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getSpeed() : ""%>" type="text" name="speed" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input value="<%=      (prd != null) ? prd.getSpeed() : ""%>" type="number" name="speed" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Speed</label>
                     </div>
                 </div>
@@ -236,7 +240,7 @@
                             {
                                 if (prd != null)
                                 {
-                                    if (item.getCate_ID() == prd.getCategory().getCate_ID() )
+                                    if (item.getCate_ID() == prd.getCategory().getCate_ID())
                                     {
                     %>
                     <option value=<%=      item.getCate_ID()%> selected>
