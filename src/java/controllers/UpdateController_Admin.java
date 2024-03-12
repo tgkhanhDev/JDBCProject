@@ -114,7 +114,13 @@ public class UpdateController_Admin extends HttpServlet {
                     out.print(request.getParameter("search"));
                     break;
                 case "4":
-                    out.print("Hello 4");
+          
+                    String employeeID = request.getParameter("employeeID");
+                    String taskReq = request.getParameter("taskReq");
+  
+                    result= new RequestDAO().attachManagerID(employeeID, taskReq);
+                    
+                    
                     break;
             }
 

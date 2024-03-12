@@ -175,6 +175,9 @@
                             <form action="mainController">
                                 <input type="hidden" name="action" value="<%= CONSTANTS.GETFORMINFOPRODUCT_ADMIN%>" />
                                 <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>" />
+                                <input type="hidden" name="search" value="${search}" />
+                                <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                                <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                                 <input type="hidden" name="page" value="<%=         currentPage%>" />
                                 <input type="hidden" name="reqID" value="<%=     item.getReqID()%>" />
                                 <select class="flex justify-center rounded  py-1 " name="newManagerID">
@@ -245,7 +248,7 @@
         <!--=============================-->
 
         <!--Add btn--> 
-        <button class="px-4 py-2 bg-green-500 rounded text-white" id="toggleForm">Tạo Request</button>
+        <!--<button class="px-4 py-2 bg-green-500 rounded text-white" id="toggleForm">Tạo Request</button>-->
         <!--===========-->
 
         <!--form update--> 
@@ -276,7 +279,6 @@
                         {
                             Account managerDetail = new AccountDAO().getAccountByID(managerAcc.getAccountID() + "");
                     %>
-                    <div></div>
 
                     <div class="popup">
 
