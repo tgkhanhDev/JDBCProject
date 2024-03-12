@@ -79,12 +79,11 @@ public class AdminController_Admin extends HttpServlet {
                     //========================================
                     String date = request.getParameter("date");
                     String status = request.getParameter("status");
-                    date = (date == null) ? date = "1" : date;
-                    status = (status == null) ? "" : status;
-                    search = (search == null) ? "" : search;
+                    date = (date == null || date.trim().equals("null"))? date = "1" : date;
+                    status = (status == null ||  status.trim().equals("null") )? "" : status;
+                    search = (search == null || search.trim().equals("null") )? "" : search;
 
-                    list = new RequestDAO().getSortRequest(date, search, status);
-//                        list= new RequestDAO().getAllRequest();
+                    list = new RequestDAO().getSortRequest(date, search , status);
                     request.setAttribute("date", date);
                     request.setAttribute("status", status);
                     //========================================

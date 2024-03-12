@@ -108,6 +108,10 @@ public class UpdateController_Admin extends HttpServlet {
                     }else if(sttType.equals("1")==false && isAttach==false) {
                         new RequestDAO().attachManagerID( managerID , reqID);
                     }
+                    
+                    out.print("Hello Update 3");
+                    out.print("---------------");
+                    out.print(request.getParameter("search"));
                     break;
                 case "4":
                     out.print("Hello 4");
@@ -116,7 +120,8 @@ public class UpdateController_Admin extends HttpServlet {
 
             if (result >= 1)
             {
-//                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
+//                out.print("Update Thanh cong");
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
 
             } else
             {

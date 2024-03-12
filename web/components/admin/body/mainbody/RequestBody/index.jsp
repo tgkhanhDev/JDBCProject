@@ -26,14 +26,14 @@
     <body>
         <!--//           Lấy từ session--> 
         <jstl:set var="accSes" value="${sessionScope.loginUser}" />
-
+        <jstl:set var="search" value="${param.search}" />
         <form action="mainController" class="flex items-center gap-10 my-5">
             <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
             <input type="hidden" name="sec" value="<%=         request.getParameter("sec")%>" />
             <!--Theo sdt--> 
             <div class="flex gap-2">
                 <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
-                <input class="border-2" name="search" value="<%=(request.getParameter("search") != null) ? request.getParameter("search") : ""%>" placeholder="Enter product name..." />
+                <input class="border-2" name="search" value="${search}" placeholder="Enter product name..." />
                 <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
             </div>
 
@@ -61,6 +61,7 @@
 
             <!--Theo trạng thái:--> 
             <%
+                //Neu status attribute = null => lay status param
                 String status = (String) request.getAttribute("status");
                 String statusPar = (String) request.getParameter("status");
                 statusPar = (statusPar == null) ? "" : statusPar;
@@ -132,17 +133,15 @@
                 <tbody>
                     <%
                         ArrayList<Request> listReq = (ArrayList<Request>) session.getAttribute("list");
+                        String currentPage = (String) request.getParameter("page");
+                        currentPage = (currentPage == null || currentPage.trim().equals("null") )? "1": currentPage;
                         if (listReq != null)
                         {
-                            String currentPage = (String) request.getParameter("page");
-                            if (currentPage == null)
-                            {
-                                currentPage = "1";
-                            }
 
                             ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(listReq, CONSTANTS.MAXPAGE_ADMIN));
-
+//                            out.print("<div class='font-bold text-2xl'>currPage: "+ currentPage +"</div>");
                             ArrayList<Request> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
+//                            for (Request item : currList)
                             for (Request item : currList)
                             {
                     %>
@@ -200,7 +199,7 @@
                                         <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>"/>
                                         <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN%>"/>
                                         <input type="hidden" name="reqID" value="<%=   item.getReqID()%>"/>
-                                        <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                                        <input type="hidden" name="search" value="${search}" />
                                         <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                                         <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                                         <input type="hidden" name="page" value="<%=          request.getParameter("page")%>" />
@@ -284,7 +283,7 @@
                 <form action="mainController" class="cursor-pointer">
                     <div>
                         <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
-                        <input type="hidden" name="sec" value="<%=          request.getAttribute("sec")%>" />
+                        <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
 
                     </div>
                     <button id="toggleForm" class="absolute top-3 right-3">
@@ -293,7 +292,7 @@
                 </form>
                 <form action="mainController" class="max-w-md mx-auto" method="post">
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
-                    <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
+                    <input type="hidden" name="sec" value="<%=      request.getParameter("sec")%>" />
 
 
                     <input type="hidden" name="AccountID" value="${accSes.accountID}" />   <!-- ra accID   --> 
