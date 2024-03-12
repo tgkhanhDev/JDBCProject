@@ -64,7 +64,9 @@ public class TransactionDAO {
                         int prdID = table.getInt("prd_ID");
                         Product prd = new ProductDAO().getProductByID(prdID + "");
                         //end===========================
-                        trans = new Transaction(tranID, date, money, status, prd);
+                        
+                        //bug
+                        trans = new Transaction(tranID, date, 1 , money, status, prd);
 
                     }
                 }

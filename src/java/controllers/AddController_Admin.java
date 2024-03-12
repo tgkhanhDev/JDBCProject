@@ -119,9 +119,9 @@ public class AddController_Admin extends HttpServlet {
                     double transMoney = prd_3.getPrice() + service_3.getServicePrice();
                     String transStatus_3 = "0"; //false
                     Product transProduct_3 = prd_3;
-                    Transaction transaction_3 = new Transaction(0, transDate_3, transMoney, transStatus_3, transProduct_3);
+//                    Bug 
+                    Transaction transaction_3 = new Transaction(0, transDate_3, 1 , transMoney, transStatus_3, transProduct_3);
                     int addTrans = new TransactionDAO().addNewTransaction(transaction_3);
-
 //                    out.print("<h3>TransDate:     " + transaction_3.getDate() + "</h3>");
                     //=====End Transaction
                     //=====Status
