@@ -6,10 +6,13 @@
 package controllers;
 
 import DAO.AccountDAO;
+import DAO.ServiceDAO;
 import DTO.Account;
 import DTO.Employee;
+import DTO.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,9 +42,12 @@ public class homePageLoginController extends HttpServlet {
             HttpSession session = request.getSession();
             Account acc = (Account) session.getAttribute("loginUser");
             if (acc != null) {
-                
+                ServiceDAO ser = new ServiceDAO();
+                ArrayList<Service> serList = ser.getAllService();
+
+                request.setAttribute("serviceList", serList);
                 //check thu neu ng dung la nhan vien thi tim them tong tin chi tiet luu vao em
-              
+
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWHOMEPAGELOGIN).forward(request, response);
             } else {
                 response.sendRedirect("mainController?action=home");

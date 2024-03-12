@@ -165,28 +165,47 @@
             <!-- <div class="invisibleHeader "></div> -->
             <div class="absolute w-screen flex justify-center">
                 <div id="servicePop"
-                     class="absolute top-0 w-[30vw] bg-blue-500 z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
-                    <div class="w-full h-full p-3 grid grid-cols-3">
-                        <div class="col-span-1">
-                            <div class="">Internet</div>
-                            <div class="">Internet1...</div>
-                            <div class="">Internet khác...</div>
+                     class="absolute top-0 w-[30vw] bg-white z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
+                     <div class="w-full h-full p-3 grid grid-cols-3">
+                        <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
+                        <%
+                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
+                            if (serList != null && serList.size() > 0)
+                            {
+                                for (Service item : serList)
+                                {
+                        %>
+                        <div class="col-span-1 ">
+                            <form action="mainController">
+                                <%
+                                    if (item.getServicePrice() == 0)
+                                    {
+                                %>
+                                <input type="hidden" name="action" value=<%=CONSTANTS.GETPRODUCTS%>>
+                                <%
+                                } else
+                                {
+                                %>
+                                <input type="hidden" name="action" value=<%=CONSTANTS.APPLICATION%>>
+                                <input type="hidden" name="applicationID" value=<%=    item.getId()%>>
+                                <%
+                                    }
+                                %>
+                                <button class="" type="submit">
+                                    <span class="capitalize"><%=         item.getServiceName()%></span>
+
+                                    <!--<input type="hidden" name="prdSection"  value="<%%>"  />--> 
+
+                                </button>
+                            </form>
+
                         </div>
-                        <div class="col-span-1">
-                            <div class="">Camera</div>
-                            <div class="">Camera1...</div>
-                            <div class="">Camera khác...</div>
-                        </div>
-                        <div class="col-span-1">
-                            <div class="">TV</div>
-                            <div class="">TV1...</div>
-                            <div class="">TV khác...</div>
-                        </div>
-                        <div class="col-span-1">
-                            <div class="">Robot</div>
-                            <div class="">Robot1...</div>
-                            <div class="">Robot khác...</div>
-                        </div>
+                        <%
+                                }
+
+                            }
+
+                        %>
                     </div>
                 </div>
                 <div id="memPop"
@@ -275,7 +294,7 @@
                         </a>
 
 
-                        <a class="sub-menu-link" href="#">
+                        <a class="sub-menu-link" href="mainController?action=getContract">
                             <img src="/PrjProject/img/navbarSignin/contract.png" alt="">
                             <p>Hợp đồng</p>
                         </a>

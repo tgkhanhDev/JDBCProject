@@ -92,8 +92,18 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.VIEWUPDATEPRO:
                     url="page/profilePage/updateProfilePage.jsp";
                     break;
-                    
-                    
+              
+               
+                case  CONSTANTS.GETMYDEVICE:
+                    url="MyDeviceController";
+                break;
+                
+                case CONSTANTS.GETCONTRACT :
+                    url="ContractController";
+                    break;
+                case CONSTANTS.VIEWCONTRACT:
+                url="page/contactPage/contactPage.jsp";
+                break;
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:

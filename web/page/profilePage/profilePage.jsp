@@ -4,11 +4,12 @@
     Author     : Lenovo
 --%>
 
+<%@page import="DTO.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Hồ sơ người dùng</title>
 
         <!-- FontAwesome  -->
@@ -26,14 +27,23 @@
 
 
         <!-- css  -->
-       
+
     </head>
     <body>
-       
-        <jsp:include page="/components/profile/profile.jsp" />
+        <%
+            Account acc = (Account) session.getAttribute("loginUser");
+            if (acc.getRole().getRoleID()==1){
+        %>
+        
+        
+        <jsp:include page="/components/profile/profile.jsp" /> 
+        
+        <%}else{%>
+              <jsp:include page="/components/profile/profileAdmin.jsp" /> 
+        <%}%>
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500 ">
             <jsp:include page="/components/footer/footer.jsp" />
         </div> 
-            <script type="text/javascript"  src="/PrjProject/Javascript/Footer/index.js"></script>
+        <script type="text/javascript"  src="/PrjProject/Javascript/Footer/index.js"></script>
     </body>
 </html>

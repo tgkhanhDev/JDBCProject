@@ -77,27 +77,28 @@ public class updateProfileController extends HttpServlet {
                 if (acc.getRole().getRoleID() == 1) {
                     session.setAttribute("loginUser", accUpdate);
                     request.setAttribute("NOTIFYPRO", "Cập nhật thành công");
-                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPROFILE).forward(request, response);
+                    // vi no phai qua tao 1 cai list default cho sreach
+                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPROFILE).forward(request, response);
                 } else {
+
+                    //--------------------------------------------------------------------------------------------------- 
                     // lay infor cua empl dua vao accID
                     Employee em = d.getEmployeInfor(acc.getAccountID());
+
                     String dayOfBirth = request.getParameter("birthtxt");
-               
-                    Date workingDate = em.getWorkingDay();
-                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                  String  working = format.format(workingDate);
+                    String workingDay = request.getParameter("workingtxt");
                     String identyfiID = request.getParameter("identifytxt").trim();
-                    if (d.updateEmployeeInfor(acc.getAccountID(), dayOfBirth, working, identyfiID) != 0) {
+
+                    if (d.updateEmployeeInfor(acc.getAccountID(), dayOfBirth, workingDay, identyfiID) != 0) {
                         request.setAttribute("NOTIFYPRO", "Cập nhật thành công");
                         session.setAttribute("loginUser", accUpdate);
                         Employee emUpdate = d.getEmployeInfor(accUpdate.getAccountID());
                         session.setAttribute("emInfor", emUpdate);
-                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPROFILE).forward(request, response);
+                        request.setAttribute("NOTIFYPRO", "Cập nhật thành công");
+                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPROFILE).forward(request, response);
                     } else {
-                        out.print("working:" + working);
-                        out.print("accID" + accUpdate.getAccountID());
-                        int result = d.updateEmployeeInfor(accUpdate.getAccountID(), dayOfBirth, working, identyfiID);
-                        out.print("result" + result);
+                        request.setAttribute("WARN", "Cập nhật hồ sơ nhân viên thất bại");
+                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWUPDATEPRO).forward(request, response);
                     }
                 }
             } else {
@@ -106,27 +107,6 @@ public class updateProfileController extends HttpServlet {
 
             }
 
-//
-//            if (phoneLenght < 10 && phoneLenght > 11) {
-//                request.setAttribute("WARN", "Số điện thoại phải từ 10 đến 11 kí tự");
-//                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWUPDATEPRO).forward(request, response);
-//                out.print("phone" + phone);
-//                out.print("gmail" + gmail);
-//            }
-//            
-//           if(acc.getRole().getRoleID()==1){
-//               if(d.updateAcountInfor(acc.getAccountID(), lastName, firstName, phone, gmail, sex)!=0){
-//                   Account accUpdate = d.getClientAccount(acc.getPhone(),acc.getGmail(),acc.getPassword());
-//                   session.setAttribute("loginUser", accUpdate);
-//                   request.setAttribute("NOTIFYPRO", "Cập nhật thành công");                 
-//                   request.getRequestDispatcher("mainController?action="+CONSTANTS.VIEWPROFILE).forward(request, response);
-//               }else{
-//               request.setAttribute("WARN", "Cập nhật thất bại");
-//                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWUPDATEPRO).forward(request, response);               
-//               }  
-//           }else{
-//               
-//           }
         }
     }
 
