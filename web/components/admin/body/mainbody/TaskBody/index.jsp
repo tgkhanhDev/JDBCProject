@@ -1,25 +1,25 @@
 <%-- 
     Document   : index
-    Created on : Feb 13, 2024, 3:03:56 PM
+    Created on : Feb 13, 2024, 3:04:59 PM
     Author     : ACER
 --%>
-
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="DAO.AccountDAO"%>
 <%@page import="DTO.Employee"%>
+<%@page import="DAO.AccountDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="DAO.RequestDAO"%>
+<%@page import="DTO.StatusType"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page import="DAO.ServiceDAO"%>
 <%@page import="DTO.Service"%>
-<%@page import="DTO.Product"%>
-<%@page import="DAO.ProductDAO"%>
-<%@page import="DAO.RequestTypeDAO"%>
 <%@page import="DTO.RequestType"%>
-<%@page import="mylibs.UtilsFunc"%>
+<%@page import="DAO.RequestTypeDAO"%>
 <%@page import="DTO.Request"%>
-<%@page import="DTO.StatusType"%>
+<%@page import="DAO.ProductDAO"%>
+<%@page import="mylibs.UtilsFunc"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="DTO.Product"%>
 <%@page import="DTO.Account"%>
 <%@page import="controllers.CONSTANTS"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -30,14 +30,14 @@
     <body>
         <!--//           Lấy từ session--> 
         <jstl:set var="accSes" value="${sessionScope.loginUser}" />
-
+        <jstl:set var="search" value="${param.search}" />
         <form action="mainController" class="flex items-center gap-10 my-5">
             <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
             <input type="hidden" name="sec" value="<%=         request.getParameter("sec")%>" />
             <!--Theo sdt--> 
             <div class="flex gap-2">
                 <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
-                <input class="border-2" name="search" value="<%=(request.getParameter("search") != null) ? request.getParameter("search") : ""%>" placeholder="Enter product name..." />
+                <input class="border-2" name="search" value="${search}" placeholder="Enter product name..." />
                 <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
             </div>
 
@@ -65,6 +65,7 @@
 
             <!--Theo trạng thái:--> 
             <%
+                //Neu status attribute = null => lay status param
                 String status = (String) request.getAttribute("status");
                 String statusPar = (String) request.getParameter("status");
                 statusPar = (statusPar == null) ? "" : statusPar;
@@ -136,18 +137,15 @@
                 <tbody>
                     <%
                         ArrayList<Request> listReq = (ArrayList<Request>) session.getAttribute("list");
+                        String currentPage = (String) request.getParameter("page");
+                        currentPage = (currentPage == null || currentPage.trim().equals("null")) ? "1" : currentPage;
                         if (listReq != null)
                         {
-                            String currentPage = (String) request.getParameter("page");
-                            if (currentPage == null)
-                            {
-                                currentPage = "1";
-                            }
 
                             ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(listReq, CONSTANTS.MAXPAGE_ADMIN));
-
+//                            out.print("<div class='font-bold text-2xl'>currPage: "+ currentPage +"</div>");
                             ArrayList<Request> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
-
+//                            for (Request item : currList)
                             for (Request item : currList)
                             {
                     %>
@@ -178,6 +176,7 @@
                                 <input type="hidden" name="action" value="<%= CONSTANTS.GETFORMINFOPRODUCT_ADMIN%>" />
                                 <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>" />
                                 <input type="hidden" name="page" value="<%=         currentPage%>" />
+                                <input type="hidden" name="reqID" value="<%=     item.getReqID()%>" />
                                 <select class="flex justify-center rounded  py-1 " name="newManagerID">
                                     <%
                                         ArrayList<Account> technicianList = (ArrayList<Account>) session.getAttribute("technicianList");
@@ -219,55 +218,7 @@
                                              }
                                          %>
                                          "><%=      item.getStatusType().getStatusName()%></summary>
-                                <ul class="menu dropdown-content z-[1] rounded  absolute w-[150px]  bg-gray-100">
-                                    <form action="mainController">
-                                        <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>"/>
-                                        <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN%>"/>
-                                        <input type="hidden" name="reqID" value="<%=   item.getReqID()%>"/>
-                                        <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
-                                        <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
-                                        <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
-                                        <input type="hidden" name="page" value="<%=          currentPage%>" />
-                                        <!--input để xem nếu chưa đc gắn managerID thì sẽ tự gắn--> 
-                                        <input type="hidden" name="isAttach" value="<%=    (item.getAdminAcc() != null)%>"/>
-                                        <input type="hidden" name="managerID" value="${accSes.accountID}"/>
-                                        <%
-                                            ArrayList<StatusType> sttType = (ArrayList<StatusType>) session.getAttribute("statusList");
-                                            if (sttType != null)
-                                            {
 
-                                                for (StatusType stt : sttType)
-                                                {
-                                        %>
-                                        <li class="">
-                                            <button class="py-2 h-full w-full <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>   
-                                                    <%
-                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
-                                                        {
-                                                            out.print("opacity-30 ");
-                                                        } else
-                                                        {
-                                                            out.print("hover:bg-gray-200 cursor-pointer");
-                                                        }
-                                                    %>
-                                                    " 
-                                                    type="submit" name="sttType" value="<%=stt.getStatusID()%>" 
-                                                    <%
-                                                        //Neu id dang >3 thi kh the ve chua xu ly
-                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
-                                                        {
-                                                            out.print("disabled");
-                                                        }
-                                                    %>
-                                                    >
-                                                <%=      stt.getStatusName()%>
-                                            </button>
-                                        </li>
-                                        <%
-                                                }
-                                            }%>
-                                    </form>
-                                </ul>
                             </details>
 
                         </td>
@@ -284,6 +235,7 @@
                             <%=          item.getDescription()%>
                         </td>
                     </tr>
+
                     <%                            }
                         }
                     %>
@@ -309,7 +261,7 @@
                     <div>
                         <input type="hidden" name="action" value="<%=          CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                         <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                        <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                        <input type="hidden" name="search" value="${search}" />
                         <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                         <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                         <input type="hidden" name="page" value="<%=         ((request.getParameter("page") == null) ? "1" : request.getParameter("page"))%>" />
@@ -330,32 +282,61 @@
 
                         <div class="popup-content">
                             <div class="flex gap-4 mb-[10px]">
-                                <img class="w-[250px] max-h-[180px] border-2 border-gray-300 rounded-lg " src="https://scontent.xx.fbcdn.net/v/t1.15752-9/430145271_7319032638211554_4348224168719193655_n.jpg?stp=dst-jpg_s280x280&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WbAvM2DuhlAAX8eTUve&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQjWEu5Al57zOmNBVCbcyNN9vxvEzeoXDUMLpBQP5MDag&oe=66162B94" alt="personIcon.png">
+                                <img class="w-[250px]  border-2 border-gray-300 rounded-lg " src="https://scontent.xx.fbcdn.net/v/t1.15752-9/430145271_7319032638211554_4348224168719193655_n.jpg?stp=dst-jpg_s280x280&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=WbAvM2DuhlAAX8eTUve&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQjWEu5Al57zOmNBVCbcyNN9vxvEzeoXDUMLpBQP5MDag&oe=66162B94" alt="personIcon.png">
                                 <div class="flex flex-col w-full text-start gap-3">
                                     <p class="font-bold text-2xl capitalize">Thông tin nhân viên</p>
                                     <p class="font-bold capitalize">CCCD: <span class="font-normal"><%= managerAcc.getIdentify_ID()%></span></p>
                                     <p class="font-bold capitalize">Tên nhân viên: <span class="font-normal"><%=  (managerDetail.getFirstName() + " " + managerDetail.getLastName())%></span></p>
                                     <p class="font-bold capitalize" > Ngày sinh: <span class="font-normal"><%=  new SimpleDateFormat("dd/MM/yyyy").format(managerAcc.getDayOfBirth())%></span></p>
                                     <p class="font-bold capitalize" > Chuyên môn: <span class="font-normal"><%=  managerAcc.getMajor().getMajorName()%></span> </p>
+                                    <p class="font-bold capitalize" > Số điện thoại: <span class="font-normal"><%=  managerDetail.getPhone()%> </span></p>
+                                    <p class="font-bold capitalize" > Email: <span class="font-normal"><%=  managerDetail.getGmail()%> </span></p>
+                                    <p class="font-bold capitalize" > Giới tính: <span class="font-normal"><%=  managerDetail.getSex()%> </span></p>
+
                                 </div>
                             </div>
                             <div class=" w-full h-auto flex flex-col gap-2  border-2  border-gray-300 rounded-lg p-[5px]">
-                                <p class="text-center font-bold text-2xl ">Thông tin liên lạc</p>
-                                <p class="font-bold capitalize" > Số điện thoại: <span class="font-normal"><%=  managerDetail.getPhone()%> </span></p>
-                                <p class="font-bold capitalize" > Email: <span class="font-normal"><%=  managerDetail.getGmail()%> </span></p>
-                                <p class="font-bold capitalize" > Giới tính: <span class="font-normal"><%=  managerDetail.getSex()%> </span></p>
+                                <p class="text-center font-bold text-2xl ">Thông tin request</p>
+                                <%
+                                    Request requestForm = (Request) request.getAttribute("requestForm");
+                                    if (requestForm != null)
+                                    {
+                                %>
+                                <p class="font-bold capitalize">Tên request: <span class="font-normal"><%=  requestForm.getContact().getService().getServiceName()%></span></p>
+                                <p class="font-bold capitalize">Sản phẩm: <span class="font-normal"><%=  requestForm.getContact().getTransaction().getProduct().getName()%></span></p>
+                                <p class="font-bold capitalize">Giá: <span class="font-normal"><%=  requestForm.getContact().getService().getServicePrice() + requestForm.getContact().getTransaction().getMoney()%></span></p>
+                                <p class="font-bold capitalize">Description: <span class="font-normal"><%=  requestForm.getDescription()%></span></p>
+                                <p class="font-bold capitalize">Nguời gửi: <span class="font-normal"><%=  (requestForm.getAcc().getFirstName() + requestForm.getAcc().getLastName())%></span></p>
+                                <p class="font-bold capitalize">Số điện thoại: <span class="font-normal"><%=  requestForm.getAcc().getPhone()%></span></p>
+                                <p class="font-bold capitalize">Gmail: <span class="font-normal"><%=  requestForm.getAcc().getGmail()%></span></p>
+                                    <%}%>
                             </div>
                         </div>
                         <div class=" flex justify-center items-center mt-5 gap-2">
                             <div class="font-bold ">Giao việc cho thằng ngu này? </div>
-                            <button class="capitalize px-4 py-2 bg-green-500 text-white rounded">Xác nhận</button>
+                            <!--xacnhan-->
+                            <form action="mainController" class="cursor-pointer">
+                                <div>
+                                    <input type="hidden" name="action" value="<%=          CONSTANTS.UPDATEINFO_ADMIN%>" />
+
+                                    <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>"/>
+                                    <input type="hidden" name="search" value="${search}" />
+                                    <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                                    <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
+                                    <input type="hidden" name="page" value="<%=          request.getParameter("page")%>" />
+
+                                    <input type="hidden" name="taskReq" value="<%=         requestForm.getReqID()%>" />
+                                    <input type="hidden" name="employeeID" value="<%=       managerAcc.getAccountID()%>" />
+                                </div>
+                                <button class="capitalize px-4 py-2 bg-green-500 text-white rounded">Xác nhận</button>
+                            </form>
 
                             <!--quit--> 
                             <form action="mainController" class="cursor-pointer">
                                 <div>
                                     <input type="hidden" name="action" value="<%=          CONSTANTS.VIEWPRODUCT_ADMIN%>" />
                                     <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
-                                    <input type="hidden" name="search" value="<%=          request.getParameter("search")%>" />
+                                    <input type="hidden" name="search" value="${search}" />
                                     <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                                     <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
                                     <input type="hidden" name="page" value="<%=         ((request.getParameter("page") == null) ? "1" : request.getParameter("page"))%>" />
@@ -372,6 +353,9 @@
                 </div>
             </div>
         </div>
+
+
+
 
         <script>
             //    on&off formUpdate:

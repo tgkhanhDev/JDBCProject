@@ -8,8 +8,10 @@ package controllers;
 import DAO.AccountDAO;
 import DAO.EmployeeDAO;
 import DAO.ProductDAO;
+import DAO.RequestDAO;
 import DTO.Account;
 import DTO.Employee;
+import DTO.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -59,6 +61,11 @@ public class ProductsFormController_Admin extends HttpServlet {
                     String managerID4 = request.getParameter("newManagerID");
                     Employee managerAcc= new EmployeeDAO().getEmployeeByID(Integer.parseInt(managerID4)); 
                     request.setAttribute("formAccount", managerAcc);
+                    
+                    String reqID = request.getParameter("reqID");
+                    Request reqForm = new RequestDAO().getRequestByID(Integer.parseInt(reqID));
+                    request.setAttribute("requestForm", reqForm);
+                    
                     break;
             }
             request.setAttribute("sec", sec);

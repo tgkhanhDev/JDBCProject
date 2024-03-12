@@ -79,11 +79,11 @@ public class AdminController_Admin extends HttpServlet {
                     //========================================
                     String date = request.getParameter("date");
                     String status = request.getParameter("status");
-                    date = (date == null || date.trim().equals("null"))? date = "1" : date;
-                    status = (status == null ||  status.trim().equals("null") )? "" : status;
-                    search = (search == null || search.trim().equals("null") )? "" : search;
+                    date = (date == null || date.trim().equals("null")) ? date = "1" : date;
+                    status = (status == null || status.trim().equals("null")) ? "" : status;
+                    search = (search == null || search.trim().equals("null")) ? "" : search;
 
-                    list = new RequestDAO().getSortRequest(date, search , status);
+                    list = new RequestDAO().getSortRequest(date, search, status);
                     request.setAttribute("date", date);
                     request.setAttribute("status", status);
                     //========================================
@@ -95,9 +95,9 @@ public class AdminController_Admin extends HttpServlet {
                     {
                         String date4 = request.getParameter("date");
                         String status4 = request.getParameter("status");
-                        date4 = (date4 == null) ? date = "1" : date4;
-                        status4 = (status4 == null) ? "" : status4;
-                        search = (search == null) ? "" : search;
+                        date4 = (date4 == null || date4.trim().equals("null")) ? date = "1" : date4;
+                        status4 = (status4 == null || status4.trim().equals("null")) ? "" : status4;
+                        search = (search == null || search.trim().equals("null")) ? "" : search;
                         list = new RequestDAO().getSortRequestByManagerID(date4, search, status4, acc.getAccountID());
                     }
                     ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();

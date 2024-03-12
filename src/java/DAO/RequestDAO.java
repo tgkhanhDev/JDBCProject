@@ -25,17 +25,19 @@ import mylibs.DBUtils;
 public class RequestDAO {
 
     //Get Req:
-    public ArrayList<Request> getAllRequest() {
-        ArrayList<Request> list = new ArrayList<>();
+    public Request getRequestByID(int id) {
+        Request rs = null;
         Connection cn = null;
         try
         {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "SELECT [ReqID], [AccountID],[ManagerAccountID] ,[ContactID],[StatusID], [reqTypeID], [Description] FROM [dbo].[Request] ";
-                Statement st = cn.createStatement();
-                ResultSet table = st.executeQuery(sql);
+                String sql = "SELECT [ReqID], [AccountID],[ManagerAccountID] ,[ContactID],[StatusID], [reqTypeID], [Description] FROM [dbo].[Request]"
+                        + "WHERE [ReqID] = ? ";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
                 if (table != null)
                 {
                     while (table.next())
@@ -66,7 +68,7 @@ public class RequestDAO {
 
                         String Description = table.getString("Description");
 
-                        list.add(new Request(ReqID, account, adminAcc, contact, statusType, rqt, Description));
+                        rs = new Request(ReqID, account, adminAcc, contact, statusType, rqt, Description);
 
                     }
                 }
@@ -89,7 +91,7 @@ public class RequestDAO {
                 e.printStackTrace();
             }
         }
-        return list;
+        return rs;
     }
 
     public ArrayList<Request> getSortRequest(String dateSort, String phoneSearch, String status) {
@@ -413,3 +415,4 @@ public class RequestDAO {
         return list;
     }
 }
+
