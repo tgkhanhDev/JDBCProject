@@ -15,6 +15,6 @@
         <div id="body">
         </div>
         <jsp:include page="mainbody/index.jsp" />
-
+       
     </body>
 </html>

@@ -5,12 +5,6 @@
  */
 package controllers;
 
-import DAO.AccountDAO;
-import DAO.EmployeeDAO;
-import DAO.ProductDAO;
-import DAO.RequestDAO;
-import DTO.Account;
-import DTO.Employee;
 import DTO.Request;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class ProductsFormController_Admin extends HttpServlet {
+public class testController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,40 +34,33 @@ public class ProductsFormController_Admin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            //INFO NEEDED: sec , itemID
-            //Result => form info
-            /* Xu Ly Form  */
-            Object formList = new Object();
-            String itemID = request.getParameter("itemID");
-            String sec = (String) request.getParameter("sec");
+            /* TODO output your page here. You may use following sample code. */
+            String sec = request.getParameter("sec");
+            String sttType = request.getParameter("sttType");
+            String reqID = request.getParameter("reqID");
+            out.print("<h3>StatusType: " + sttType + "</h3>");
+            out.print("<h3>reqID: " + reqID + "</h3>");
+            out.print("<h3> TEST" + "</h3>");
+            out.print("<h3> sec: " + sec + "</h3>");
 
-            switch (sec)
+            ArrayList<Request> list = (ArrayList<Request>) request.getSession().getAttribute("list");
+            if (list != null)
             {
-                case "1":
-                    formList = new ProductDAO().getProductByID(itemID);
-                    break;
-                case "2":
-                    formList = (Account) new AccountDAO().getAccountByID(itemID);
-                    break;
-                case "3":
-                    break;
-                case "4":
-                    String managerID4 = request.getParameter("newManagerID");
-                    Employee managerAcc= new EmployeeDAO().getEmployeeByID(Integer.parseInt(managerID4)); 
-                    request.setAttribute("formAccount", managerAcc);
-                    
-                    String reqID = request.getParameter("reqID");
-                    Request reqForm = new RequestDAO().getRequestByID(Integer.parseInt(reqID));
-                    request.setAttribute("requestForm", reqForm);
-                    
-                    break;
+                out.print("Ngon: ");
+                for (Request request1 : list)
+                {
+                    out.print(request1.getReqID()+", ");
+                }
+            } else
+            {
+                out.print("CC");
             }
-            request.setAttribute("sec", sec);
-            request.setAttribute("formList", formList);
 
-            //            Về view nè 
-            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
-//                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN + "&sec=" + sec).forward(request, response);
+            out.print("<form action='mainController'>");
+            out.print("<input type='hidden'  name='action' value='getProductAdmin' >");
+            out.print("<input type='hidden'  name='sec' value=' " + sec + ">");
+            out.print("<div><button type='submit' class='bg-yellow-500 px-4 py-2 rounded'>Letsgooooo</button></div>");
+            out.print("</form>");
 
         }
     }

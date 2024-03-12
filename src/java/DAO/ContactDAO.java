@@ -6,6 +6,7 @@
 package DAO;
 
 import DTO.Contact;
+import DTO.Product;
 import DTO.Service;
 import DTO.Transaction;
 import java.sql.Connection;
@@ -66,6 +67,48 @@ public class ContactDAO {
             }
         }
         return rs;
+    }
+
+    //POST UPDATE=======================================================================:
+    public int addContact(Contact contact) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "INSERT INTO [dbo].[Contact]([SerID],[TranID],[status])\n"
+                        + "VALUES (?,(SELECT MAX(TranID) FROM [dbo].[Transaction_infor]),?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, contact.getService().getId());
+                pst.setString(2, contact.getStatus());
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 
 }

@@ -6,26 +6,21 @@ package controllers;
  * and open the template in the editor.
  */
 import DAO.AccountDAO;
-import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
-import DAO.RequestTypeDAO;
+import DAO.StatusTypeDAO;
 import DTO.Account;
-import DTO.Contact;
-import DTO.Request;
-import DTO.RequestType;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mylibs.DBUtils;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 /**
  *
@@ -48,6 +43,8 @@ public class AdminController_Admin extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             ArrayList list = new ArrayList();
+            HttpSession session = request.getSession();
+
             String sec = request.getParameter("sec");
             String search = request.getParameter("search");
 
@@ -77,23 +74,43 @@ public class AdminController_Admin extends HttpServlet {
                     }
                     break;
                 case "3":
-                    if (search != null)
-                    {
-                    } else
-                    {
-                        list = new RequestDAO().getAllRequest();
-                        //========================================
-                        
-                        //========================================
-                    }
+
+                    session.setAttribute("statusList", new StatusTypeDAO().getAllStatusType());
+                    //========================================
+                    String date = request.getParameter("date");
+                    String status = request.getParameter("status");
+                    date = (date == null || date.trim().equals("null")) ? date = "1" : date;
+                    status = (status == null || status.trim().equals("null")) ? "" : status;
+                    search = (search == null || search.trim().equals("null")) ? "" : search;
+
+                    list = new RequestDAO().getSortRequest(date, search, status);
+                    request.setAttribute("date", date);
+                    request.setAttribute("status", status);
+                    //========================================
                     break;
 
                 case "4":
+                    Account acc = (Account) session.getAttribute("loginUser");
+                    if (acc != null)
+                    {
+                        String date4 = request.getParameter("date");
+                        String status4 = request.getParameter("status");
+                        date4 = (date4 == null || date4.trim().equals("null")) ? date = "1" : date4;
+                        status4 = (status4 == null || status4.trim().equals("null")) ? "" : status4;
+                        search = (search == null || search.trim().equals("null")) ? "" : search;
+                        list = new RequestDAO().getSortRequestByManagerID(date4, search, status4, acc.getAccountID());
+                    }
+                    ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();
+                    session.setAttribute("technicianList", technicianList);
+                    break;
+                case "5":
+                    out.print("Case 5: ");
                     break;
             }
 
             request.setAttribute("sec", sec);
-            request.setAttribute("list", list);
+            session.setAttribute("list", list);
+//            request.setAttribute("list", list);
 
             //            Về view nè 
             request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);

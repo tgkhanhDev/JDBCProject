@@ -3,7 +3,8 @@
     Created on : Feb 13, 2024, 3:04:59 PM
     Author     : ACER
 --%>
-
+<%@page import="DTO.StatusType"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page import="DAO.ServiceDAO"%>
 <%@page import="DTO.Service"%>
 <%@page import="DTO.RequestType"%>
@@ -23,10 +24,70 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <!--//           Lấy từ session--> 
+        <jstl:set var="accSes" value="${sessionScope.loginUser}" />
+        <jstl:set var="search" value="${param.search}" />
+        <form action="mainController" class="flex items-center gap-10 my-5">
+            <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
+            <input type="hidden" name="sec" value="<%=         request.getParameter("sec")%>" />
+            <!--Theo sdt--> 
+            <div class="flex gap-2">
+                <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
+                <input class="border-2" name="search" value="${search}" placeholder="Enter product name..." />
+                <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
+            </div>
 
+            <!--Theo danh mục--> 
+            <%
+                String date = (String) request.getAttribute("date");
+                String datePar = (String) request.getParameter("date");
+                datePar = (datePar == null) ? "1" : datePar;
+                date = (date == null) ? datePar : date;
+
+
+            %>
+            <div class="flex gap-2" >
+                <select name="date" class="capitalize rounded">
+                    <option value="1" >Mặc định</option>
+                    <%                        if (date != null)
+                        {
+                    %>
+                    <option value="2"  <%=     (date.equals("2")) ? "selected" : ""%>>Theo ngày gần nhất</option>
+                    <%
+                        }
+                    %>
+                </select>
+            </div>
+
+            <!--Theo trạng thái:--> 
+            <%
+                //Neu status attribute = null => lay status param
+                String status = (String) request.getAttribute("status");
+                String statusPar = (String) request.getParameter("status");
+                statusPar = (statusPar == null) ? "" : statusPar;
+                status = (status == null) ? statusPar : status;
+            %>
+            <div class="flex gap-2" >
+                <div class="">Theo trạng thái: </div>
+                <select name="status" class="capitalize rounded">
+                    <option value="" >Mặc định</option>
+                    <%
+                        ArrayList<StatusType> sttList = (ArrayList<StatusType>) session.getAttribute("statusList");
+                        if (sttList != null)
+                        {
+                            for (StatusType stt : sttList)
+                            {
+                    %>
+                    <option value="<%=    stt.getStatusID()%>"  <%=  ((status + "").equals(stt.getStatusID() + "")) ? "selected" : ""%> ><%=    stt.getStatusName()%></option>
+                    <%
+                            }
+                        }
+                    %>
+                </select>
+            </div>
+
+        </form>
         <!--TABLE--> 
-
-
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -55,14 +116,14 @@
                         <th scope="col" class="px-6 py-3 text-center">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-3 text-center">
-                            Edit
-                        </th>
                         <th scope="col" class="px-6 py-3">
                             Request Type 
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Sản Phẩm
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Price
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Description
@@ -71,30 +132,30 @@
                 </thead>
                 <tbody>
                     <%
-                        ArrayList<Request> list = (ArrayList<Request>) request.getAttribute("list");
-                        if (list != null)
+                        ArrayList<Request> listReq = (ArrayList<Request>) session.getAttribute("list");
+                        String currentPage = (String) request.getParameter("page");
+                        currentPage = (currentPage == null || currentPage.trim().equals("null") )? "1": currentPage;
+                        if (listReq != null)
                         {
-                            String currentPage = (String) request.getParameter("page");
-                            if (currentPage == null)
-                            {
-                                currentPage = "1";
-                            }
 
-                            ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN));
-
+                            ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(listReq, CONSTANTS.MAXPAGE_ADMIN));
+//                            out.print("<div class='font-bold text-2xl'>currPage: "+ currentPage +"</div>");
                             ArrayList<Request> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
-                            for (Request item : list)
+//                            for (Request item : currList)
+                            for (Request item : currList)
                             {
                     %>
+
+
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                            <%=          item.getReqID()%>
+                            <%=             item.getReqID()%>
                         </th>
                         <td class="px-6 py-4 capitalize">
                             <%=          item.getContact().getService().getServiceName()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getContact().getTransaction().getDate().toLocaleString()%>
+                            <%=          (item.getContact().getTransaction().getDate() == null) ? "NULL" : item.getContact().getTransaction().getDate().toLocaleString()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=          item.getAcc().getPhone()%>
@@ -104,32 +165,87 @@
                         </td>
 
                         <td class="px-6 py-4">
-                            <%=          (item.getAdminAcc() != null) ? item.getAdminAcc().getLastName() : item.getAdminAcc()%>
+                            <%=          (item.getAdminAcc() != null) ? (item.getAdminAcc().getFirstName() + " " + item.getAdminAcc().getLastName()) : item.getAdminAcc()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=         (item.getAdminAcc().getRole() != null) ? item.getAdminAcc().getRole().getRoleName() : item.getAdminAcc().getRole()%>
                         </td>
 
-                        <td class="px-6 py-4 text-center">
-                            <button class="rounded text-white
-                                    <%
-                                        if (item.getStatusType().getStatusID() == 1)
-                                        {
-                                            out.print("bg-gray-500");
-                                        } else if (item.getStatusType().getStatusID() == 4)
-                                        {
-                                            out.print("bg-green-500");
-                                        } else if (item.getStatusType().getStatusID() == 5)
-                                        {
-                                            out.print("bg-red-500");
-                                        }
-                                    %>
-                                    ">
-                                <%=         item.getStatusType().getStatusName()%>
-                            </button>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <input type="checkbox" name="setStatus" value="<%=  item.getReqID()%>" />
+                        <td class="px-6 py-4 text-center ">
+                            <!-- 148 --> 
+                            <details class="dropdown w-[150px]">
+                                <summary class="m-1 btn rounded  py-1 text-[20px] text-white
+                                         <%
+                                             if (item.getStatusType().getStatusID() == 1)
+                                             {
+                                                 out.print("bg-gray-500");
+                                             } else if (item.getStatusType().getStatusID() == 3)
+                                             {
+                                                 out.print("bg-cyan-500");
+                                             } else if (item.getStatusType().getStatusID() == 4)
+                                             {
+                                                 out.print("bg-green-500");
+                                             } else if (item.getStatusType().getStatusID() == 5)
+                                             {
+                                                 out.print("bg-red-500");
+                                             } else
+                                             {
+                                                 out.print("bg-yellow-500");
+                                             }
+                                         %>
+                                         "><%=      item.getStatusType().getStatusName()%></summary>
+                                <ul class="menu dropdown-content z-[1] rounded  absolute w-[150px]  bg-gray-100">
+                                    <form action="mainController">
+                                        <input type="hidden" name="sec" value="<%= request.getParameter("sec")%>"/>
+                                        <input type="hidden" name="action" value="<%= CONSTANTS.UPDATEINFO_ADMIN%>"/>
+                                        <input type="hidden" name="reqID" value="<%=   item.getReqID()%>"/>
+                                        <input type="hidden" name="search" value="${search}" />
+                                        <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                                        <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
+                                        <input type="hidden" name="page" value="<%=          request.getParameter("page")%>" />
+
+                                        <!--input để xem nếu chưa đc gắn managerID thì sẽ tự gắn--> 
+                                        <input type="hidden" name="isAttach" value="<%=    (item.getAdminAcc() != null)%>"/>
+                                        <input type="hidden" name="managerID" value="${accSes.accountID}"/>
+
+                                        <%
+                                            ArrayList<StatusType> sttType = (ArrayList<StatusType>) session.getAttribute("statusList");
+                                            if (sttType != null)
+                                            {
+
+                                                for (StatusType stt : sttType)
+                                                {
+                                        %>
+                                        <li class="">
+                                            <button class="py-2 h-full w-full <%=(stt.getStatusID() == item.getStatusType().getStatusID()) ? "bg-gray-200" : "bg-gray-100"%>   
+                                                    <%
+                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
+                                                        {
+                                                            out.print("opacity-30 ");
+                                                        } else
+                                                        {
+                                                            out.print("hover:bg-gray-200 cursor-pointer");
+                                                        }
+                                                    %>
+                                                    " 
+                                                    type="submit" name="sttType" value="<%=stt.getStatusID()%>" 
+                                                    <%
+                                                        //Neu id dang >3 thi kh the ve chua xu ly
+                                                        if (item.getStatusType().getStatusID() >= 3 && stt.getStatusID() <= 2)
+                                                        {
+                                                            out.print("disabled");
+                                                        }
+                                                    %>
+                                                    >
+                                                <%=      stt.getStatusName()%>
+                                            </button>
+                                        </li>
+                                        <%
+                                                }
+                                            }%>
+                                    </form>
+                                </ul>
+                            </details>
 
                         </td>
                         <td class="px-6 py-4">
@@ -137,6 +253,9 @@
                         </td>
                         <td class="px-6 py-4">
                             <%=          item.getContact().getTransaction().getProduct().getName()%>
+                        </td>
+                        <td class="px-6 py-4">
+                            <%=          item.getContact().getService().getServicePrice() + item.getContact().getTransaction().getMoney()%>
                         </td>
                         <td class="px-6 py-4">
                             <%=          item.getDescription()%>
@@ -164,7 +283,7 @@
                 <form action="mainController" class="cursor-pointer">
                     <div>
                         <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
-                        <input type="hidden" name="sec" value="<%=          request.getAttribute("sec")%>" />
+                        <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
 
                     </div>
                     <button id="toggleForm" class="absolute top-3 right-3">
@@ -173,12 +292,11 @@
                 </form>
                 <form action="mainController" class="max-w-md mx-auto" method="post">
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
-                    <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
+                    <input type="hidden" name="sec" value="<%=      request.getParameter("sec")%>" />
 
-                    <!--//           Lấy từ session--> 
-                    <input type="hidden" name="AccountID" value="1" />   <!-- ra accID   --> 
-                    <input type="hidden" name="ManagerID" value="2" />  <!--  ra MangagerID do thg Admin tạo  --> 
-                    <input type="hidden" name="Account" value="AccountObject" />  <!--  ra Account  --> 
+
+                    <input type="hidden" name="AccountID" value="${accSes.accountID}" />   <!-- ra accID   --> 
+                    <input type="hidden" name="ManagerID" value="${accSes.accountID}" />  <!-- Client tạo sẽ ra null, nhưng trường hợp này do thg Admin tạo => accSes)  --> 
                     <!-- end session  -->
 
                     <!--Khi khởi tạo, mặc định là true-->
@@ -284,6 +402,8 @@
                 });
             });
 
+
         </script>
+
     </body>
 </html>
