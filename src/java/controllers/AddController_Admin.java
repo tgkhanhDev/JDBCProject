@@ -112,7 +112,7 @@ public class AddController_Admin extends HttpServlet {
                     Service service_3 = new ServiceDAO().getServiceByID(serID);
                     //=====End Service
 
-                    //=====Transaction
+                    //=====Transactionn
                     Date transDate_3 = new Date();
 //                    out.print("<h3>newDate:     " + transDate_3 + "</h3>");
 //                    out.print("<h3>GETTIME:    " + transDate_3.toString() + "</h3>");
