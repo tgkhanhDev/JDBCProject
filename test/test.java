@@ -1,4 +1,8 @@
 
+import DAO.ProductDAO;
+import DAO.TransactionDAO;
+import DTO.Product;
+import DTO.Transaction;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,8 +30,8 @@ public class test {
             index.add(arr.get(i));
             track++;
 
-            
-            if(track == itemPerPage){
+            if (track == itemPerPage)
+            {
                 result.add(index);
                 index = new ArrayList();
                 track = 0;
@@ -40,12 +44,17 @@ public class test {
     }
 
     public static void main(String[] args) {
-    
-        System.out.println("DATE: "+  new Date() );
-        int a=2;
-        int b=3;
 
-        
+//       Transaction transList = new TransactionDAO().getTransByID(1);        
+        ArrayList<Transaction> arrList = new TransactionDAO().getAllTransaction("", "", "1");
+//       System.out.println(transList.getDate());
+
+        for (Transaction item : arrList)
+        {
+            System.out.println(item.getDate());
+
+        }
+
     }
 
 }

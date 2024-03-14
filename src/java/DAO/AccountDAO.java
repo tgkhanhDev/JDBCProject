@@ -109,15 +109,18 @@ public class AccountDAO {
     public Employee getEmployeInfor(int accountID) {
         Connection cn = null;
         Employee em = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [AccountID],[DayOfBirth],[Identify_ID],[Working_Day],[Salary],Employee.MajorID, Major.MajorName  FROM Employee join Major\n"
                         + "on Employee.MajorID = Major.MajorID where AccountID = ?";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, accountID);
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     int s_accountID = table.getInt("AccountID");
                     java.util.Date s_birthdate = convertStringToDate(table.getString("DayOfBirth"));
                     java.util.Date s_workdate = convertStringToDate(table.getString("Working_day"));
@@ -156,12 +159,14 @@ public class AccountDAO {
         try
         {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT COUNT(*) as [count] from [dbo].[Account] where [Gmail] =?";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, gmail);
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     count = table.getInt("count");
                 }
             }
@@ -189,14 +194,17 @@ public class AccountDAO {
         Connection cn = null;
         int count = 0;
 
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT COUNT(*)as [count] from [dbo].[Account] where [Phone] = ?";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, phone);
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     count = table.getInt("count");
                 }
             }
@@ -219,30 +227,39 @@ public class AccountDAO {
 
         return count;
     }
+
     // kiem tra thu phone co ton tai ko neu co !=0 neu ko thi =0
     public int checkIdentifyID(String identify) {
         Connection cn = null;
         int count = 0;
 
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT COUNT(*)as [count] from [dbo].Employee where [Identify_ID] = ?";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, identify);
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     count = table.getInt("count");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
 
                 e.printStackTrace();
             }
@@ -250,14 +267,16 @@ public class AccountDAO {
 
         return count;
     }
-  
+
     public int registerAccount(String lastName, String firstName, String phone, String gmail, String pass) {
         Connection cn = null;
         int result = 0;
         String sex = "--";
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = " INSERT INTO Account\n"
                         + "VALUES \n"
                         + "(?, ?, ?, ?, ?, ?, 1, 1, 1, NULL) ";
@@ -270,14 +289,19 @@ public class AccountDAO {
                 pst.setString(6, sex);
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -287,23 +311,30 @@ public class AccountDAO {
     public int createClientInfor(int accountID) {
         Connection cn = null;
         int result = 0;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "INSERT INTO Client\n"
                         + "VALUES (?, null);";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, accountID);
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -314,9 +345,11 @@ public class AccountDAO {
         Connection cn = null;
         int result = 0;
 
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String s = "Update Account set FirstName = ? , LastName= ? , Phone = ?, Gmail =?, sex=?  where AccountID=?";
                 PreparedStatement pst = cn.prepareStatement(s);
                 pst.setString(1, first);
@@ -327,14 +360,19 @@ public class AccountDAO {
                 pst.setInt(6, accountID);
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -344,9 +382,11 @@ public class AccountDAO {
     public int updateEmployeeInfor(int accountID, String dayOfBirth, String workingDay, String identify) {
         Connection cn = null;
         int result = 0;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "Update Employee set DayOfBirth=?,Identify_ID = ?,Working_Day=? where AccountID=?";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, dayOfBirth);
@@ -355,14 +395,19 @@ public class AccountDAO {
                 pst.setInt(4, accountID);
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -376,17 +421,21 @@ public class AccountDAO {
     public Account SearchAccountByID(int idParam) {
         Account list = new Account();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus], Account.[RoleID],Role.RoleName ,[Script] FROM\n"
                         + "[dbo].[Account] JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "WHERE [dbo].[Account].[AccountID] = ? ";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setInt(1, idParam);
                 ResultSet table = st.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int s_accid = table.getInt("AccountID");
                         String s_lastName = table.getString("LastName");
                         String s_firstName = table.getString("FirstName");
@@ -405,14 +454,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -425,16 +479,20 @@ public class AccountDAO {
     public Role getRoleByID(int id) {
         Role rs = null;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [RoleID], [RoleName]  FROM [dbo].[Role]\n"
                         + "WHERE [RoleID] = ?  ";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setInt(1, id);
                 ResultSet table = st.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int roleid = table.getInt("RoleID");
                         String roleName = table.getString("RoleName");
                         rs = new Role(roleid, roleName);
@@ -443,14 +501,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -461,15 +524,19 @@ public class AccountDAO {
     public ArrayList<Account> getAllAccount() {
         ArrayList<Account> list = new ArrayList<>();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus], Account.[RoleID],Role.RoleName ,[Script] FROM\n"
                         + "[dbo].[Account] JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID";
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int s_accid = table.getInt("AccountID");
                         String s_lastName = table.getString("LastName");
                         String s_firstName = table.getString("FirstName");
@@ -487,14 +554,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -505,17 +577,21 @@ public class AccountDAO {
     public ArrayList<Account> getAccountByPhone(String phoneParam) {
         ArrayList<Account> list = new ArrayList<>();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus], Account.[RoleID],Role.RoleName ,[Script] FROM\n"
                         + "[dbo].[Account] JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "WHERE [dbo].[Account].[Phone] like ?  ";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, "%" + phoneParam + "%");
                 ResultSet table = st.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int s_accid = table.getInt("AccountID");
                         String s_lastName = table.getString("LastName");
                         String s_firstName = table.getString("FirstName");
@@ -533,14 +609,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -550,17 +631,21 @@ public class AccountDAO {
     public Account getAccountByID(String idParam) {
         Account list = new Account();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [AccountID], [LastName], [FirstName], [Phone], [Gmail],[Password],[sex] ,[status], [PolicyStatus], Account.[RoleID],Role.RoleName ,[Script] FROM\n"
                         + "[dbo].[Account] JOIN [dbo].[Role] ON [dbo].[Account].[RoleID] = [dbo].[Role].RoleID\n"
                         + "WHERE [dbo].[Account].[AccountID] = ? ";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, idParam);
                 ResultSet table = st.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int s_accid = table.getInt("AccountID");
                         String s_lastName = table.getString("LastName");
                         String s_firstName = table.getString("FirstName");
@@ -579,14 +664,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -596,14 +686,18 @@ public class AccountDAO {
     public ArrayList<Role> getAllAccountRole() {
         ArrayList<Role> list = new ArrayList<>();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT [RoleID],[RoleName] FROM [dbo].[Role]";
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int id = table.getInt("RoleID");
                         String roleName = table.getString("RoleName");
                         list.add(new Role(id, roleName));
@@ -612,14 +706,19 @@ public class AccountDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -681,13 +780,58 @@ public class AccountDAO {
         return list;
     }
 
+    public int getSizeOfAccount() {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "SELECT COUNT(*) as 'rowQuantity' FROM [dbo].[Account]";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        result = table.getInt("rowQuantity");
+                    }
+                }
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
     //POST UPDATE
     public int updateAccountInfo(Account acc) {
         int result = 0;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql
                         = "UPDATE [dbo].[Account]\n"
                         + "SET \n"
@@ -718,14 +862,19 @@ public class AccountDAO {
                 //Tra ve 0/1
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -736,9 +885,11 @@ public class AccountDAO {
     public int AddAccount(Account acc) {
         int result = 0;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql
                         = "INSERT INTO [dbo].[Account] ([LastName],[FirstName],[Phone],[Gmail],[Password],[sex], [status],[PolicyStatus],[RoleID],[Script])\n"
                         + "VALUES ("
@@ -769,14 +920,19 @@ public class AccountDAO {
                 //Tra ve 0/1
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -786,9 +942,11 @@ public class AccountDAO {
     public int blockAccount(String id) {
         int result = 0;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql
                         = "UPDATE [dbo].[Account]\n"
                         + "SET [dbo].[Account].[status]= ~[dbo].[Account].[status]\n"
@@ -800,14 +958,19 @@ public class AccountDAO {
                 //Tra ve 0/1
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -817,9 +980,11 @@ public class AccountDAO {
     public int blockAccount_Policy(String id) {
         int result = 0;
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql
                         = "UPDATE [dbo].[Account]\n"
                         + "SET [dbo].[Account].[PolicyStatus]= ~[dbo].[Account].[PolicyStatus]\n"
@@ -831,14 +996,19 @@ public class AccountDAO {
                 //Tra ve 0/1
                 result = pst.executeUpdate();
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }

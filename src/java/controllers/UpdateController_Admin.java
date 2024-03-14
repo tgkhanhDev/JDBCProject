@@ -8,6 +8,7 @@ package controllers;
 import DAO.AccountDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
+import DAO.TransactionDAO;
 import DTO.Account;
 import DTO.Product;
 import DTO.ProductCategories;
@@ -120,6 +121,11 @@ public class UpdateController_Admin extends HttpServlet {
   
                     result= new RequestDAO().attachManagerID(employeeID, taskReq);
                     
+                    
+                    break;
+                case "5":
+                    int tranID = Integer.parseInt(request.getParameter("tranID"));
+                    result = new TransactionDAO().updateTransStatus(tranID);
                     
                     break;
             }

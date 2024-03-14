@@ -32,10 +32,17 @@
                     break;
                 case "4":
             %> <jsp:include page="/components/admin/body/mainbody/TaskBody/index.jsp" /><%
-                    break;
-                case "5":
-            %> <jsp:include page="/components/admin/body/mainbody/EmployeeBody/index.jsp" /><%
+                                    break;
+                                case "5":
+            %> <jsp:include page="/components/admin/body/mainbody/Transaction/index.jsp" /><%
+                                    break;
+                                case "6":
+            %> <jsp:include page="/components/admin/body/mainbody/Contract/index.jsp" /><%
+                                    break;
+                                case "7":
+            %> <jsp:include page="/components/admin/body/mainbody/Payment/index.jsp" /><%
                         break;
+
                 }
 
 

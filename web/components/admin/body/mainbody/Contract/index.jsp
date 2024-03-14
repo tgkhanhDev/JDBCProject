@@ -1,32 +1,23 @@
 <%-- 
     Document   : index
-    Created on : Feb 13, 2024, 3:04:24 PM
+    Created on : Mar 14, 2024, 3:19:33 AM
     Author     : ACER
 --%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
-<%@page import="mylibs.UtilsFunc"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="mylibs.DBUtils"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="DAO.AccountDAO"%>
-<%@page import="DTO.Role"%>
-<%@page import="DTO.Product"%>
-<%@page import="controllers.CONSTANTS"%>
-<%@page import="DAO.ProductDAO"%>
-<%@page import="DTO.ProductCategories"%>
 <%@page import="DTO.Account"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="DTO.Role"%>
+<%@page import="DAO.AccountDAO"%>
+<%@page import="controllers.CONSTANTS"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-
-        <jstl:set var='search' value="${param.search}" />
+        <h1>Contract</h1>
         <jstl:set var='sec' value="${param.sec}" />
         <jstl:set var='page' value="${param.page}" />
         <!--abc--> 
@@ -59,10 +50,10 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-center">
-                            AccountID
+                            ID
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            LastName
+                            Name
                         </th>
                         <th scope="col" class="px-6 py-3">
                             FirstName
@@ -91,112 +82,15 @@
                         <th scope="col" class="px-6 py-3 text-center">
                             <span class="">Other</span>
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
-                    <%
-                        ArrayList<Account> list = (ArrayList<Account>) session.getAttribute("list");
-                        if (list != null)
-                        {
-                            String currentPage = (String) request.getParameter("page");
-                            if (currentPage == null)
-                            {
-                                currentPage = "1";
-                            }
-                            ArrayList<ArrayList> pagingList = (new UtilsFunc().pagination(list, CONSTANTS.MAXPAGE_ADMIN));
-                            ArrayList<Account> currList = pagingList.get(Integer.parseInt(currentPage) - 1);
-                            for (Account item : currList)
-                            {
-
-
-                    %>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                            <%=          item.getAccountID()%>
-                        </th>
-                        <td class="px-6 py-4">
-                            <%=          item.getLastName()%>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getFirstName()%>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getPhone()%>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getGmail()%>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getPassword()%>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getSex()%>
-                        </td>
-                        <td class="px-6 py-4 flex justify-center items-center">
-                            <form action="mainController" />
-                            <input type="hidden" name="action" value="<%=  CONSTANTS.BLOCK_ADMIN%>" />
-                            <input type="hidden" name="sec" value="<%=  request.getParameter("sec")%>" />
-                            <input type="hidden" name="type" value="changePolicy" />
-                            <input type="hidden" name="itemID" value="<%=   item.getAccountID()%>" />
-                            <%
-                                if (item.getPolicyStatus().equals("1"))
-                                {
-                            %>
-                            <button class="bg-yellow-700 rounded py-1 px-2 text-white ">Legal <%= item.getPolicyStatus()%></button>
-                            <%
-                            } else
-                            {
-                            %>
-                            <button class="bg-red-500 rounded py-1 px-2 text-white">Illegal <%= item.getPolicyStatus()%></button>
-                            <%
-                                }
-
-                            %>                           
-                            </form>
-                        </td>
-                        <td class="px-6 py-4">
-                            <%=          item.getScript()%>
-                        </td>
-                        <td class="px-6 py-4 flex justify-center items-center">
-                            <form action="mainController" />
-                            <input type="hidden" name="action" value="<%=  CONSTANTS.BLOCK_ADMIN%>" />
-                            <input type="hidden" name="sec" value="<%=  request.getParameter("sec")%>" />
-                            <input type="hidden" name="itemID" value="<%=   item.getAccountID()%>" />
-                            <%
-                                if (item.getStatus().equals("1"))
-                                {
-                            %>
-                            <button class="bg-green-500 rounded py-1 px-2 text-white ">Active</button>
-                            <%
-                            } else
-                            {
-                            %>
-                            <button class="bg-red-500 rounded py-1 px-2 text-white">Inactive</button>
-                            <%
-                                }
-
-                            %>
-                            </form>
-                        </td>
-                        <td class="px-6 py-4 text-center cursor-pointer">
-                            <form action="mainController">
-                                <input type="hidden" name="action" value=<%=    CONSTANTS.GETFORMINFOPRODUCT_ADMIN%> />
-                                <input type="hidden" name="sec" value=<%= request.getParameter("sec")%>  />
-                                <input type="hidden" name="itemID" value= <%=       item.getAccountID()%> />
-                                <button class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <%                            }
-                        }
-                    %>
                 </tbody>
             </table>
         </div>
 
         <!--Add btn--> 
-        <button class="px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Người Dùng</button>
+        <button class="px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Contract</button>
         <!--===========-->
 
         <!--form update--> 
@@ -338,5 +232,6 @@
             });
 
         </script>
+
     </body>
 </html>

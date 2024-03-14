@@ -9,7 +9,10 @@ import DAO.AccountDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
 import DAO.StatusTypeDAO;
+import DAO.TransactionDAO;
 import DTO.Account;
+import DTO.Product;
+import DTO.Transaction;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,10 +46,19 @@ public class AdminController_Admin extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             ArrayList list = new ArrayList();
+            int size = 0;
+
             HttpSession session = request.getSession();
 
             String sec = request.getParameter("sec");
             String search = request.getParameter("search");
+
+            //currentPage:
+            String currPage = request.getParameter("page");
+            if (currPage == null)
+            {
+                currPage = "1";
+            }
 
             if (sec == null)
             {
@@ -102,14 +114,27 @@ public class AdminController_Admin extends HttpServlet {
                     }
                     ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();
                     session.setAttribute("technicianList", technicianList);
+
                     break;
                 case "5":
-                    out.print("Case 5: ");
+                    //Transaction
+                    String status5 = request.getParameter("status");
+                    String date5 = request.getParameter("date");
+                    status5 = (status5 == null || status5.trim().equals("null")) ? "" : status5;
+                    date5 = (date5 == null || date5.trim().equals("null")) ? date = "" : date5;
+                    
+                    ArrayList<Product> prdList = new ProductDAO().getAllProduct();
+                    session.setAttribute("prdList", prdList );
+                    
+                    list = new TransactionDAO().getAllTransaction(status5, date5, currPage);
+                    break;
+                case "6":
                     break;
             }
-
+            size = list.size();
             request.setAttribute("sec", sec);
             session.setAttribute("list", list);
+            session.setAttribute("size", size);
 //            request.setAttribute("list", list);
 
             //            Về view nè 

@@ -47,6 +47,9 @@
                     <div class="flex flex-col">
                         <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("3")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="3" data-sider >Xem yêu cầu</button></div>
                         <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("4")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="4" data-sider >Giao Task</button></div>
+                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("5")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="5" data-sider >Xem Transaction</button></div>
+                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("6")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="6" data-sider >Xem Contract</button></div>
+                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("7")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="7" data-sider >Xem Payment</button></div>
                     </div>
                 </div>
 
@@ -54,7 +57,7 @@
                 <div class="mt-5">
                     <div class="text-2xl border-b-2 mr-2 capitalize">Company Management</div>
                     <div class="flex flex-col">
-                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("5")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="5" data-sider >nhân viên</button></div>
+                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("9")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="9" data-sider >nhân viên</button></div>
                     </div>
                 </div>
 
