@@ -4,6 +4,7 @@
     Author     : ACER
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="DTO.Account"%>
@@ -12,6 +13,7 @@
 <%@page import="DAO.AccountDAO"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -111,7 +113,7 @@
                                 ${item.quantity}
                             </td>
                             <td class="px-6 py-4 text-center">
-                                ${item.money+ (item.product.price *item.quantity) }
+                                ${(item.product.price *item.quantity) }
                             </td>
                             <td class="px-6 py-4 text-center">
                                 ${item.product.name}
@@ -122,6 +124,7 @@
                             <td class="px-6 py-4 text-center">
                                 <form action="mainController">
                                     <input type="hidden" name="action" value="<%=  CONSTANTS.UPDATEINFO_ADMIN%>" />
+                                    <input type="hidden" name="type" value="updateStatus" />
                                     <input type="hidden" name="sec" value="${sec}" />
                                     <input type="hidden" name="page" value="${page}" />
                                     <input type="hidden" name="date" value="${date}" />
@@ -158,6 +161,9 @@
         <!--form update--> 
         <!--layer-->
         <jstl:set var="formList" value="${requestScope.formList}" />
+        <jstl:set var="createFlag" value="${requestScope.createFlag}" />
+
+
         <div id="formUpdate" class="transition-all ease-in-out <jstl:if test="${formList == null}"><jstl:out value="hidden" /></jstl:if> ">
                 <div id="formLayer" class="z-10 absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
                 <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
@@ -176,42 +182,55 @@
                 </form>
 
                 <form action="mainController" class="max-w-md mx-auto" method="post" accept-charset="UTF-8">
-                    
+
                     <jstl:choose > 
-                        <jstl:when test="${formList != null}">
+                        <jstl:when test="${formList != null &&  createFlag == null}">
                             <input type="hidden" name="action" value="<%=     CONSTANTS.UPDATEINFO_ADMIN%>" />
                             <input type="hidden" id="tranID" name="tranID" value="${formList.tranID}" />
+                            <input type="hidden" name="type" value="updateRow" />
                         </jstl:when>
                         <jstl:otherwise>
                             <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
                         </jstl:otherwise>
                     </jstl:choose>
-                    <input type="hidden" name="sec" value="${sec}" />
 
-                    <!--date-->
+
+                    <input type="hidden" name="sec" value="${sec}" />
+                    <input type="hidden" name="page" value="${page}" />  <!--currPage-->
+                    <input type="hidden" name="date" value="${date}" /> <!--search-->
+                    <input type="hidden" name="status" value="${status}" /> <!--search-->
+                    <input type="hidden" name="tranID" value="${item.tranID}" />
+
+                    <!--format Date--> 
+                    <jstl:set var="originalDate" value="${  formList.date  }" />
+                    <fmt:parseDate value="${originalDate}" pattern="EEE MMM dd HH:mm:ss zzz yyyy" var="parsedDate" />
+                    <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" var="formattedDate" />
+                    <!--endFormat--> 
+
+                    <!--dateForm (no edit)-->
                     <div class="relative z-0 w-full mb-5 group">
                         <jstl:choose > 
-                            <jstl:when test="${formList != null}">
-                                <input value="${formList.date}" type="text" name="dateForm" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-not-allowed" placeholder=" " disabled />
+                            <jstl:when test="${formList != null && createFlag == null}">
+                                <input value="${   formattedDate  }" type="text" name="dateForm" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-not-allowed" placeholder=" " readonly />
                             </jstl:when>
                             <jstl:otherwise>
-                                <input value="<%= new Date()%>" type="text" name="dateForm" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-not-allowed" placeholder=" " disabled />
+                                <input value="<%=new SimpleDateFormat("yyyy-MM-dd").format(new Date())%>" type="text" name="dateForm" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-not-allowed" placeholder="" readonly />
                             </jstl:otherwise>
                         </jstl:choose>
                         <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Transaction Date:
                     </div>
 
-                    <!--Quantity--> 
+                    <!--quantity--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input id="formQuantity" value="${formList.quantity}" type="number" name="money" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input id="formQuantity" value="${formList.quantity}" type="number" name="quantity" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <label for="" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantity
                     </div>
 
 
-
+                    <!--prdID-->
                     <div class="relative z-0 w-full mb-5 group">
                         <jstl:set var="prdList" value="${sessionScope.prdList}" />
-                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product</label>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product</label>
                         <select id="formProduct" name="prdID" class="rounded w-full my-2">
                             <option value="">None</option>
                             <jstl:forEach var="prd" items="${prdList}">
@@ -230,16 +249,16 @@
                     </div>
 
 
-                    <!--total--> 
+                    <!--totalPrice (no edit)--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <div>  <input value="${formList.money+ formList.product.price* formList.quantity}" type="text" name="dateForm" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer " placeholder=" " />
+                        <div>  <input value="${formList.product.price* formList.quantity}" type="text" name="totalPrice" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer cursor-not-allowed" placeholder=" " />
                             <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold italic">Thành tiền
                         </div>
                     </div>
 
                     <div class="flex justify-between">
                         <jstl:choose > 
-                            <jstl:when test="${formList != null}">
+                            <jstl:when test="${formList != null && createFlag == null }">
                                 <button class="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 rounded text-white">Update</button>
                             </jstl:when>
                             <jstl:otherwise>
@@ -253,7 +272,15 @@
 
                     <form id="reloadForm" action="mainController">
                         <input type="hidden" name="action" value="<%=  CONSTANTS.GETFORMINFOPRODUCT_ADMIN%>" />
-                        <input type="hidden" name="reload" value="reload" />
+                        <jstl:choose > 
+                            <jstl:when test="${formList != null && createFlag == null}">
+                                <input type="hidden" name="reload" value="reloadUpdate" />
+                                <!--//xu ly--> 
+                            </jstl:when>
+                            <jstl:otherwise>
+                                <input type="hidden" name="reload" value="reloadCreate" />
+                            </jstl:otherwise>
+                        </jstl:choose>
                         <input type="hidden" name="sec" value="${sec}" />
                         <input type="hidden" name="page" value="${page}" />
                         <input type="hidden" name="date" value="${date}" />
@@ -263,21 +290,52 @@
                         <input id="formTranIDReload" name="formTranIDReload" value="" type="hidden" />
                         <input id="formQuantityReload" name="formQuantityReload" value="" type="hidden" />
                         <input id="formProductReload" name="formProductReload" value="" type="hidden" />
-                        <button id="reloadBtn" class="p-1 rounded-2xl  flex justify-center" style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px">
-                            <svg fill="#000000" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                 viewBox="0 0 489.533 489.533" xml:space="preserve">
-                            <g>
-                            <path d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9
-                                  l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6
-                                  c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6
-                                  C49.575,418.961,150.875,501.261,268.175,488.161z"/>
-                            </g>
-                            </svg>
-                        </button>
-                        <p class="italic flex justify-center ">reload</p>
-                    </form>
+
+
+                        <div class="<jstl:choose>
+                                 <jstl:when test="${formList != null && createFlag == null}" ></jstl:when>
+                                 <jstl:otherwise>hidden</jstl:otherwise>
+                             </jstl:choose>
+                             ">
+                            <button id="reloadBtnUpdate" class="p-1 rounded-2xl  flex justify-center 
+                                    " style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px">
+                                <svg fill="#000000" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                     viewBox="0 0 489.533 489.533" xml:space="preserve">
+                                <g>
+                                <path d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9
+                                      l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6
+                                      c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6
+                                      C49.575,418.961,150.875,501.261,268.175,488.161z"/>
+                                </g>
+                                </svg>
+                            </button>
+                            <p class="italic flex justify-center ">reload</p>
+                        </div>
+
+                        <div class="<jstl:choose>
+                                 <jstl:when test="${formList != null && createFlag == null}" >hidden</jstl:when>
+                                 <jstl:otherwise></jstl:otherwise>
+                             </jstl:choose>
+                             ">
+                            <button id="reloadBtnCreate" class="p-1 rounded-2xl  flex justify-center" style="box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px">
+                                <svg fill="#000000" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                     viewBox="0 0 489.533 489.533" xml:space="preserve">
+                                <g>
+                                <path d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9
+                                      l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6
+                                      c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6
+                                      C49.575,418.961,150.875,501.261,268.175,488.161z"/>
+                                </g>
+                                </svg>
+                            </button>
+                            <p class="italic flex justify-center ">reload</p>
+
+                        </div>
 
                 </div>
+
+                </form>
+
             </div>
         </div>
     </div>
@@ -294,17 +352,23 @@
         });
 
 
-        document.getElementById("reloadBtn").addEventListener("click", () => {
+        document.getElementById("reloadBtnUpdate").addEventListener("click", () => {
             let formTransID = document.getElementById("tranID").value;
             let formQuan = document.getElementById("formQuantity").value;
             let formPro = document.getElementById("formProduct").value;
-
             //set Value
             document.getElementById("formTranIDReload").value = formTransID;
             document.getElementById("formQuantityReload").value = formQuan;
             document.getElementById("formProductReload").value = formPro;
+        });
 
-        })
+        document.getElementById("reloadBtnCreate").addEventListener("click", (e) => {
+            let formQuan1 = document.getElementById("formQuantity").value;
+            let formPro1 = document.getElementById("formProduct").value;
+            document.getElementById("formQuantityReload").value = formQuan1;
+            document.getElementById("formProductReload").value = formPro1;
+
+        });
 
 
 

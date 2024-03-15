@@ -45,15 +45,11 @@ public class test {
 
     public static void main(String[] args) {
 
-//       Transaction transList = new TransactionDAO().getTransByID(1);        
-        ArrayList<Transaction> arrList = new TransactionDAO().getAllTransaction("", "", "1");
-//       System.out.println(transList.getDate());
-
-        for (Transaction item : arrList)
-        {
-            System.out.println(item.getDate());
-
-        }
+        double a = 1245.0;
+        
+        int b = (int) a;
+        
+        System.out.println("b: "+ b);
 
     }
 

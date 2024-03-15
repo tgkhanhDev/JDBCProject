@@ -76,7 +76,7 @@ public class TransactionDAO {
                 pst.setString(1, status);
 //                Lay trong vong 7 ngay 
                 pst.setString(2, date);
-                pst.setString(3, (Integer.parseInt(page)-1)*5 +"" );
+                pst.setString(3, (Integer.parseInt(page) - 1) * 5 + "");
                 ResultSet table = pst.executeQuery();
                 if (table != null)
                 {
@@ -234,6 +234,92 @@ public class TransactionDAO {
 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, id);
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int updateTransaction(int transID, String date, int quantity, int money, int prdID) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql
+                        = "UPDATE [dbo].[Transaction_infor]\n"
+                        + "SET [Date]= ?,\n"
+                        + "[quantity]= ?,\n"
+                        + "[prd_ID] = ?,\n"
+                        + "[money]= ?\n"
+                        + "WHERE [TranID] = ?";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, date);
+                pst.setInt(2, quantity);
+                pst.setInt(3, prdID);
+                pst.setInt(4, money);
+                pst.setInt(5, transID);
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int addNewTransaction(String date, int quantity, int money, int prdID) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql
+                        = "INSERT INTO [dbo].[Transaction_infor] ([Date],[quantity],[money],[Status], [prd_ID])\n"
+                        + "VALUES (?,?,?,?,?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, date);
+                pst.setInt(2, quantity);
+                pst.setInt(3, money);
+                pst.setString(4, "1");
+                pst.setInt(5, prdID);
 
                 //Tra ve 0/1
                 result = pst.executeUpdate();

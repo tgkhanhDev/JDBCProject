@@ -146,9 +146,17 @@ public class AddController_Admin extends HttpServlet {
                     }
 
                     break;
+                case "5":
+                    String date = request.getParameter("dateForm");
+                    int quantity = Integer.parseInt(request.getParameter("quantity"));
+                    int prdID_5 = Integer.parseInt(request.getParameter("prdID"));
+                    int totalPrice = new ProductDAO().getProductByID(prdID_5+"").getPrice()* quantity;
+                    result=new TransactionDAO().addNewTransaction(date, quantity, totalPrice , prdID_5);
+                    break;
+                    
             }
 
-            if (result >= 1)
+            if (result >= 1 )
             {
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
             } else

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -104,29 +105,64 @@ public class UpdateController_Admin extends HttpServlet {
                     String managerID = request.getParameter("managerID");
                     boolean isAttach = Boolean.getBoolean(request.getParameter("isAttach"));
                     result = new RequestDAO().updateRequestStatus(sttType, reqID);
-                    if(sttType.equals("1")){
+                    if (sttType.equals("1"))
+                    {
                         new RequestDAO().detachManagerID(reqID);
-                    }else if(sttType.equals("1")==false && isAttach==false) {
-                        new RequestDAO().attachManagerID( managerID , reqID);
+                    } else if (sttType.equals("1") == false && isAttach == false)
+                    {
+                        new RequestDAO().attachManagerID(managerID, reqID);
                     }
-                    
+
                     out.print("Hello Update 3");
                     out.print("---------------");
                     out.print(request.getParameter("search"));
                     break;
                 case "4":
-          
+
                     String employeeID = request.getParameter("employeeID");
                     String taskReq = request.getParameter("taskReq");
-  
-                    result= new RequestDAO().attachManagerID(employeeID, taskReq);
-                    
-                    
+
+                    result = new RequestDAO().attachManagerID(employeeID, taskReq);
+
                     break;
                 case "5":
+                    String type = request.getParameter("type");
                     int tranID = Integer.parseInt(request.getParameter("tranID"));
-                    result = new TransactionDAO().updateTransStatus(tranID);
-                    
+
+                    TransactionDAO transDAO = new TransactionDAO();
+
+                    switch (type)
+                    {
+                        case "updateStatus":
+                            result = transDAO.updateTransStatus(tranID);
+                            break;
+                        case "updateRow":
+                            out.print("UpdateRow");
+                            String dateForm = request.getParameter("dateForm");
+                            int quantity = Integer.parseInt(request.getParameter("quantity"));
+                            int prdID = Integer.parseInt(request.getParameter("prdID"));
+                            out.print("-------dateForm: " + dateForm);
+                            out.print("------quantity: " + quantity);
+                            out.print("-------prdID: " + prdID);
+                            out.print("-------tranID: " + tranID);
+
+                            //money Prd* quantity + money Transaction;
+                            int total = (int) Math.round(new ProductDAO().getProductByID(prdID + "").getPrice() * quantity );
+                            out.print("------total: " + total);
+
+                            result = transDAO.updateTransaction(tranID, dateForm, quantity, total , prdID);
+
+                            break;
+                    }
+
+                    String page = request.getParameter("page");
+                    String date = request.getParameter("date");
+                    String statusSearch = request.getParameter("status");
+
+                    request.setAttribute("page", page);
+                    request.setAttribute("date", date);
+                    request.setAttribute("status", statusSearch);
+
                     break;
             }
 
