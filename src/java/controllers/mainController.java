@@ -128,6 +128,9 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.LOGOUT:
                     url = "logoutController";
                     break;
+                case CONSTANTS.TABLECART:
+                    url="handleTableCart";
+                    break;
                 default:
                     url="testController";
                     break;

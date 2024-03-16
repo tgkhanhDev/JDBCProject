@@ -76,6 +76,10 @@
         <servlet-name>ContractController</servlet-name>
         <servlet-class>controllers.ContractController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>handleTableCart</servlet-name>
+        <servlet-class>controllers.handleTableCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -139,6 +143,10 @@
     <servlet-mapping>
         <servlet-name>ContractController</servlet-name>
         <url-pattern>/ContractController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>handleTableCart</servlet-name>
+        <url-pattern>/handleTableCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

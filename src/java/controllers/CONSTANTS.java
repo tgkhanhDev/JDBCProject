@@ -46,6 +46,13 @@ public interface CONSTANTS {
     
     public final String APPLICATION = "application"; // qua trang viết đơn
     
+    public final String GETCART = "getCart";// xu ly cart
+    public final String TABLECART = "tableCart"; // xu ly tableCart
+    public final String VIEWCART = "viewCart"; // qua gio hang, xu ly thanh toan
+    
+    
+    
+    
     //admin
     public final String GETPRODUCT_ADMIN = "getProductAdmin"; // Lấy thông tin admin
     public final String VIEWPRODUCT_ADMIN = "productAdmin"; // qua trang Admin
