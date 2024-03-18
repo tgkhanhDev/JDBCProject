@@ -164,6 +164,9 @@
                             <th scope="col" class="px-6 py-3 text-center">
                                 Quantity
                             </th>
+                            <th scope="col" class="px-6 py-3 text-center">
+                                Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,14 +182,14 @@
                                 {
                                     no++;
                                     Product prd = new ProductDAO().getProductByID(entry.getKey());
-                                      total += (entry.getValue()* prd.getPrice());
+                                    total += (entry.getValue() * prd.getPrice());
                         %>
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <%= no%>
                             </th>
                             <td class="px-6 py-4">
-                                <%=  prd.getThumbnail()%>
+                                <img src="<%=  prd.getThumbnail()%>" alt="<%= prd.getName()%>" class="w-[200px]" />
                             </td>
                             <td class="px-6 py-4">
                                 <%=  prd.getName()%>
@@ -195,32 +198,55 @@
                                 <%=   prd.getSpeed()%>
                             </td>
                             <td class="px-6 py-4">
-                                <%= prd.getPrice() %>$
+                                <%= prd.getPrice()%>$
                             </td>
-                            <td class="px-6 py-4 text-center">
-                                <%= entry.getValue() %>
-                            </td>
-                        </tr>
-                        <%
-                            }
-                        %>
+                    <form action="mainController" >
+                        <input type="hidden" name="action" value="<%=  CONSTANTS.UPDATECART%>"/>
+                        <input type="hidden" name="prdID" value="<%=  prd.getPrd_ID()%>"/>
+                        <td class="px-6 py-4 text-center">
+                            <input class="rounded-xl text-center mx-auto block" type="number" name="quantity" value="<%= entry.getValue()%>"/>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <button class="px-6 py-3 rounded bg-yellow-500">Update</button>
+                        </td>
+                    </form>
 
-                        <%
-                            }
-                        %>
+                    </tr>
+                    <%
+                        }
+                    %>
 
-
-                        <jstl:if test="${cartList != null}">
-                            <jstl:forEach var="item" items="cartList" >
-
-                            </jstl:forEach>
-                        </jstl:if>
+                    <%
+                        }
+                    %>
                     </tbody>
                 </table>
-                <div>Total: <%=total%>$</div>
+                <div class="flex justify-between px-10 text-xl mt-5">
+                    <div></div>
+                    <div><span class="font-bold">Total: </span><%=total%>$</div>
+                </div>
+                <div class="">
+                    <form action="mainController" class="flex justify-between px-10">
+                        <input type="hidden" name="action" value="<%=   CONSTANTS.VIEWPAYMENT%>" />
+                        <div></div>
+                        <button class="px-6 py-3 rounded bg-green-500">Go to Payment</button>
+                    </form>
+                </div>
             </div>
 
         </div>
+                        
+          <%
+          String mess = (String) request.getAttribute("message");
+          if(mess != null){
+              %>
+              <script>
+                  alert("<%=  mess %>");
+              </script>
+        <%
+          }
+          %>
+                        
         <script>
             console.log("Hello Cart JS");
 

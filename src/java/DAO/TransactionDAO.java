@@ -227,8 +227,8 @@ public class TransactionDAO {
             cn = DBUtils.makeConnection();
             if (cn != null)
             {
-                String sql = "INSERT INTO [dbo].[Transaction_infor] ([Date],[money],[Status],[prd_ID])\n"
-                        + "VALUES (?, ?, ?, ?) ";
+                String sql = "INSERT INTO [dbo].[Transaction_infor] ([Date],[quantity],[money],[Status], [prd_ID])\n"
+                        + "VALUES (?,?, ?, ?, ?) ";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 if (trans.getDate() != null)
                 {
@@ -237,15 +237,16 @@ public class TransactionDAO {
                 {
                     pst.setDate(1, null);
                 }
-                pst.setDouble(2, trans.getMoney());
-                pst.setString(3, trans.getStatus());
+                pst.setInt(2, trans.getQuantity());
+                pst.setDouble(3, trans.getMoney());
+                pst.setString(4, trans.getStatus());
 
                 if (trans.getProduct().getPrd_ID() == 0)
                 {
-                    pst.setString(4, null);
+                    pst.setString(5, null);
                 } else
                 {
-                    pst.setInt(4, trans.getProduct().getPrd_ID());
+                    pst.setInt(5, trans.getProduct().getPrd_ID());
                 }
 
                 result = pst.executeUpdate();

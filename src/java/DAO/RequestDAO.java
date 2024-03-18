@@ -509,6 +509,49 @@ public class RequestDAO {
 
         return result;
     }
+    public int addRequestForClient(Request request) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "INSERT INTO [dbo].[Request]([AccountID],[ManagerAccountID],[ContactID],[StatusID],[reqTypeID],[Description])\n"
+                        + "VALUES (?,null,(SELECT Max([ContactID]) FROM [dbo].[Contact]),?,?,?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, request.getAcc().getAccountID());
+//                pst.setInt(2, request.getAdminAcc().getAccountID());
+                pst.setInt(2, request.getStatusType().getStatusID());
+                pst.setInt(3, request.getRequestType().getRqTyID());
+                pst.setString(4, request.getDescription());
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
 
     public int updateRequestStatus(String statusID, String reqID) {
         Connection cn = null;

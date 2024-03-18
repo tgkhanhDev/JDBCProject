@@ -32,16 +32,19 @@ public class mainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter())
+        {
             String url = "";
 
             String action = request.getParameter("action");
 
-            if (action == null) {
+            if (action == null)
+            {
                 action = CONSTANTS.GETHOME;
             }
 
-            switch (action) {
+            switch (action)
+            {
                 case CONSTANTS.VIEWHOME:
                     url = "page/index.jsp";
                     break;
@@ -84,26 +87,24 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.VIEWPROFILE:
                     url = "page/profilePage/profilePage.jsp";
                     break;
-                    
-                    
+
                 case CONSTANTS.GETUPDATEPRO:
-                    url="updateProfileController";
+                    url = "updateProfileController";
                     break;
                 case CONSTANTS.VIEWUPDATEPRO:
-                    url="page/profilePage/updateProfilePage.jsp";
+                    url = "page/profilePage/updateProfilePage.jsp";
                     break;
-              
-               
-                case  CONSTANTS.GETMYDEVICE:
-                    url="MyDeviceController";
-                break;
-                
-                case CONSTANTS.GETCONTRACT :
-                    url="ContractController";
+
+                case CONSTANTS.GETMYDEVICE:
+                    url = "MyDeviceController";
+                    break;
+
+                case CONSTANTS.GETCONTRACT:
+                    url = "ContractController";
                     break;
                 case CONSTANTS.VIEWCONTRACT:
-                url="page/contactPage/contactPage.jsp";
-                break;
+                    url = "page/contactPage/contactPage.jsp";
+                    break;
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:
@@ -129,13 +130,22 @@ public class mainController extends HttpServlet {
                     url = "logoutController";
                     break;
                 case CONSTANTS.TABLECART:
-                    url="handleTableCart";
+                    url = "handleTableCart";
                     break;
                 case CONSTANTS.REQUESTVALIDATE_ADMIN:
-                    url="RequestValidation_Admin";
+                    url = "RequestValidation_Admin";
+                    break;
+                case CONSTANTS.PAYALLPRODUCTS:
+                    url = "PayAllProducts";
+                    break;
+                case CONSTANTS.VIEWPAYMENT:
+                    url="page/paymentPage/payment.jsp";
+                    break;
+                case CONSTANTS.UPDATECART:
+                    url="UpdateCart";
                     break;
                 default:
-                    url="testController";
+                    url = "testController";
                     break;
             }
 

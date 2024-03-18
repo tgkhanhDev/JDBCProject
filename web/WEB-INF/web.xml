@@ -84,6 +84,14 @@
         <servlet-name>RequestValidation_Admin</servlet-name>
         <servlet-class>controllers.RequestValidation_Admin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PayAllProducts</servlet-name>
+        <servlet-class>controllers.PayAllProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCart</servlet-name>
+        <servlet-class>controllers.UpdateCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -155,6 +163,14 @@
     <servlet-mapping>
         <servlet-name>RequestValidation_Admin</servlet-name>
         <url-pattern>/RequestValidation_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayAllProducts</servlet-name>
+        <url-pattern>/PayAllProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCart</servlet-name>
+        <url-pattern>/UpdateCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

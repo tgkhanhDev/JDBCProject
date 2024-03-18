@@ -50,6 +50,10 @@ public interface CONSTANTS {
     public final String TABLECART = "tableCart"; // xu ly tableCart
     public final String VIEWCART = "viewCart"; // qua gio hang, xu ly thanh toan
     
+    public final String PAYALLPRODUCTS = "payAll";
+    public final String VIEWPAYMENT = "viewPayment";
+    public final String UPDATECART = "updateCart";
+    
     
     
     
