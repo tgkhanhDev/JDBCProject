@@ -153,6 +153,13 @@ public class AddController_Admin extends HttpServlet {
                     int totalPrice = new ProductDAO().getProductByID(prdID_5+"").getPrice()* quantity;
                     result=new TransactionDAO().addNewTransaction(date, quantity, totalPrice , prdID_5);
                     break;
+                    
+                case "6":
+                    String transactionForm = request.getParameter("transactionForm");
+                    String serviceForm = request.getParameter("serviceForm");
+                    result= new ContactDAO().addContract_Form(transactionForm, serviceForm);
+                    
+                    break;
             }
 
             if (result >= 1 )

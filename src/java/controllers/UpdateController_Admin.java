@@ -6,6 +6,7 @@
 package controllers;
 
 import DAO.AccountDAO;
+import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
 import DAO.TransactionDAO;
@@ -163,6 +164,13 @@ public class UpdateController_Admin extends HttpServlet {
                     request.setAttribute("date", date);
                     request.setAttribute("status", statusSearch);
 
+                    break;
+                case "6":
+                    
+                    int contractID = Integer.parseInt( request.getParameter("contractID") ) ;
+
+                    result = new ContactDAO().updateContractStatus(contractID);
+                    
                     break;
             }
 

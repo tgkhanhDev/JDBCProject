@@ -11,6 +11,7 @@ import DTO.Transaction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,56 @@ public class TransactionDAO {
     }
     //====
 
-    public ArrayList<Transaction> getAllTransaction(String status, String date, String page) {
+    public ArrayList<Transaction> getAllTransaction() {
+        ArrayList<Transaction> list = new ArrayList();
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "SELECT [TranID],[Date],[quantity],[money],[Status],[prd_ID] FROM [dbo].[Transaction_infor]";
+
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        int tranID = table.getInt("TranID");
+                        java.util.Date dateRS = new UtilsFunc().convertStringToBirthDate(table.getString("Date"));
+                        int quantity = table.getInt("quantity");
+                        double money = table.getDouble("money");
+                        String statusRS = (table.getBoolean("Status")) ? "1" : "0";
+                        //getPrdObj
+                        int prdID = table.getInt("prd_ID");
+                        Product prd = new ProductDAO().getProductByID(prdID + "");
+                        list.add(new Transaction(tranID, dateRS, quantity, money, statusRS, prd));
+                    }
+                }
+
+            }
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<Transaction> getAllTransactionPagination(String status, String date, String page) {
         ArrayList<Transaction> list = new ArrayList();
         Connection cn = null;
         try
@@ -323,6 +373,46 @@ public class TransactionDAO {
 
                 //Tra ve 0/1
                 result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int countTransaction() {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql
+                        = "SELECT count(*) as [rowSize] FROM Transaction_infor";
+
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        result = table.getInt(1);
+                    }
+                }
             }
         } catch (Exception e)
         {

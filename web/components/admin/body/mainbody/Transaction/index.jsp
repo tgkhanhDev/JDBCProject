@@ -22,12 +22,12 @@
     </head>
     <body>
 
-        <h1>Transaction</h1>
         <jstl:set var='sec' value="${param.sec}" />
         <jstl:set var='page' value="${(param.page == null)?'1': param.page }" />
         <jstl:set var="date" value="${param.date}" />
         <jstl:set var="status" value="${param.status}" scope="page" />
         <jstl:set var="list" value="${sessionScope.list }"  />
+        <jstl:set var="size" value="${sessionScope.size }"  />
 
         <!--Search--> 
         <div class="my-5 flex flex-col">
@@ -155,7 +155,7 @@
         </div>
 
         <!--Add btn--> 
-        <button class="px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Contract</button>
+        <button class="hidden px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Contract</button>
         <!--===========-->
 
         <!--form update--> 
@@ -339,7 +339,6 @@
             </div>
         </div>
     </div>
-
 
 
     <script>

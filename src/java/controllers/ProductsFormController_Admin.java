@@ -107,13 +107,20 @@ public class ProductsFormController_Admin extends HttpServlet {
                         request.setAttribute("createFlag", "alert");
                     }
                     break;
+                    
+                case "6":
+                    String transID = request.getParameter("transID");
+                    Transaction formTransaction = new TransactionDAO().getTransByID(Integer.parseInt(transID));
+                    formList = formTransaction;
+                    
+                    break;
+                    
             }
             request.setAttribute("sec", sec);
             request.setAttribute("formList", formList);
 
             //            Về view nè 
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
-//                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN + "&sec=" + sec).forward(request, response);
 
         }
     }

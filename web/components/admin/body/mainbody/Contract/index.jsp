@@ -19,32 +19,54 @@
     <body>
         <h1>Contract</h1>
         <jstl:set var='sec' value="${param.sec}" />
-        <jstl:set var='page' value="${param.page}" />
-        <!--abc--> 
+        <jstl:set var='page' value="${(param.page == null)?'1': param.page }" />
+        <jstl:set var="transID" value="${param.transID}" />
+        <jstl:set var="status" value="${param.status}" scope="page" />
+        <jstl:set var="list" value="${sessionScope.list }"  />
+        <jstl:set var="size" value="${sessionScope.size }"  />
 
-        <!--Dropdown--> 
-        <div class="flex gap-2" >
-            <div class="">Danh mục đang hiển thị: </div>
-            <select class="rounded" id="cars">
-                <option value="allProduct">Toàn bộ sản phẩm</option>
-                <option value="cate">Danh mục sản phẩm</option>
-                <option value="service">Dịch vụ</option>
-            </select>
-        </div>
-        <!--endDropdown-->
-
-
-        <!--Search--> 
-        <div class="my-5">
+        <div class="my-5 flex flex-col">
             <form action="mainController" class="flex items-center gap-2">
                 <input type="hidden" name="action" value=<%=    CONSTANTS.GETPRODUCT_ADMIN%> />
                 <input type="hidden" name="sec" value=<%= request.getParameter("sec")%>  />
-                <div class="mr-2">Tìm kiếm: </div>
-                <input class="border-2" name="search" value="<%=(request.getParameter("search") != null) ? request.getParameter("search") : ""%>" placeholder="Enter phone numbers..." />
+
+                <div>
+                    <label>Theo trạng thái: </label>
+                    <select class="rounded" name="status">
+                        <option value="">Tất cả</option>
+                        <jstl:choose>
+                            <jstl:when test="${status eq '1'}" >
+                                <option value="1" selected>Đang hoạt động</option>
+                            </jstl:when>
+                            <jstl:otherwise>
+                                <option value="1">Đang hoạt động</option>
+                            </jstl:otherwise>
+                        </jstl:choose>
+
+                        <jstl:choose>
+                            <jstl:when test="${status eq '0'}" >
+                                <option value="0" selected="">Ngưng hoạt động</option>
+                            </jstl:when>
+                            <jstl:otherwise>
+                                <option value="0">Ngưng hoạt động</option>
+                            </jstl:otherwise>
+                        </jstl:choose>
+                    </select>
+                </div>
+
+                <div class="relative max-w-sm flex items-center gap-2">
+                    <label>Theo Transaction:  </label>
+                    <input type="text" name="transID"  value="${transID}"/>
+                </div>
+
+
                 <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
-            </form
+
+            </form>
         </div>
 
+
+        <!--table--> 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-5">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -52,32 +74,17 @@
                         <th scope="col" class="px-6 py-3 text-center">
                             ID
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            FirstName
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Phone
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Gmail
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Password
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Gender
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Service Name
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                            Policy status
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Script
+                            Giá phụ thu
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
-                            Block/Unblock
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Transaction ID
                         </th>
                         <th scope="col" class="px-6 py-3 text-center">
                             <span class="">Other</span>
@@ -85,6 +92,51 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <jstl:forEach items="${list}" var="item">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                ${item.contactID}
+                            </th>
+                            <td class="px-6 py-4 text-center">
+                                ${item.service.serviceName}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                ${item.service.servicePrice}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <form action="mainController">
+                                    <input type="hidden" name="action" value="<%=  CONSTANTS.UPDATEINFO_ADMIN%>" />
+                                    <input type="hidden" name="sec" value="${sec}" />
+                                    <input type="hidden" name="page" value="${page}" />
+                                    <input type="hidden" name="status" value="${status}" />
+                                    <input type="hidden" name="contractID" value="${item.contactID}" />
+                                    <jstl:choose > 
+                                        <jstl:when test="${item.status eq '1'}">
+                                            <button class="px-4 py-2 bg-green-500 hover:bg-green-600 rounded text-white">Active</button>
+                                        </jstl:when>
+                                        <jstl:otherwise>
+                                            <button class="px-4 py-2 bg-red-500 hover:bg-red-600 rounded text-white">InActive</button>
+                                        </jstl:otherwise>
+                                    </jstl:choose>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                ${item.transaction.tranID}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <form>
+                                    <input type="hidden" name="action" value="<%=  CONSTANTS.GETFORMINFOPRODUCT_ADMIN%>" />
+                                    <input type="hidden" name="sec" value="${sec}" />
+                                    <input type="hidden" name="page" value="${page}" />
+                                    <input type="hidden" name="transID" value="${item.transaction.tranID}" />
+
+                                    <button class="px-4 py-2 rounded bg-yellow-500 text-white">View Transaction Detail</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                    </jstl:forEach>
+
                 </tbody>
             </table>
         </div>
@@ -95,123 +147,63 @@
 
         <!--form update--> 
         <!--layer-->
-        <%        Account prd = (Account) request.getAttribute("formList");
-        %>
-        <div id="formUpdate" class="transition-all ease-in-out <%= (prd != null) ? "" : "hidden"%>">
-            <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
-            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
+        <jstl:set var="transList"  value="${sessionScope.formTransList}" />
+        <jstl:set var="serviceList"  value="${sessionScope.formServiceList}" />
+
+        <div id="formUpdate" class="transition-all ease-in-out hidden">
+            <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70 z-10"></div>
+            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10 rounded-xl">
                 <!--quit button--> 
                 <form action="mainController" class="z-100 cursor-pointer">
                     <div>
                         <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
-                        <input type="hidden" name="sec" value="<%=          request.getAttribute("sec")%>" />
+                        <input type="hidden" name="sec" value="${sec}" />
+                        <input type="hidden" name="page" value="${page}" />
 
                     </div>
                     <button id="toggleForm" class="absolute top-3 right-3">
                         <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 457.6L905.6 64l54.336 54.336-393.6 393.6L960 905.6l-54.4 54.4L512 566.336 118.4 960 64 905.6 457.6 512 64 118.336 118.336 64l393.6 393.6z" fill="#000000" /></svg>
                     </button>
                 </form>
-                <form action="mainController" class="max-w-md mx-auto" method="post" accept-charset="UTF-8">
-                    <%
-                        if (prd != null)
-                        {
-                    %>
-                    <input type="hidden" name="action" value="<%=     CONSTANTS.UPDATEINFO_ADMIN%>" />
-                    <input type="hidden" name="AccountID" value="<%=      prd.getAccountID()%>" />
-
-                    <%
-                    } else
-                    {
-                    %>
+                <form action="mainController" class="max-w-md mx-auto" method="get" accept-charset="UTF-8"> 
                     <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
-                    <%
-                        }
-                    %>
+                    <input type="hidden" name="sec" value="${sec}" />
 
-                    <input type="hidden" name="sec" value="<%=      request.getAttribute("sec")%>" />
-                    <!--form--> 
-                    <!--1/2--> 
-                    <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input value="<%=      (prd != null) ? prd.getFirstName() : ""%>" type="text" name="FirstName" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name</label>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input value="<%=      (prd != null) ? prd.getLastName() : ""%>" type="text" name="LastName" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label for="floating_last_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 md:gap-6">
-                        <div class="relative z-0 w-full mb-5 group">
-                            <input value="<%=      (prd != null) ? prd.getPhone() : ""%>" type="text" name="phone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
-                        </div>
-                        <div class="relative z-0 w-full mb-5 group">
-                            <label for="floating_gender" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gender</label>
-                            <select name="sex" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                                <option class="capitalize" value="Male"  <%= (prd != null) ? (prd.getSex().equals("Male") ? "selected" : "") : ""%>  >male</option>
-                                <option class="capitalize" value="Female"  <%= (prd != null) ? (prd.getSex().equals("Female") ? "selected" : "") : ""%> >female</option>
-                            </select>
-                        </div>
+                    <div class="text-3xl flex justify-center mb-10 underline">Create Contract</div>
+                    <div class="relative z-0 w-full mb-5 group">
+                        <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Select transactions...</label>
+                        <select required name="transactionForm" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option class="capitalize" value="" selected=""></option>
+                            <jstl:if test="${transList != null }" >
+                                <jstl:forEach var="trans" items="${transList}">
+                                    <jstl:if test="${trans.status eq '1'}" >
+                                        <option class="capitalize" value="${trans.tranID}">ID:${trans.tranID} --- Date:${trans.getDateForRendering()} --- Product:${trans.product.name}</option>
+                                    </jstl:if>
+                                </jstl:forEach>
+                            </jstl:if>
+                        </select>
                     </div>
 
                     <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getGmail() : ""%>" type="email" name="gmail" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Gmail</label>
+                        <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Select service...</label>
+                        <select required name="serviceForm" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option class="capitalize" value="" selected=""></option>
+                            <jstl:if test="${serviceList != null }" >
+                                <jstl:forEach var="serv" items="${serviceList}">
+                                    <jstl:if test="${serv.status eq '1'}" >
+                                        <option class="capitalize" value="${serv.id}"> Name:${serv.serviceName} --- Additional Price:${serv.servicePrice}</option>
+                                    </jstl:if>
+                                </jstl:forEach>
+                            </jstl:if>
+                        </select>
                     </div>
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getPassword() : ""%>" type="password" name="password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
-                    </div>
-                    <!--Khi khởi tạo, mặc định là true-->
-                    <input type="hidden" name="status" value="<%=        (prd != null) ? prd.getStatus() : "1"%>" />
-                    <!--Khi khởi tạo, mặc định là true-->
-                    <input type="hidden" name="policyStatus" value="<%=        (prd != null) ? prd.getPolicyStatus() : "1"%>" />
-                    <div class="relative z-0 w-full mb-5 group">
-                        <input value="<%=      (prd != null) ? prd.getScript() : ""%>" type="text" name="script" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
-                        <label for="floating_first_name" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Policy Script</label>
-                    </div>
+
+
                     <!--=============--> 
-                    <select name="RoleID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                        <%
-                            ArrayList<Role> roleList = new AccountDAO().getAllAccountRole();
-
-                            for (Role item : roleList)
-                            {
-                                if (prd != null)
-                                {
-                                    if (prd.getRole().getRoleName().equals(item.getRoleName()))
-                                    {
-                        %>
-                        <option value=<%=         item.getRoleID()%> selected  ><%=              item.getRoleName()%>*</option>
-                        <%
-                            }
-                        %>
-                        <%
-                        } else if (item.getRoleName().matches("Client"))
-                        {
-                        %>
-                        <option value=<%=     item.getRoleID()%>  ><%=              item.getRoleName()%></option>
-                        <%
-                                }
-                            }
-
-                        %>
-                    </select>
-
                     <div class="flex justify-between">
                         <div></div>
-                        <div class="flex gap-2">
-                            <%                                if (prd != null)
-                                {
-
-                            %>
-                            <button type="submit" class="text-white bg-cyan-500 hover:bg-cyan-600 rounded  px-5 py-2 text-center">Update</button>
-                            <%                            } else
-                            {
-                            %>
+                        <div class="flex gap-2">                        
                             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 rounded  px-5 py-2 text-center">Submit</button>
-                            <%}%>
                         </div>
                     </div>
                 </form>
@@ -219,8 +211,52 @@
         </div>
 
 
+        <!--Form Detail--> 
+        <jstl:set var="formList"  value="${requestScope.formList}" />
+
+        <div id="formDetail" class="transition-all ease-in-out <jstl:choose><jstl:when test="${formList == null}">hidden</jstl:when><jstl:otherwise></jstl:otherwise></jstl:choose>   ">
+                    <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70 z-10"></div>
+                    <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10 rounded-xl">
+                        <!--quit button--> 
+                        <form action="mainController" class="z-100 cursor-pointer">
+                            <div>
+                                    <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
+                        <input type="hidden" name="sec" value="${sec}" />
+                        <input type="hidden" name="page" value="${page}" />
+
+                    </div>
+                    <button id="toggleFormDetail" class="absolute top-3 right-3">
+                        <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 457.6L905.6 64l54.336 54.336-393.6 393.6L960 905.6l-54.4 54.4L512 566.336 118.4 960 64 905.6 457.6 512 64 118.336 118.336 64l393.6 393.6z" fill="#000000" /></svg>
+                    </button>
+                </form>
+                <form action="mainController" class="max-w-md mx-auto" method="get" accept-charset="UTF-8"> 
+                    <div class="text-2xl mb-10  flex justify-center underline">Transaction Infomation</div>
+                    <jstl:choose>
+                        <jstl:when test="${formList != null}">
+                            <div class="relative z-0 w-full mb-5 group">
+                                <input value="${formList.tranID}" type="number" name="TransID" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly />
+                                <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">ID:</label>
+                            </div>
+                            <div class="relative z-0 w-full mb-5 group">
+                                <input value="${formList.getDateForRendering()}" type="text" name="date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly/>
+                                <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Create time:</label>
+                            </div>
+                            <div class="relative z-0 w-full mb-5 group">
+                                <input value="${formList.quantity}" type="number" name="quantity" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly/>
+                                <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantity:</label>
+                            </div>
+                            <div class="relative z-0 w-full mb-5 group">
+                                <input value="${formList.money * formList.quantity}" type="number" name="money" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " readonly/>
+                                <label class="text-xl peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Price:</label>
+                            </div>
+                        </jstl:when>
+                        <jstl:otherwise><div>Nothing to display...</div></jstl:otherwise>
+                    </jstl:choose>  
 
 
+                </form>
+            </div>
+        </div>
 
         <script>
             //    on&off formUpdate:
@@ -230,6 +266,13 @@
                     document.getElementById("formUpdate").classList.toggle("hidden");
                 });
             });
+
+            //    on&off formDetail:
+            const toggleFromDetail = document.querySelector("#toggleFormDetail");
+            toggleFromDetail.addEventListener("click", () => {
+                document.getElementById("formDetail").classList.toggle("hidden");
+            });
+
 
         </script>
 

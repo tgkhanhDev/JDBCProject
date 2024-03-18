@@ -1,13 +1,12 @@
 <%-- 
-    Document   : index
-    Created on : Feb 19, 2024, 4:26:40 PM
+    Document   : jstlPagination
+    Created on : Mar 18, 2024, 11:15:08 AM
     Author     : ACER
 --%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
-<%@page import="DTO.Request"%>
+
 <%@page import="controllers.CONSTANTS"%>
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +18,14 @@
         <jstl:set var="sec" value="${param.sec}" />
         <jstl:set var="date" value="${param.date}" />
         <jstl:set var="status" value="${param.status}" />
+
+        <!--========-->
+
         <%
             int size = (int) session.getAttribute("size");
             int maxPage = 0;
 
-//            String search = (request.getParameter("search") == null)? "": request.getParameter("search");
+            //            String search = (request.getParameter("search") == null)? "": request.getParameter("search");
             maxPage = (int) (Math.ceil((size * 1.0) / CONSTANTS.MAXPAGE_ADMIN));
             String currPage = (String) request.getParameter("page");
             if (currPage == null || (Integer.parseInt(currPage) <= 0))
@@ -38,13 +40,12 @@
 
         %>
 
-
         <div class="flex justify-center">
             <nav>
                 <ul class="list-style-none flex">
                     <li class= "<%=          (Integer.parseInt(currPage) == 1) ? "hidden" : ""%>">
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=       CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=   CONSTANTS.GETPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="${sec}" />
                             <input type="hidden" name="search" value="${search}" />
                             <input type="hidden" name="date" value="${date}" />
@@ -56,7 +57,7 @@
                     <!--3 button--> 
                     <li>
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=    CONSTANTS.GETPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="${sec}" />
                             <input type="hidden" name="search" value="${search}" />
                             <input type="hidden" name="date" value="${date}" />
@@ -71,7 +72,7 @@
                     </li>
                     <li aria-current="page">
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=  CONSTANTS.GETPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="${sec}" />
                             <input type="hidden" name="search" value="${search}" />
                             <input type="hidden" name="date" value="${date}" />
@@ -89,7 +90,7 @@
                     </li>
                     <li>
                         <form action="mainController">
-                            <input type="hidden" name="action" value="<%=        CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%=    CONSTANTS.GETPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="${sec}" />
                             <input type="hidden" name="search" value="${search}" />
                             <input type="hidden" name="date" value="${date}" />
@@ -105,7 +106,7 @@
                     <li class= "<%=          (Integer.parseInt(currPage) == maxPage) ? "hidden" : ""%>"   >
                         <form action="mainController">
                             <!--    CONSTANTS.VIEWPRODUCT_ADMIN -->    
-                            <input type="hidden" name="action" value="<%= CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                            <input type="hidden" name="action" value="<%= CONSTANTS.GETPRODUCT_ADMIN%>" />
                             <input type="hidden" name="sec" value="${sec}" />
                             <input type="hidden" name="search" value="${search}" />
                             <input type="hidden" name="date" value="${date}" />
