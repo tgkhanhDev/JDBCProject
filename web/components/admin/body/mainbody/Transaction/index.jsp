@@ -155,7 +155,7 @@
         </div>
 
         <!--Add btn--> 
-        <button class="hidden px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Contract</button>
+        <button class=" px-4 py-2 bg-green-500 rounded text-white capitalize" id="toggleForm">Thêm Transaction</button>
         <!--===========-->
 
         <!--form update--> 

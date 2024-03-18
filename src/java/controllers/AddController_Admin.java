@@ -90,79 +90,54 @@ public class AddController_Admin extends HttpServlet {
                     break;
                 case "3":
                     //Tạo Transaction (stt false) => Tạo Contact (status false) => Tạo Request
-                    int accID = Integer.parseInt(request.getParameter("AccountID"));
-                    int managerID = Integer.parseInt(request.getParameter("ManagerID"));
+                    //Admin chỉ có thể tạo rq để sửa chữa, k thể tạo đơn mua hàng => ko cần tạo Transaction.
 
-                    out.print("<h1>accID: " + accID + "</h1>");
-                    out.print("<h1>managerID: " + managerID + "</h1>");
+                    //Từ Contract => Request phải cần set Status trước
+                    //Hướng tư duy: Admin tạo Transaction Với prd bằng Null
+                    String accPhone = request.getParameter("AccountPhone");
+                    String managerID = request.getParameter("ManagerID");
 
-                    Account acc_3 = new AccountDAO().getAccountByID(accID + "");
-                    Account managerAcc_3 = new AccountDAO().getAccountByID(managerID + "");
+                    String serID = request.getParameter("SerID");
+                    String reqTypeID = request.getParameter("reqTypeID");
+                    String Description = request.getParameter("Description");
 
-                    //Product &ReqType & Des
-                    int prdID_3 = Integer.parseInt(request.getParameter("PrdID"));
-                    Product prd_3 = new ProductDAO().getProductByID(prdID_3 + "");
-                    int reqTypeID = Integer.parseInt(request.getParameter("reqTypeID"));
-                    RequestType rqType_3 = new RequestTypeDAO().getRequestTypeByID(reqTypeID);
-                    String descriptionData = request.getParameter("Description");
-
-                    //Contact==========
-                    //=====Service
-                    int serID = Integer.parseInt(request.getParameter("SerID"));
-                    Service service_3 = new ServiceDAO().getServiceByID(serID);
-                    //=====End Service
-
-                    //=====Transactionn
-                    Date transDate_3 = new Date();
-//                    out.print("<h3>newDate:     " + transDate_3 + "</h3>");
-//                    out.print("<h3>GETTIME:    " + transDate_3.toString() + "</h3>");
-                    double transMoney = prd_3.getPrice() + service_3.getServicePrice();
-                    String transStatus_3 = "0"; //false
-                    Product transProduct_3 = prd_3;
-//                    Bug 
-                    Transaction transaction_3 = new Transaction(0, transDate_3, 1 , transMoney, transStatus_3, transProduct_3);
-                    int addTrans = new TransactionDAO().addNewTransaction(transaction_3);
-//                    out.print("<h3>TransDate:     " + transaction_3.getDate() + "</h3>");
-                    //=====End Transaction
-                    //=====Status
-                    String status_3 = "0"; //false
-                    //=====End Status
-                    Contact contact = new Contact(0, service_3, transaction_3, status_3);
-                    int addContact = new ContactDAO().addContact(contact);
-
-                    //End Contact========
-                    int stt = 2; //// Da Xac Nhan,   1 neu la Client Tao
-                    StatusType sttType = new StatusTypeDAO().getStatusTypeByID(stt);
-
-                    Request request_3 = new Request(0, acc_3, managerAcc_3, contact, sttType, rqType_3, descriptionData);
-
-                    //Adding...
-                    if (addTrans >= 1 && addContact >= 1)
+                    //Admin nên prd phải null
+                    Transaction trans = new Transaction(0, new Date(), 0, 0, "1", null);
+                    int rsTrans = new TransactionDAO().addNewTransactionForCreateRequest(trans);
+                    if (rsTrans > 0)
                     {
-                        result = new RequestDAO().addRequest(request_3);
-                    } else
-                    {
-                        out.print("Thêm Thất bại");
+                        Contact contract = new Contact(0, new ServiceDAO().getServiceByID(Integer.parseInt(serID)), trans, "1");
+                        int rsContract = new ContactDAO().addContactForRequest(contract);
+
+                        if (rsContract > 0)
+                        {
+                            AccountDAO accDAO = new AccountDAO();
+                            StatusType defaulStatus = new StatusTypeDAO().getStatusTypeByID(2); // Đã xn
+                            Request rq = new Request(0, accDAO.getAccountByPhone(accPhone).get(0), accDAO.getAccountByID(managerID), contract, defaulStatus, new RequestTypeDAO().getRequestTypeByID(Integer.parseInt(reqTypeID)), Description);
+                            result = new RequestDAO().addRequest(rq);
+                        }
                     }
 
+                    //Render lại Layout... Price, ...
+                    
                     break;
                 case "5":
                     String date = request.getParameter("dateForm");
                     int quantity = Integer.parseInt(request.getParameter("quantity"));
                     int prdID_5 = Integer.parseInt(request.getParameter("prdID"));
-                    int totalPrice = new ProductDAO().getProductByID(prdID_5+"").getPrice()* quantity;
-                    result=new TransactionDAO().addNewTransaction(date, quantity, totalPrice , prdID_5);
+                    int totalPrice = new ProductDAO().getProductByID(prdID_5 + "").getPrice() * quantity;
+                    result = new TransactionDAO().addNewTransaction(date, quantity, totalPrice, prdID_5);
                     break;
-                    
+
                 case "6":
                     String transactionForm = request.getParameter("transactionForm");
                     String serviceForm = request.getParameter("serviceForm");
-                    result= new ContactDAO().addContract_Form(transactionForm, serviceForm);
-                    
+                    result = new ContactDAO().addContract_Form(transactionForm, serviceForm);
+
                     break;
             }
-
-            if (result >= 1 )
+            
+            if (result >= 1)
             {
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETPRODUCT_ADMIN).forward(request, response);
             } else

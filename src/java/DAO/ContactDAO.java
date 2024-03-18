@@ -73,7 +73,7 @@ public class ContactDAO {
     }
 
     //POST UPDATE=======================================================================:
-    public int addContact(Contact contact) {
+    public int addContactForRequest(Contact contact) {
         int result = 0;
         Connection cn = null;
         try
@@ -266,7 +266,7 @@ public class ContactDAO {
                         + "VALUES(?, ?,1)"; //9
 
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setString(1,  transaction);
+                pst.setString(1, transaction);
                 pst.setString(2, service);
                 //Tra ve 0/1
                 result = pst.executeUpdate();

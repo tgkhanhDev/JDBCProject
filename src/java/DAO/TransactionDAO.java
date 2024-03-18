@@ -433,4 +433,46 @@ public class TransactionDAO {
         return result;
     }
 
+    //Mục đích của hàm này là để khi admin tạo request sẽ set idProduct của Transaction bằng null => Ý chỉ cho admin tạo đơn sữa chữa/ bảo hành,... KO BAO GỒM MUA HÀNG
+    public int addNewTransactionForCreateRequest(Transaction trans) {
+        Connection cn = null;
+        int result = 0;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+                String sql = "INSERT INTO [dbo].[Transaction_infor] ([Date],[money],[Status],[prd_ID])\n"
+                        + "VALUES (?, ?, ?, null) ";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                if (trans.getDate() != null)
+                {
+                    pst.setTimestamp(1, new java.sql.Timestamp(trans.getDate().getTime()));
+                } else
+                {
+                    pst.setDate(1, null);
+                }
+                pst.setDouble(2, trans.getMoney());
+                pst.setString(3, trans.getStatus());
+
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 }

@@ -33,7 +33,7 @@
             <!--Theo sdt--> 
             <div class="flex gap-2">
                 <div class="mr-2 flex justify-center items-center">Tìm kiếm: </div>
-                <input class="border-2" name="search" value="${search}" placeholder="Enter product name..." />
+                <input class="border-2" name="search" value="${search}" placeholder="Enter phone number..." />
                 <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
             </div>
 
@@ -43,7 +43,8 @@
                 String datePar = (String) request.getParameter("date");
                 datePar = (datePar == null) ? "1" : datePar;
                 date = (date == null) ? datePar : date;
-
+                
+                
 
             %>
             <div class="flex gap-2" >
@@ -128,13 +129,16 @@
                         <th scope="col" class="px-6 py-3">
                             Description
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Payment ID
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
                         ArrayList<Request> listReq = (ArrayList<Request>) session.getAttribute("list");
                         String currentPage = (String) request.getParameter("page");
-                        currentPage = (currentPage == null || currentPage.trim().equals("null") )? "1": currentPage;
+                        currentPage = (currentPage == null || currentPage.trim().equals("null")) ? "1" : currentPage;
                         if (listReq != null)
                         {
 
@@ -202,7 +206,7 @@
                                         <input type="hidden" name="search" value="${search}" />
                                         <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                                         <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
-                                        <input type="hidden" name="page" value="<%=          request.getParameter("page")%>" />
+                                        <input type="hidden" name="page" value="<%=          currentPage %>" />
 
                                         <!--input để xem nếu chưa đc gắn managerID thì sẽ tự gắn--> 
                                         <input type="hidden" name="isAttach" value="<%=    (item.getAdminAcc() != null)%>"/>
@@ -260,6 +264,9 @@
                         <td class="px-6 py-4">
                             <%=          item.getDescription()%>
                         </td>
+                        <td class="px-6 py-4">
+                            <%=          item.getContact().getTransaction().getTranID()  %>
+                        </td>
                     </tr>
                     <%                            }
                         }
@@ -276,42 +283,64 @@
         <!--form update--> 
         <!--layer-->
 
-        <div id="formUpdate" class="transition-all ease-in-out hidden">
-            <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70"></div>
-            <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10">
-                <!--quit button--> 
-                <form action="mainController" class="cursor-pointer">
-                    <div>
-                        <input type="hidden" name="action" value="<%=          CONSTANTS.GETPRODUCT_ADMIN%>" />
-                        <input type="hidden" name="sec" value="<%=          request.getParameter("sec")%>" />
+        <jstl:set var="message" value="${requestScope.validateMessage}" />
+        <div id="formUpdate" class="transition-all ease-in-out  <jstl:choose><jstl:when test="${message == null}">hidden</jstl:when><jstl:otherwise></jstl:otherwise></jstl:choose>">
+                    <div id="formLayer" class="absolute top-0 left-0 w-screen h-screen bg-black bg-opacity-70 z-10"></div>
+                    <div class="bg-[#f6f6f6] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-20 py-10 z-10 rounded-xl ">
+                        <div class="flex justify-center text-2xl underline mb-10" >Tạo Request</div>
+
+                        <!--quit button--> 
+                        <form action="mainController" class="cursor-pointer">
+                            <div>
+                                    <input type="hidden" name="action" value="<%=          CONSTANTS.VIEWPRODUCT_ADMIN%>" />
+                        <input type="hidden" name="sec" value="<%=      request.getParameter("sec")%>" />
+                        <input type="hidden" name="search" value="${search}" />
+                        <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                        <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
+                        <input type="hidden" name="page" value="<%=       currentPage  %>" />
 
                     </div>
                     <button id="toggleForm" class="absolute top-3 right-3">
                         <svg width="20px" height="20px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512 457.6L905.6 64l54.336 54.336-393.6 393.6L960 905.6l-54.4 54.4L512 566.336 118.4 960 64 905.6 457.6 512 64 118.336 118.336 64l393.6 393.6z" fill="#000000" /></svg>
                     </button>
                 </form>
-                <form action="mainController" class="max-w-md mx-auto" method="post">
-                    <input type="hidden" name="action" value="<%=     CONSTANTS.ADDINFO_ADMIN%>" />
+
+
+                <form action="mainController" class="max-w-md mx-auto" >
+                    <input type="hidden" name="action" value="<%=    CONSTANTS.REQUESTVALIDATE_ADMIN%>" />
                     <input type="hidden" name="sec" value="<%=      request.getParameter("sec")%>" />
+                    <input type="hidden" name="search" value="${search}" />
+                    <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
+                    <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
+                    <input type="hidden" name="page" value="<%= currentPage%>" />
 
 
-                    <input type="hidden" name="AccountID" value="${accSes.accountID}" />   <!-- ra accID   --> 
                     <input type="hidden" name="ManagerID" value="${accSes.accountID}" />  <!-- Client tạo sẽ ra null, nhưng trường hợp này do thg Admin tạo => accSes)  --> 
                     <!-- end session  -->
 
                     <!--Khi khởi tạo, mặc định là true-->
                     <input type="hidden" name="status" value="" />
 
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input value="" type="number" name="AccountPhone" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Account Phone: </label>
+                        <jstl:if test="${message != null}">
+                            <div class="text-red-500 italic text-xs">${message}</div>
+                        </jstl:if>
+                    </div>
+
+
                     <!--Service Type--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <select name="SerID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                        <select required name="SerID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option></option>
                             <%
                                 ArrayList<Service> serList = new ServiceDAO().getAllService();
                                 if (serList != null)
                                 {
                                     for (Service service : serList)
                                     {
-                                        if (service.getStatus().matches("1"))
+                                        if (service.getStatus().matches("1") && service.getId() != 3) // Khac mua hang
                                         {
                             %>
                             <option value="<%=  service.getId()%>" > <%=   service.getServiceName()%></option>
@@ -326,36 +355,10 @@
                     </div>
                     <!--End Service Type-->  
 
-                    <!--get Product--> 
-
-                    <div class="relative z-0 w-full mb-5 group">
-                        <select name="PrdID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                            <option value="0" > Khác </option>
-                            <%
-                                ArrayList<Product> productList = new ProductDAO().getAllProduct();
-                                if (productList != null)
-                                {
-                                    for (Product prd : productList)
-                                        if (prd.getStatus().matches("1"))
-                                        {
-                            %>
-                            <option value="<%=     prd.getPrd_ID()%>" > <%=   prd.getName()%></option>
-                            <%
-                                        }
-                                    {
-
-                                    }
-
-                                }
-                            %>
-                        </select>
-                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Product Name</label>
-                    </div>
-                    <!--End Get Product--> 
-
                     <!--RequestType--> 
                     <div class="relative z-0 w-full mb-5 group">
-                        <select name="reqTypeID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                        <select required name="reqTypeID" class="capitalize block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                            <option></option>
                             <%
                                 ArrayList<RequestType> reqTypeList = new RequestTypeDAO().getAllRequestType();
                                 if (reqTypeList != null)
@@ -363,9 +366,12 @@
                                     for (RequestType reqType : reqTypeList)
                                     //Đáng lý phải checkstatus trước render
                                     {
+                                        if (reqType.getRqTyID() != 3) // Khác "mua"
+                                        {
                             %>
                             <option value="<%=  reqType.getRqTyID()%>" > <%=   reqType.getRqTyName()%></option>
                             <%
+                                        }
                                     }
 
                                 }

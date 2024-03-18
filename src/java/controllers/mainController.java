@@ -131,6 +131,9 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.TABLECART:
                     url="handleTableCart";
                     break;
+                case CONSTANTS.REQUESTVALIDATE_ADMIN:
+                    url="RequestValidation_Admin";
+                    break;
                 default:
                     url="testController";
                     break;

@@ -22,6 +22,10 @@ public class Transaction {
     private String status;
     private Product product; //FK
 
+    public Transaction() {
+    }
+
+    
     public Transaction(int TranID, Date date, int quantity, double money, String status, Product product) {
         this.TranID = TranID;
         this.date = date;

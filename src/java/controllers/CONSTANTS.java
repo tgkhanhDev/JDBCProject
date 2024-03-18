@@ -62,4 +62,6 @@ public interface CONSTANTS {
     public final String ADDINFO_ADMIN = "addAdmin"; // qua Add Servlet
     public final String BLOCK_ADMIN = "blockAdmin"; // qua Add Servlet
     public final String LOGOUT = "getLogout";
+    
+    public final String REQUESTVALIDATE_ADMIN = "validateRqAdmin";
 }

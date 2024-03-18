@@ -80,6 +80,10 @@
         <servlet-name>handleTableCart</servlet-name>
         <servlet-class>controllers.handleTableCart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RequestValidation_Admin</servlet-name>
+        <servlet-class>controllers.RequestValidation_Admin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -147,6 +151,10 @@
     <servlet-mapping>
         <servlet-name>handleTableCart</servlet-name>
         <url-pattern>/handleTableCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestValidation_Admin</servlet-name>
+        <url-pattern>/RequestValidation_Admin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

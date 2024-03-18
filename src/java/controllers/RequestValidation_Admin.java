@@ -5,10 +5,9 @@
  */
 package controllers;
 
-import DTO.Request;
+import DAO.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ACER
  */
-public class testController extends HttpServlet {
+public class RequestValidation_Admin extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +34,43 @@ public class testController extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet RequestValidation_Admin</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet RequestValidation_Admin at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
 
-            out.print("<h3>TESTTTT" + "</h3>");
             String accPhone = request.getParameter("AccountPhone");
+            String managerID = request.getParameter("ManagerID");
+
+            String serID = request.getParameter("SerID");
+            String reqTypeID = request.getParameter("reqTypeID");
+            String Description = request.getParameter("Description");
+
+            int checkPhone = new AccountDAO().checkPhone(accPhone);
+
             out.println("<h3>accPhone: " + accPhone + "</h3>");
+            out.println("<h3>managerID: " + managerID + "</h3>");
+            out.println("<h3>serID: " + serID + "</h3>");
+            out.println("<h3>reqTypeID: " + reqTypeID + "</h3>");
+            out.println("<h3>Description: " + Description + "</h3>");
+
+            if (checkPhone == 0)
+            {
+                request.setAttribute("validateMessage", "Số điện thoại không tồn tại, vui lòng thử lại");
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
+            } else if (managerID.trim().equals("") || managerID == null)
+            {
+                request.setAttribute("validateMessage", "Hết phiên đăng nhập, vui lòng thử lại");
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
+            } else
+            {
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.ADDINFO_ADMIN).forward(request, response);
+            }
 
         }
     }
