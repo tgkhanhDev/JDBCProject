@@ -139,10 +139,19 @@ public class mainController extends HttpServlet {
                     url = "PayAllProducts";
                     break;
                 case CONSTANTS.VIEWPAYMENT:
-                    url="page/paymentPage/payment.jsp";
+                    url = "page/paymentPage/payment.jsp";
                     break;
                 case CONSTANTS.UPDATECART:
-                    url="UpdateCart";
+                    url = "UpdateCart";
+                    break;
+                case CONSTANTS.GETTASK_TECHNICIAN:
+                    url = "TechnicianController_Technician";
+                    break;
+                case CONSTANTS.VIEW_TECHNICIAN:
+                    url = "page/technicianPage/technician.jsp";
+                    break;
+                case CONSTANTS.UPDATE_TECHNICIAN:
+                    url = "UpdateTechnician";
                     break;
                 default:
                     url = "testController";

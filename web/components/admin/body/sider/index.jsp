@@ -62,6 +62,21 @@
 
         </form>
 
-
+                    <!--//Quay ve--> 
+        <div class="mt-10">
+            <form action="mainController" >
+                <input type="hidden" name="action" value="<%=  CONSTANTS.VIEWHOME  %>"/>
+                <button
+                    class="rounded-full py-4 w-full max-w-[280px]  flex items-center  justify-center transition-all duration-500 hover:bg-indigo-100">
+                    <div class="rotate-[180deg]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M8.25324 5.49609L13.7535 10.9963L8.25 16.4998" stroke="#4F46E5" stroke-width="1.6"
+                              stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span class="px-2 font-semibold text-lg leading-8 text-indigo-600">Back to Home</span>
+                </button>
+            </form>
+        </div>
     </body>
 </html>

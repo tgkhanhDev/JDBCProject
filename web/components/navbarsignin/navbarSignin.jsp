@@ -166,10 +166,9 @@
             <div class="absolute w-screen flex justify-center">
                 <div id="servicePop"
                      class="absolute top-0 w-[30vw] bg-white z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
-                     <div class="w-full h-full p-3 grid grid-cols-3">
+                    <div class="w-full h-full p-3 grid grid-cols-3">
                         <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
-                        <%
-                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
+                        <%                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
                             if (serList != null && serList.size() > 0)
                             {
                                 for (Service item : serList)
@@ -320,7 +319,19 @@
                                 <p class="text-lg">Quản lí của Amin</p> 
                             </button>
                         </form>
-                        <%}%>
+                        <%} else if (acc.getRole().getRoleID() == 3)
+                        {
+                        %>
+                        <form action="mainController" method="post"> 
+                            <input type="hidden" name="sec" value="1"/>
+                            <button class="sub-menu-link mb-[2px] " id="sub-menu-link-admin"  type="submit" name="action" value="<%=     CONSTANTS.GETTASK_TECHNICIAN%>">
+                                <img id="imgAdmin" class="w-[45px]" src="/PrjProject/img/navbarSignin/admin.png" alt="">
+                                <p class="text-lg">Quản lí của Technician</p> 
+                            </button>
+                        </form>
+                        <%
+                            }
+                        %>
 
 
                     </div>

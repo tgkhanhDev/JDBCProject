@@ -68,4 +68,11 @@ public interface CONSTANTS {
     public final String LOGOUT = "getLogout";
     
     public final String REQUESTVALIDATE_ADMIN = "validateRqAdmin";
+    
+    
+    //Technician
+    public final String GETTASK_TECHNICIAN = "getTaskTechni";
+    public final String VIEW_TECHNICIAN = "viewTechni";
+    public final String UPDATE_TECHNICIAN = "updateTechni";
+    
 }

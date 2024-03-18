@@ -92,6 +92,14 @@
         <servlet-name>UpdateCart</servlet-name>
         <servlet-class>controllers.UpdateCart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TechnicianController_Technician</servlet-name>
+        <servlet-class>controllers.TechnicianController_Technician</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateTechnician</servlet-name>
+        <servlet-class>controllers.UpdateTechnician</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -171,6 +179,14 @@
     <servlet-mapping>
         <servlet-name>UpdateCart</servlet-name>
         <url-pattern>/UpdateCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TechnicianController_Technician</servlet-name>
+        <url-pattern>/TechnicianController_Technician</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateTechnician</servlet-name>
+        <url-pattern>/UpdateTechnician</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
