@@ -43,7 +43,7 @@
                     flag = "alter";
                     break;
                 case "7":
-            %> <jsp:include page="/components/admin/body/mainbody/Payment/index.jsp" /><%
+            %> <jsp:include page="/components/admin/body/mainbody/Services/index.jsp" /><%
                         break;
 
                 }
@@ -56,7 +56,7 @@
                 {
             %>
             <jsp:include page="/components/admin/body/pagination/index.jsp" />
-
+            
             <%
             } else
             {

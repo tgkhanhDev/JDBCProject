@@ -7,6 +7,7 @@ package controllers;
 
 import DAO.ProductDAO;
 import DAO.ServiceDAO;
+import DTO.Account;
 import DTO.Product;
 import DTO.Service;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import mylibs.DBUtils;
 
 /**
@@ -42,22 +44,33 @@ public class productController extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             //Do Navbar sd chung nen tam thoi lay luon o day:
+
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("loginUser");
+
             ServiceDAO ser = new ServiceDAO();
             ArrayList<Service> serList = ser.getAllService();
             request.setAttribute("serviceList", serList);
-            
-            
+
             /* Get Product về để sau đó render. */
-            String cateID = (String) request.getParameter("cateID");
-            if (cateID == null)
+            if (acc != null)
             {
-                cateID = "1";
+                String cateID = (String) request.getParameter("cateID");
+                if (cateID == null)
+                {
+                    cateID = "1";
+                }
+                ArrayList<Product> list = new ArrayList<>();
+                list = new ProductDAO().getAllProductByCateID(cateID);
+                request.setAttribute("productList", list);
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCTS + "&cateID=" + cateID).forward(request, response);
+                //Giờ qua web render ra
+            } else
+            {
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETLOGINPAGE).forward(request, response);
+
             }
-            ArrayList<Product> list = new ArrayList<>();
-            list = new ProductDAO().getAllProductByCateID(cateID);
-            request.setAttribute("productList", list);
-            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCTS + "&cateID=" + cateID).forward(request, response);
-            //Giờ qua web render ra
+
         }
     }
 

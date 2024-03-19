@@ -9,6 +9,7 @@ import DAO.AccountDAO;
 import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
+import DAO.ServiceDAO;
 import DAO.TransactionDAO;
 import DTO.Account;
 import DTO.Product;
@@ -148,10 +149,10 @@ public class UpdateController_Admin extends HttpServlet {
                             out.print("-------tranID: " + tranID);
 
                             //money Prd* quantity + money Transaction;
-                            int total = (int) Math.round(new ProductDAO().getProductByID(prdID + "").getPrice() * quantity );
+                            int total = (int) Math.round(new ProductDAO().getProductByID(prdID + "").getPrice() * quantity);
                             out.print("------total: " + total);
 
-                            result = transDAO.updateTransaction(tranID, dateForm, quantity, total , prdID);
+                            result = transDAO.updateTransaction(tranID, dateForm, quantity, total, prdID);
 
                             break;
                     }
@@ -166,10 +167,22 @@ public class UpdateController_Admin extends HttpServlet {
 
                     break;
                 case "6":
-                    
-                    int contractID = Integer.parseInt( request.getParameter("contractID") ) ;
+
+                    int contractID = Integer.parseInt(request.getParameter("contractID"));
 
                     result = new ContactDAO().updateContractStatus(contractID);
+
+                    break;
+
+                case "7":
+
+                    out.print("====UPDATE====");
+
+                    String serID = request.getParameter("serID");
+
+                    String serName = request.getParameter("serName");
+                    int price7 = Integer.parseInt(request.getParameter("price"));
+                    result = new ServiceDAO().updateService(serID, serName, price7);
                     
                     break;
             }

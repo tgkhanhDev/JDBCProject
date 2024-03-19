@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import DTO.Account;
 import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,6 +40,11 @@ public class mainController extends HttpServlet {
 
             String action = request.getParameter("action");
 
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("loginUser");
+
+//            if(acc == null) action = null;
+            
             if (action == null)
             {
                 action = CONSTANTS.GETHOME;
