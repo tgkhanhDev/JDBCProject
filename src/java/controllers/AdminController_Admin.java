@@ -6,10 +6,16 @@ package controllers;
  * and open the template in the editor.
  */
 import DAO.AccountDAO;
+import DAO.ContactDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
+import DAO.ServiceDAO;
 import DAO.StatusTypeDAO;
+import DAO.TransactionDAO;
 import DTO.Account;
+import DTO.Product;
+import DTO.Service;
+import DTO.Transaction;
 import controllers.CONSTANTS;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,10 +49,22 @@ public class AdminController_Admin extends HttpServlet {
         try (PrintWriter out = response.getWriter())
         {
             ArrayList list = new ArrayList();
+            int size = 0;
+
             HttpSession session = request.getSession();
 
             String sec = request.getParameter("sec");
             String search = request.getParameter("search");
+
+            //dành cho việc chia pagination trên sql
+            String jstlFlag = null;
+            int jstlSize = 0;
+            //currentPage:
+            String currPage = request.getParameter("page");
+            if (currPage == null)
+            {
+                currPage = "1";
+            }
 
             if (sec == null)
             {
@@ -102,14 +120,60 @@ public class AdminController_Admin extends HttpServlet {
                     }
                     ArrayList<Account> technicianList = new AccountDAO().getAllTechnician();
                     session.setAttribute("technicianList", technicianList);
+
                     break;
                 case "5":
-                    out.print("Case 5: ");
+                    //Transaction
+                    String status5 = request.getParameter("status");
+                    String date5 = request.getParameter("date");
+                    status5 = (status5 == null || status5.trim().equals("null")) ? "" : status5;
+                    date5 = (date5 == null || date5.trim().equals("null")) ? "" : date5;
+
+                    ArrayList<Product> prdList = new ProductDAO().getAllProduct();
+                    session.setAttribute("prdList", prdList);
+
+                    list = new TransactionDAO().getAllTransactionPagination(status5, date5, currPage);
+
+                    //setFlag for anotherSize method:
+                    jstlFlag = "alter";
+                    jstlSize = new TransactionDAO().countTransaction();
+                    break;
+                case "6":
+
+                    String status6 = request.getParameter("status");
+                    String transID6 = request.getParameter("transID");
+                    status6 = (status6 == null || status6.trim().equals("null")) ? "" : status6;
+                    transID6 = (transID6 == null || transID6.trim().equals("null")) ?  "" : transID6;
+
+                    list = new ContactDAO().getAllContactPagination(status6, transID6, currPage);
+                    ArrayList<Transaction> formTransList = new TransactionDAO().getAllTransaction();
+                    ArrayList<Service> formServiceList = new ServiceDAO().getAllService();
+                    session.setAttribute("formTransList", formTransList);
+                    session.setAttribute("formServiceList", formServiceList);
+                    
+                    //setFlag for anotherSize method:
+                    jstlFlag = "alter";
+                    jstlSize = new ContactDAO().countContract();
+                    break;
+                    
+                case "7":
+                    list = new ServiceDAO().getAllService();
                     break;
             }
-
             request.setAttribute("sec", sec);
             session.setAttribute("list", list);
+
+            size = list.size();
+            //Vì phương pháp sd jstl, tôi đã chia sẵn mảng ở trong Sql,
+            //mà pagination của tôi lại phân trang theo tổng phần tử 
+            // => tôi phải lấy size bằng cách khác
+            if (jstlFlag == null)
+            {
+                session.setAttribute("size", size);
+            } else
+            {
+                session.setAttribute("size", jstlSize);
+            }
 //            request.setAttribute("list", list);
 
             //            Về view nè 

@@ -45,7 +45,7 @@ public class homePageLoginController extends HttpServlet {
                 ServiceDAO ser = new ServiceDAO();
                 ArrayList<Service> serList = ser.getAllService();
 
-                request.setAttribute("serviceList", serList);
+                session.setAttribute("serviceList", serList);
                 //check thu neu ng dung la nhan vien thi tim them tong tin chi tiet luu vao em
 
                 request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWHOMEPAGELOGIN).forward(request, response);

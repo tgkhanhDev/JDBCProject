@@ -393,6 +393,49 @@ public class ProductDAO {
         return list;
     }
 
+    public int getSizeOfProduct() {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "SELECT COUNT(*) as 'rowQuantity' FROM [dbo].[Product]";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                       result = table.getInt("rowQuantity");
+                    }
+                }
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
     //POST UPDATE:
     public int updateProductInfo(Product prd) {
         int result = 0;

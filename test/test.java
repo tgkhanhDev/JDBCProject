@@ -1,7 +1,5 @@
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
+import java.lang.Math;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,38 +12,43 @@ import java.util.Date;
  */
 public class test {
 
-    public static ArrayList<ArrayList> pagination(ArrayList arr, int itemPerPage) {
-        ArrayList<ArrayList> result = new ArrayList<>();
-
-        //flag
-        int track = 0;
-        ArrayList index = new ArrayList();
-
-        for (int i = 0; i < arr.size(); i++)
-        {
-            index.add(arr.get(i));
-            track++;
-
-            
-            if(track == itemPerPage){
-                result.add(index);
-                index = new ArrayList();
-                track = 0;
-            }
-        }
-
-        result.add(index);
-
-        return result;
-    }
-
     public static void main(String[] args) {
-    
-        System.out.println("DATE: "+  new Date() );
-        int a=2;
-        int b=3;
+//
+//        HashMap<Product, Integer> cart = new HashMap();
+//        Product prd = new Product(1, "abc", "hinh1", "abclam", 12, 13, new ProductCategories(1, "abc1", "", "1"), "1");
+//        Product prd2 = new Product(2, "abc2", "hinh1", "abclam", 12, 13, new ProductCategories(1, "abc1", "", "1"), "1");
+//        Product prd3 = new Product(3, "abc3", "hinh1", "abclam", 12, 13, new ProductCategories(1, "abc1", "", "1"), "1");
+//        Product prd4 = new Product(4, "abc4", "hinh1", "abclam", 12, 13, new ProductCategories(1, "abc1", "", "1"), "1");
+//
+//        cart.put(prd, 1);
+//        cart.put(prd2, 3);
+//        cart.put(prd3, 5);
+//
+//        int total = 0;
+//        for (Map.Entry<Product, Integer> entry : cart.entrySet())
+//        {
+//            total += entry.getValue();
+//        }
+//
+//        System.out.println("check exist: " + cart.containsKey(prd2));
+//        
+//        System.out.println("Total: "+ total);
 
-        
+        int a = -4;
+        int b = 6;
+        int c =gcd(a,b);
+        ;
+        System.out.println("rs: " + c);
+
     }
 
+    public static int gcd(int a, int b) {
+        while (b != 0)
+        {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
 }
