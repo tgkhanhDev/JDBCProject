@@ -112,6 +112,30 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.VIEWCONTRACT:
                     url = "page/contactPage/contactPage.jsp";
                     break;
+
+
+                case CONSTANTS.GETTRAN:
+                    url = "TransactionController";
+                    break;
+                case CONSTANTS.VIEWTRAN:
+                    url = "page/transactionPage/TransactionPage.jsp";
+                    break;
+                case CONSTANTS.GETREQUESTNAVBAR:
+                    url = "RequestPageController";
+                    break;
+                case CONSTANTS.VIEWREQUESTNAVBAR:
+                    url="page/viewRequestPageNavbar/viewRequestPageNavbar.jsp";
+                    break;
+                case CONSTANTS.GETCREATEREQUESTNAVBAR:
+                    url = "CreateRequestClient";
+                    break;
+                case CONSTANTS.VIEWCREATEREQUESTNAVBAR:
+                    url="page/createRequestClientPage/createRequestClientPage.jsp";
+                    break;
+                
+                    
+                
+
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:

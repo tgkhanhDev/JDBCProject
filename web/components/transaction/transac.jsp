@@ -1,17 +1,15 @@
 <%-- 
-    Document   : contact
-    Created on : Mar 11, 2024, 8:48:52 PM
+    Document   : transaction
+    Created on : Mar 15, 2024, 1:16:16 PM
     Author     : Lenovo
 --%>
 
-<%@page import="DAO.ContactDAO"%>
+<%@page import="DTO.Account"%>
+<%@page import="DAO.AccountDAO"%>
 <%@page import="DTO.Request"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="DTO.Account"%>
-<%@page import="DAO.RequestDAO"%>
-<%@page import="DAO.AccountDAO"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,7 +41,7 @@
 
             /* Xác nhận */
             .option-true {
-                background-color: #6ade38;
+                background-color: #6EE7B7;
                 /* Màu xanh lá cây */
                 color: black;
                 /* Màu chữ đen */
@@ -57,6 +55,7 @@
                 border-radius: 5px;
                 position: relative;
             }
+
 
             .pagination {
                 display: flex;
@@ -82,114 +81,146 @@
                 height: 27px;
                 border-radius: 2px;
             }
-
         </style>
     </head>
-
-    <!--
-    dat ten: searchIDtxt: la thanh sreach ID
-    searchStatustxt: la sreachstatus
-    
-    --->
     <body class=" max-w-[var(--maxWidth)] w-[100vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500 ">
-        <% AccountDAO d = new AccountDAO();
-            ContactDAO rq = new ContactDAO();
+        <%
             Account acc = (Account) session.getAttribute("loginUser");
+            int currentPage = Integer.parseInt(request.getParameter("currentPagetxt"));
+            // lay sreach IDcontact
             String msgIDSearch = request.getParameter("searchIDtxt");
             String msgStatusSearch = request.getParameter("searchStatustxt");
+            String msgSearchMonth = request.getParameter("searchMonthtxt");
+
+            int total = (int) request.getAttribute("total");
             ArrayList<Request> list = (ArrayList<Request>) request.getAttribute("list");
             int currentP = (int) request.getAttribute("currentPage");
-            int total = 0;
-            if (acc.getRole().getRoleID() == 1) {
-                total = (msgIDSearch != null) ? rq.getTotalContractCLientByContactID(acc.getAccountID(), msgIDSearch) : rq.getTotalAllClientContract(acc.getAccountID());
-            } else {
-                if (msgIDSearch == "" && msgStatusSearch == "") {
-                    total = rq.getTotalAllAdminContract(acc.getAccountID());
-                } else if (msgIDSearch != "" && rq.checkNumberInString(msgIDSearch) == 0 && msgStatusSearch == "") {
-                    total = rq.getTotalAllAdminContractByContactID(acc.getAccountID(), Integer.parseInt(msgIDSearch));
-                } else if (msgIDSearch == "" && msgStatusSearch != "") {
-                    total = rq.getTotalAllAdminContractByContractStatus(acc.getAccountID(), Integer.parseInt(msgStatusSearch));
-                } else if (msgIDSearch != "" && rq.checkNumberInString(msgIDSearch) == 0 && msgStatusSearch != "") {
-                    total = rq.getTotalAllAdminContractByContractStatusAndContactID(acc.getAccountID(), Integer.parseInt(msgStatusSearch), msgIDSearch);
-                }
-            }
-
             int endP = total / 5;
             if (total % 5 != 0 || endP == 0) {
                 endP++;
             }
+
         %>
 
         <div class=" m-[10px] bg-sky-700 p-[5px] text-white">
 
-            <p class="font-semibold text-2xl">CONTRACT INFORMATION</p>
+            <p class="font-semibold text-2xl">TRANSACTION INFORMATION</p>
 
 
         </div>
 
         <div class=" content  m-[10px]  p-[10px]  pb-[15px] border-2 rounded-lg     border-gray-400">
 
-            <form class="grid grid-cols-12" action="mainController" method="get" >
-                <input type="hidden" name="action" value ="getContract">
-                <input type="hidden"class="" name ="currentPagetxt" value="1"> 
-                <div class="col-span-9 grid grid-cols-10 ">
-                    <div class=" col-span-10 flex justify-start font-bold pl-[10px]">
-                        <p>Tìm kiếm ID hợp đồng</p>
-                    </div>
-                    <div class="col-span-3 flex border-2 border-gray-400 rounded-md " >
-                        <!-- neu nhu ma o tran hien tai ma nhan search thi gia tri cua current page giu nguyen con neu curr >page thi sset ve curr 1 --> 
+            <div class="grid grid-cols-12" >
+                <form action="mainController" method="get"  class="col-span-12 grid grid-cols-12" >
+                    <input type="hidden" name="action" value ="getTran">
+                    <input type="hidden" name="searchMonthtxt" value ="<%= msgSearchMonth%>">
+                    <input type="hidden"class="" name ="currentPagetxt" value="1"> 
+                    <div class="col-span-9 grid grid-cols-10 ">
+                        <div class=" col-span-10 flex justify-start font-bold pl-[10px]">
+                            <p>Tìm kiếm ID hợp đồng</p>
+                        </div>
+                        <div class="col-span-10 lg:col-span-4 flex border-2 w-auto border-gray-400 rounded-md mr-[20px]" >
+                            <!-- neu nhu ma o tran hien tai ma nhan search thi gia tri cua current page giu nguyen con neu curr >page thi sset ve curr 1 --> 
 
-                        <button class=" cursor-pointer bg-gray-100  rounded-l-md   border-2 border-r-gray-400 "><img
-                                class="w-[29px] h-[22px]" src="/PrjProject/img/contact/sreach.png" alt=""></button>
-                        <input class=" pr-[10px] pl-[10px] text-base w-full outline-none  bg-slate-200 " type="search"
-                               name="searchIDtxt" placeholder="Nhập id hợp đồng " value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>">
+                            <button class=" cursor-pointer bg-gray-100  rounded-l-md   border-2 border-r-gray-400 "><img
+                                    class="w-[29px] h-[22px]" src="/PrjProject/img/contact/sreach.png" alt=""></button>
+                            <input class=" pr-[10px] pl-[10px] text-base w-full outline-none  bg-slate-200 " type="search"
+                                   name="searchIDtxt" placeholder="Nhập id hợp đồng " value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>">
+                        </div>
+                        <div class="hidden  lg:col-span-6">
+
+                        </div>
                     </div>
-                    <div class="col-span-7">
+                    <div class=" col-span-3   w-full ">
+
+                        <div class="flex justify-center font-bold">
+                            <p>Tìm kiếm trạng thái hợp đồng</p>
+                        </div>
+                        <div     class="flex justify-end w-full border-2 border-gray-400 rounded-md ">
+
+
+                            <button class=" cursor-pointer bg-gray-100  rounded-l-md   border-2 border-r-gray-400 ">
+
+                                <img
+                                    class="w-[29px] h-[22px]" src="/PrjProject/img/contact/sreach.png" alt=""></button>
+                            <select class="bg-gray-100 p-[8px] w-full hover:selection:backdrop:bg-none  outline-none"
+                                    name="searchStatustxt">
+                                <%if (msgStatusSearch.equals("")) {%>
+                                <option value="" selected>tất cả</option>
+                                <option value="0">Chưa xác nhận</option>
+                                <option value="1">xác nhận</option>
+                                <%} else if (msgStatusSearch.equals("0")) {%>
+                                <option value="" >tất cả</option>
+                                <option value="0" selected>Chưa xác nhận</option>
+                                <option value="1">xác nhận</option>
+                                <%} else {%>
+                                <option value="" >tất cả</option>
+                                <option value="0" >Chưa xác nhận</option>
+                                <option value="1" selected>xác nhận</option>
+                                <%}%>
+
+                            </select>
+                        </div>
+
+
 
                     </div>
+                </form>
+                <%if (msgSearchMonth.equals("all")) {%>
+
+                <div class="col-span-6 flex justify-start mt-[10px] ml-[2px] ">
+                    <div class=" border-2 rounded-md  border-gray-400 p-[2px] bg-slate-300 font-semibold text-sm "> Tất cả Giao dịch </div>
+
                 </div>
-                <div class=" col-span-3   w-full ">
-                    <%if (acc.getRole().getRoleID() != 1) {%>
-                    <div class="flex justify-center font-bold">
-                        <p>Tìm kiếm trạng thái hợp đồng</p>
-                    </div>
-                    <div     class="flex justify-end w-full border-2 border-gray-400 rounded-md ">
 
+                <div class="col-span-6 flex justify-end mt-[10px] mr-[2px]">
+                    <form   action="mainController" method="get" >
+                        <input type="hidden" name="action" value ="getTran">
+                        <input type="hidden"class="" name ="currentPagetxt" value="1"> 
+                        <input  type="hidden" name="searchIDtxt"  value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>" >
+                        <input  type="hidden" name="searchStatustxt"  value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>" >
+                        <button class="bg-slate-200 border-2 rounded-md  border-gray-400 p-[2px] hover:bg-slate-300 hover:font-semibold hover:text-sm text-xs"
+                                name="searchMonthtxt" value="month"
+                                > Giao dịch trong tháng </button>
+                    </form>
 
-                        <button class=" cursor-pointer bg-gray-100  rounded-l-md   border-2 border-r-gray-400 ">
-
-                            <img
-                                class="w-[29px] h-[22px]" src="/PrjProject/img/contact/sreach.png" alt=""></button>
-                        <select class="bg-gray-100 p-[8px] w-full hover:selection:backdrop:bg-none  outline-none"
-                                name="searchStatustxt">
-                            <%if (msgStatusSearch.equals("")) {%>
-                            <option value="" selected>tất cả</option>
-                            <option value="0">Chưa xác nhận</option>
-                            <option value="1">xác nhận</option>
-                            <%} else if (msgStatusSearch.equals("0")) {%>
-                            <option value="" >tất cả</option>
-                            <option value="0" selected>Chưa xác nhận</option>
-                            <option value="1">xác nhận</option>
-                            <%} else {%>
-                            <option value="" >tất cả</option>
-                            <option value="0" >Chưa xác nhận</option>
-                            <option value="1" selected>xác nhận</option>
-                            <%}%>
-
-                        </select>
-                    </div>
-                    <%}%>
                 </div>
-            </form>
-            <div class="m-[10px] ">
-                <hr>
+
+                <%} else if (msgSearchMonth.equals("month")) {%>
+
+                <div class="col-span-6 flex justify-start mt-[10px] ml-[2px]">
+                    <form   action="mainController" method="get" >
+                        <input type="hidden" name="action" value ="getTran">
+                        <input type="hidden"class="" name ="currentPagetxt" value="1"> 
+                        <input  type="hidden" name="searchIDtxt"  value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>" >
+                        <input  type="hidden" name="searchStatustxt"  value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>" >
+                        <button class=" bg-slate-200 border-2 rounded-md  border-gray-400 p-[2px] hover:bg-slate-300 hover:font-semibold hover:text-sm text-xs " 
+                                name="searchMonthtxt" value="all"> Tất cả Giao dịch </button>
+                    </form>
+                </div>
+
+                <div class="col-span-6 flex justify-end mt-[10px] mr-[2px]">
+                    <div class="border-2 rounded-md  border-gray-400 p-[2px] bg-slate-300 font-semibold text-sm"
+
+                         > Giao dịch trong tháng </div>
+                </div>
+
+                <%} else {%>
+
+                <%}%>
             </div>
 
+
+
+            <div class="m-[2px] ">
+                <hr>
+            </div>
             <table class="w-full border-2  rounded-l-md    border-gray-400 ">
 
                 <tr class="  grid grid-cols-12  text-white bg-slate-500        ">
-                    <th class="col-span-2 flex justify-center border-2     border-gray-400">ID hợp đồng</th>
-                    <th class="col-span-3 flex justify-center border-2   border-gray-400">Tên hợp đồng </th>
+                    <th class="col-span-2 flex justify-center border-2     border-gray-400">ID giao dịch</th>
+                    <th class="col-span-3 flex justify-center border-2   border-gray-400">Tên giao dịch</th>
                     <th class="col-span-4 flex justify-center border-2     border-gray-400">Ngày giao dịch</th>
                     <th class="col-span-2 flex justify-center border-2     border-gray-400">Trạng thái</th>
                     <th class="col-span-1 flex justify-center border-2    border-gray-400">Chi tiết</th>
@@ -209,11 +240,11 @@
                 <%for (Request o : list) {
                 %>
                 <tr class="  grid grid-cols-12 border-1 rounded-md   ">
-                    <td class="col-span-2 flex justify-center border-2        border-gray-400"><%= o.getContact().getContactID()%></td>
+                    <td class="col-span-2 flex justify-center border-2        border-gray-400"><%= o.getContact().getTransaction().getTranID()%></td>
                     <td class="col-span-3 flex justify-center border-2   border-gray-400"><%= o.getContact().getService().getServiceName() + " " + o.getContact().getTransaction().getProduct().getName()%></td>
                     <td class="col-span-4 flex justify-center border-2     border-gray-400"><%= new AccountDAO().convertDateToString(o.getContact().getTransaction().getDate())%></td>
 
-                    <%if (Integer.parseInt(o.getContact().getStatus()) == 1) {%>
+                    <%if (Integer.parseInt(o.getContact().getTransaction().getStatus()) == 1) {%>
                     <td class="col-span-2 flex justify-center border-2  option-true  font-bold   border-gray-400">
                         Xác nhận
                     </td>
@@ -280,11 +311,12 @@
                             <div class=" flex flex-col col-span-6 border-r-2 border-r-gray-300 p-[5px] ">
 
                                 <p> <span class="font-bold">Tên sản phẩm:</span><%= o.getContact().getTransaction().getProduct().getName()%></p>
-
                                 <p> <span class="font-bold">Loại Sản phẩm:</span> <%= o.getContact().getTransaction().getProduct().getCategory().getName()%></p>
                                 <p> <span class="font-bold">Mô tả:</span> <%= o.getContact().getTransaction().getProduct().getDescription()%> </p>
-                                <p> <span class="font-bold">tốc độ:</span> <%= o.getContact().getTransaction().getProduct().getSpeed()%></p>
+                                <p> <span class="font-bold">Tốc độ:</span> <%= o.getContact().getTransaction().getProduct().getSpeed()%></p>
+                                <p> <span class="font-bold">Trạng thái:</span> <%= (o.getContact().getTransaction().getProduct().getStatus().equals("1")) ? "Đang bán" : "Đã dừng bán"%></p>
                                 <p><span class="font-bold">ID hợp đồng:</span> <%= o.getContact().getContactID()%></p>
+                                <p><span class="font-bold">Trạng thái hợp đồng:</span> <%=  (o.getContact().getStatus().equals("1")) ? "Đang bán" : "Đã dừng bán"%></p>
                             </div>
                             <div class="col-span-6 flex flex-col gap-2 p-[5px]">
                                 <!-- nho sua them display cho thg bendamin -->
@@ -320,10 +352,10 @@
                 <li class="pagination hover:bg-cyan-400 hover:text-white">
                     <form   class="pagination-item_link cursor-pointer" action="mainController" method="get">
                         <!-- ti sua lai post -->
-                        <input type="hidden" name="action" value ="getContract">
+                        <input type="hidden" name="action" value ="getTran">
                         <input  type="hidden" name="searchIDtxt" value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>"> 
                         <input type="hidden"class="" name ="searchStatustxt" value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>"> 
-
+                        <input type="hidden"class="" name ="searchMonthtxt" value="<%=msgSearchMonth%>"> 
                         <input type="hidden"class="" name ="currentPagetxt" value="<%= (currentP - 1)%>">    
                         <button type="submit" class="cursor-pointer hover:bg-cyan-400 hover:text-white "><</button>
                     </form>
@@ -346,10 +378,10 @@
                 <li class="pagination-item-active hover:bg-cyan-400 hover:text-white">
                     <form  class="pagination-item_link cursor-pointer" action="mainController" method="get">
                         <!-- ti sua lai post --> 
-                        <input type="hidden" name="action" value ="getContract">
+                        <input type="hidden" name="action" value ="getTran">
                         <input  type="hidden" name="searchIDtxt" value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>"> 
                         <input type="hidden"class="" name ="searchStatustxt" value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>"> 
-
+                        <input type="hidden"class="" name ="searchMonthtxt" value="<%= (msgSearchMonth != null) ? msgSearchMonth : ""%>"> 
                         <input type="submit"class="cursor-pointer" name ="currentPagetxt" value="<%=i%>">                                      
                     </form>
                 </li>
@@ -358,11 +390,10 @@
                 <li class="pagination hover:bg-cyan-400 hover:text-white">
                     <!-- ti sua lai post -->
                     <form action="mainController" class="cursor-pointer pagination-item_link " method="get">
-                        <input type="hidden" name="action" value ="getContract">
-
+                        <input type="hidden" name="action" value ="getTran">
                         <input  type="hidden" name="searchIDtxt" value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>"> 
                         <input type="hidden"class="" name ="searchStatustxt" value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>"> 
-
+                        <input type="hidden"class="" name ="searchMonthtxt" value="<%= (msgSearchMonth != null) ? msgSearchMonth : ""%>"> 
                         <input type="submit" class="cursor-pointer" name ="currentPagetxt" value="<%= i%>">
                     </form>
 
@@ -377,10 +408,10 @@
                 <li class="pagination hover:bg-cyan-400 hover:text-white">
                     <form   class="pagination-item_link cursor-pointer" action="mainController" method="get">
                         <!-- ti sua lai post -->
-                        <input type="hidden" name="action" value ="getContract">
+                        <input type="hidden" name="action" value ="getTran">
                         <input  type="hidden" name="searchIDtxt" value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>"> 
                         <input type="hidden"class="" name ="searchStatustxt" value="<%= (msgStatusSearch != null) ? msgStatusSearch : ""%>"> 
-
+                        <input type="hidden"class="" name ="searchMonthtxt" value="<%= (msgSearchMonth != null) ? msgSearchMonth : ""%>"> 
                         <input type="hidden"class="" name ="currentPagetxt" value="<%= (currentP + 1)%>">    
                         <button type="submit" class="cursor-pointer hover:bg-cyan-400 hover:text-white "> > </button>
                     </form>
@@ -403,33 +434,32 @@
                     </button>
                 </form>
             </div>
+
         </div>
 
+        <script>
+            const buttons = document.querySelectorAll(".butonMore");
 
+            buttons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const popupId = button.getAttribute("data-popup-id");
+                    const popup = document.getElementById(popupId);
+                    if (popup) {
+                        popup.style.display = "flex";
+                    }
+                });
+            });
+
+            document.querySelectorAll(".closePopup").forEach(function (closeButton) {
+                closeButton.addEventListener("click", function () {
+                    const popup = closeButton.closest('.popup');
+                    if (popup) {
+                        popup.style.display = "none";
+                    }
+                });
+            });
+
+        </script>
 
     </body>
-    <script>
-        const buttons = document.querySelectorAll(".butonMore");
-
-        buttons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                const popupId = button.getAttribute("data-popup-id");
-                const popup = document.getElementById(popupId);
-                if (popup) {
-                    popup.style.display = "flex";
-                }
-            });
-        });
-
-        document.querySelectorAll(".closePopup").forEach(function (closeButton) {
-            closeButton.addEventListener("click", function () {
-                const popup = closeButton.closest('.popup');
-                if (popup) {
-                    popup.style.display = "none";
-                }
-            });
-        });
-
-    </script>
-
 </html>

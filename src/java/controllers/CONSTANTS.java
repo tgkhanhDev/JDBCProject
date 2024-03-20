@@ -10,10 +10,9 @@ package controllers;
  * @author ACER
  */
 public interface CONSTANTS {
-    
-    public final int MAXPAGE_ADMIN=5;
-    
-    
+
+    public final int MAXPAGE_ADMIN = 5;
+
     //Get => Qua controller lay database
     //view => Qua JSP
     // ?action=...
@@ -26,25 +25,33 @@ public interface CONSTANTS {
     public final String GETPRODUCTS = "getProducts"; // get products xong mới render qua products
     public final String VIEWPRODUCTS = "products"; // qua trang products
 
-     public final  String GETSIGNUP = "getsignup";// go to registerContrller to check account exit    
-     public final  String GETSIGNIN = "getsignin"; //back to signinController (xu ly data khi mà login dữ liệu vào)
-     
-    public final String GETHOMEPAGELOGIN="gethomepagelogin"; // Qua homePageLogin.java kiem tra xong gui qua viewhomepagelogin
-    public final String VIEWHOMEPAGELOGIN="homepagelogin"; // vào trang chủ sau khi đăng nhập thành công
-    
-    public final String GETPROFILE ="getpro"; // qua profileController kiem tra qua viewprofile
-    public final  String VIEWPROFILE = "viewpro"; // qua trang profilePage
-    
-    public final String GETUPDATEPRO ="getuppro";
-    public final String  VIEWUPDATEPRO ="viewuppro";
-    
-    public final String GETMYDEVICE = "getdevi"; // show ra phần my device bên profile bằng cách qua my device controller
+    public final String GETSIGNUP = "getsignup";// go to registerContrller to check account exit    
+    public final String GETSIGNIN = "getsignin"; //back to signinController (xu ly data khi mà login dữ liệu vào)
 
-    public final String  GETCONTRACT="getContract" ;
-    public final String VIEWCONTRACT="viewContract"; 
-    
-    
+    public final String GETHOMEPAGELOGIN = "gethomepagelogin"; // Qua homePageLogin.java kiem tra xong gui qua viewhomepagelogin
+    public final String VIEWHOMEPAGELOGIN = "homepagelogin"; // vào trang chủ sau khi đăng nhập thành công
+
+    public final String GETPROFILE = "getpro"; // qua profileController kiem tra qua viewprofile
+    public final String VIEWPROFILE = "viewpro"; // qua trang profilePage
+
+    public final String GETUPDATEPRO = "getuppro";
+    public final String VIEWUPDATEPRO = "viewuppro";
+
+    public final String GETMYDEVICE = "getdevi"; // show ra phần my device bên profile bằng cách qua my device controller
+    public final String GETCONTRACT = "getContract";
+    public final String VIEWCONTRACT = "viewContract";
+
+    public final String GETTRAN = "getTran";
+    public final String VIEWTRAN = "viewTran";
+
+    public final String GETREQUESTNAVBAR = "getreq";
+    public final String VIEWREQUESTNAVBAR = "viewreq";
+
+    public final String GETCREATEREQUESTNAVBAR = "getCreatereq";
+    public final String VIEWCREATEREQUESTNAVBAR = "viewCreatereq";
+
     public final String APPLICATION = "application"; // qua trang viết đơn
+
     
     public final String GETCART = "getCart";// xu ly cart
     public final String TABLECART = "tableCart"; // xu ly tableCart
@@ -57,6 +64,7 @@ public interface CONSTANTS {
     
     
     
+
     //admin
     public final String GETPRODUCT_ADMIN = "getProductAdmin"; // Lấy thông tin admin
     public final String VIEWPRODUCT_ADMIN = "productAdmin"; // qua trang Admin

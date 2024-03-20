@@ -77,6 +77,18 @@
         <servlet-class>controllers.ContractController</servlet-class>
     </servlet>
     <servlet>
+
+        <servlet-name>TransactionController</servlet-name>
+        <servlet-class>controllers.TransactionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestPageController</servlet-name>
+        <servlet-class>controllers.RequestPageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateRequestClient</servlet-name>
+        <servlet-class>controllers.CreateRequestClient</servlet-class>
+
         <servlet-name>handleTableCart</servlet-name>
         <servlet-class>controllers.handleTableCart</servlet-class>
     </servlet>
@@ -99,6 +111,7 @@
     <servlet>
         <servlet-name>UpdateTechnician</servlet-name>
         <servlet-class>controllers.UpdateTechnician</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
@@ -165,6 +178,18 @@
         <url-pattern>/ContractController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
+        <servlet-name>TransactionController</servlet-name>
+        <url-pattern>/TransactionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestPageController</servlet-name>
+        <url-pattern>/RequestPageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateRequestClient</servlet-name>
+        <url-pattern>/CreateRequestClient</url-pattern>
+
         <servlet-name>handleTableCart</servlet-name>
         <url-pattern>/handleTableCart</url-pattern>
     </servlet-mapping>
@@ -187,6 +212,7 @@
     <servlet-mapping>
         <servlet-name>UpdateTechnician</servlet-name>
         <url-pattern>/UpdateTechnician</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>

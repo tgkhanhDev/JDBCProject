@@ -4,6 +4,7 @@
     Author     : Lenovo
 --%>
 
+<%@page import="DAO.AccountDAO"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Request"%>
 <%@page import="java.util.ArrayList"%>
@@ -99,8 +100,8 @@
             }
 
             .popup-content {
-                height: 385px;
-                width: 500px;
+                height: 400px;
+                width: 520px;
                 background-color: white;
                 padding: 10px;
                 border-radius: 5px;
@@ -267,7 +268,7 @@
                             int total = (msgSreach == null) ? (rq.getTotalRequest(acc.getAccountID())) : (rq.getTotalDeviceBySearching(acc, (int) request.getAttribute("proID")));
 
                             int endP = total / 2;
-                            if (endP % 2 != 0) {
+                            if (total % 2 != 0 || endP == 0) {
                                 endP++;
                             }
 
@@ -327,10 +328,10 @@
                                     <div class="flex gap-4 mb-[10px]">
                                         <img class="w-[250px] border-2 border-gray-300 rounded-lg " src="<%= list.getContact().getTransaction().getProduct().getThumbnail()%>" alt="">
                                         <div class="flex flex-col w-full text-start gap-3">
-                                            <p class="font-bold text-2xl " >Thông tin san pham</p>
+                                            <p class="font-bold text-2xl " >Thông tin sản phẩm</p>
                                             <p> <span class="font-bold">Tên sản phẩm:</span> <%=list.getContact().getTransaction().getProduct().getName()%></p>
                                             <p>  <span class="font-bold">Giá tiền:</span> <%= list.getContact().getTransaction().getMoney()%></p>
-                                            <p>  <span class="font-bold">Ngày giao dịch:</span> <%= rq.formatDate(list.getContact().getTransaction().getDate())%> </p>
+                                            <p>  <span class="font-bold">Ngày giao dịch:</span> <%= new AccountDAO().convertDateToString(list.getContact().getTransaction().getDate())%> </p>
                                             <p> <span class="font-bold">Số lượng:</span> <%= list.getContact().getTransaction().getQuantity()%>  </p>
                                         </div>
                                     </div>
@@ -373,7 +374,7 @@
 
                             <%for (int i = (((endP - indexList) == 0) ? (indexList - 1) : indexList); i <= Math.min(indexList + 1, endP); i++) {
                             %>    
-                            <% if (i == indexList) {%>
+                            <% if (i == indexList && i > 0) {%>
                             <li class="pagination-item-active hover:bg-cyan-400 hover:text-white">
                                 <form   class="pagination-item_link cursor-pointer" action="mainController" method="post">
                                     <!-- ti sua lai post -->
@@ -383,7 +384,7 @@
                                 </form>
                             </li>
 
-                            <%} else {%>
+                            <%} else if (i > 0) {%>
                             <li class="pagination hover:bg-cyan-400 hover:text-white">
 
                                 <!-- ti sua lai post -->
@@ -423,6 +424,12 @@
         </div>
 
 
+        <div  class="fixed left-0 bottom-12 mb-[75px] cursor-pointer">
+            <form action="mainController" method="get">
+                <button name="action" value="<%= CONSTANTS.GETHOMEPAGELOGIN%>"> <img class="w-[70px] " src="/PrjProject/img/profile/home.png" alt="">
+                </button>
+            </form>
+        </div>
 
     </body>
     <script>
@@ -432,7 +439,7 @@
         var divb = document.getElementById("divb");
 
         <% String showDivb = (String) request.getAttribute("myDevice");
-               if (showDivb == null) {
+            if (showDivb == null) {
         %>
         divb.style.display = 'none';
         diva.style.display = 'grid';
