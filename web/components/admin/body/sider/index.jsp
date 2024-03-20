@@ -39,6 +39,7 @@
 
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("1")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="1" data-sider >Sản phẩm</button></div>
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("2")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="2" data-sider >Người dùng</button></div>
+                    <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("7")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="7" data-sider >Services</button></div>
                 </div>
 
                 <!--Giao viec--> 
@@ -65,7 +66,7 @@
                     <!--//Quay ve--> 
         <div class="mt-10">
             <form action="mainController" >
-                <input type="hidden" name="action" value="<%=  CONSTANTS.VIEWHOME  %>"/>
+                <input type="hidden" name="action" value="<%=  CONSTANTS.GETHOME  %>"/>
                 <button
                     class="rounded-full py-4 w-full max-w-[280px]  flex items-center  justify-center transition-all duration-500 hover:bg-indigo-100">
                     <div class="rotate-[180deg]">

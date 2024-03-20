@@ -161,7 +161,7 @@
                     <div class="w-full h-full p-3 grid grid-cols-3">
                         <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
                         <%
-                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
+                            ArrayList<Service> serList = (ArrayList<Service>) request.getSession().getAttribute("serviceList");
                             if (serList != null && serList.size() > 0)
                             {
                                 for (Service item : serList)
