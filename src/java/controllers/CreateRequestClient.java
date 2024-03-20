@@ -5,11 +5,13 @@
  */
 package controllers;
 
-import DAO.AccountDAO;
+import DAO.RequestDAO;
+import DAO.RequestTypeDAO;
 import DTO.Account;
-import DTO.Employee;
+import DTO.RequestType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Lenovo
  */
-public class loginController extends HttpServlet {
+public class CreateRequestClient extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,39 +38,37 @@ public class loginController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            //            lấy dữ liệu  từ  login.jsp
-            String phone = request.getParameter("txtphone");
-            String gmail = request.getParameter("txtgmail");
-            String pass = request.getParameter("txtpass");
-            // thông báo đc in ra khi ng dùng cố truy cập vào 1 chức năng cần login
-            String Mustlogin = (String) request.getAttribute("MUSTLOGIN");
-//         sử dụng hàm để tìm Account
-            AccountDAO d = new AccountDAO();
-            Account acc = d.getClientAccount(phone, gmail, pass);
+            RequestDAO rq = new RequestDAO();
+            RequestTypeDAO rtd = new RequestTypeDAO();
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("loginUser");
+            ArrayList<RequestType> requestTypeList = rtd.getAllRequestType();
+            request.setAttribute("requestTypeList", requestTypeList);
+            String serTypetxt = request.getParameter("serTypetxt");
+            String reqTypetxt = request.getParameter("reqTypetxt");
+            String destxt = request.getParameter("destxt");
             if (acc != null) {
-                // luu trong trong session
-                HttpSession session = request.getSession();
-                session.setAttribute("loginUser", acc);
-                if (acc.getRole().getRoleID() != 1) {
-                    Employee em = d.getEmployeInfor(acc.getAccountID());
-                    session.setAttribute("emInfor", em);
+                if (serTypetxt == null && reqTypetxt == null) {
+                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCREATEREQUESTNAVBAR).forward(request, response);
                 }
-                int status = Integer.parseInt(acc.getStatus());
-                if (status == 1) {
-                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETHOMEPAGELOGIN).forward(request, response);
-                } else {
-                    request.setAttribute("ERROR", " Tài khoản của bạn đã vi phạm ");
-                    request.getRequestDispatcher("mainController?action=loginpage&renotify=0&sec=1").forward(request, response);
-                }
-            } else {
-//                    them cai thong bao sai
-                if (Mustlogin != null) {
-                    request.setAttribute("ERROR", Mustlogin);
+
+                if (serTypetxt.equals("")) {
+                    request.setAttribute("error", "Vui lòng không để trống loại dịch vụ");
+                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCREATEREQUESTNAVBAR).forward(request, response);
 
                 } else {
-                    request.setAttribute("ERROR", " Gmail hoặc mật khẩu đã sai ");
+                    if (rq.CreateNewTranClientInReq() != 0 && rq.CreateNewContactClientInReq(serTypetxt) != 0 && rq.CreateNewReqClientInReq(acc.getAccountID(),reqTypetxt, destxt) != 0) {
+                        request.getRequestDispatcher("mainController?action=getreq").forward(request, response);
+                    } else {
+                        request.setAttribute("error", "Lỗi gửi");
+                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCREATEREQUESTNAVBAR).forward(request, response);
+                    }
+
                 }
-                request.getRequestDispatcher("mainController?action=loginpage&renotify=0&sec=1").forward(request, response);
+
+            } else {
+                request.setAttribute("MUSTLOGIN", "Vui lòng đăng nhập!");
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETLOGINPAGE).forward(request, response);
             }
         }
     }

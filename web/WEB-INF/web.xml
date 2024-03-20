@@ -76,6 +76,18 @@
         <servlet-name>ContractController</servlet-name>
         <servlet-class>controllers.ContractController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TransactionController</servlet-name>
+        <servlet-class>controllers.TransactionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestPageController</servlet-name>
+        <servlet-class>controllers.RequestPageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateRequestClient</servlet-name>
+        <servlet-class>controllers.CreateRequestClient</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -139,6 +151,18 @@
     <servlet-mapping>
         <servlet-name>ContractController</servlet-name>
         <url-pattern>/ContractController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransactionController</servlet-name>
+        <url-pattern>/TransactionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestPageController</servlet-name>
+        <url-pattern>/RequestPageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateRequestClient</servlet-name>
+        <url-pattern>/CreateRequestClient</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

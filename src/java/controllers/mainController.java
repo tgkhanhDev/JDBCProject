@@ -84,26 +84,46 @@ public class mainController extends HttpServlet {
                 case CONSTANTS.VIEWPROFILE:
                     url = "page/profilePage/profilePage.jsp";
                     break;
-                    
-                    
+
                 case CONSTANTS.GETUPDATEPRO:
-                    url="updateProfileController";
+                    url = "updateProfileController";
                     break;
                 case CONSTANTS.VIEWUPDATEPRO:
-                    url="page/profilePage/updateProfilePage.jsp";
+                    url = "page/profilePage/updateProfilePage.jsp";
                     break;
-              
-               
-                case  CONSTANTS.GETMYDEVICE:
-                    url="MyDeviceController";
-                break;
-                
-                case CONSTANTS.GETCONTRACT :
-                    url="ContractController";
+
+                case CONSTANTS.GETMYDEVICE:
+                    url = "MyDeviceController";
+                    break;
+
+                case CONSTANTS.GETCONTRACT:
+                    url = "ContractController";
                     break;
                 case CONSTANTS.VIEWCONTRACT:
-                url="page/contactPage/contactPage.jsp";
-                break;
+                    url = "page/contactPage/contactPage.jsp";
+                    break;
+
+                case CONSTANTS.GETTRAN:
+                    url = "TransactionController";
+                    break;
+                case CONSTANTS.VIEWTRAN:
+                    url = "page/transactionPage/TransactionPage.jsp";
+                    break;
+                case CONSTANTS.GETREQUESTNAVBAR:
+                    url = "RequestPageController";
+                    break;
+                case CONSTANTS.VIEWREQUESTNAVBAR:
+                    url="page/viewRequestPageNavbar/viewRequestPageNavbar.jsp";
+                    break;
+                case CONSTANTS.GETCREATEREQUESTNAVBAR:
+                    url = "CreateRequestClient";
+                    break;
+                case CONSTANTS.VIEWCREATEREQUESTNAVBAR:
+                    url="page/createRequestClientPage/createRequestClientPage.jsp";
+                    break;
+                
+                    
+                
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:
@@ -129,7 +149,7 @@ public class mainController extends HttpServlet {
                     url = "logoutController";
                     break;
                 default:
-                    url="testController";
+                    url = "testController";
                     break;
             }
 

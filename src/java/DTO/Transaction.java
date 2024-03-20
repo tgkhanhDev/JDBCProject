@@ -20,6 +20,9 @@ public class Transaction {
     
     private String status;
     private Product product; //FK
+    private String proID ;
+
+  
 
     public Transaction(int TranID, Date date, int quantity, double money, String status, Product product) {
         this.TranID = TranID;
@@ -30,6 +33,17 @@ public class Transaction {
         this.product = product;
     }
 
+    public Transaction(int TranID, Date date, int quantity, double money, String status, String proID) {
+        this.TranID = TranID;
+        this.date = date;
+        this.quantity = quantity;
+        this.money = money;
+        this.status = status;
+        this.proID = proID;
+    }
+
+
+    
     public int getTranID() {
         return TranID;
     }
@@ -78,7 +92,15 @@ public class Transaction {
         this.product = product;
     }
 
- 
+    public String getProID() {
+        return proID;
+    }
+
+    public void setProID(String proID) {
+        this.proID = proID;
+    }
+
+
 
 
 }

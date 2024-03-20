@@ -4,6 +4,7 @@
     Author     : Lenovo
 --%>
 
+<%@page import="controllers.CONSTANTS"%>
 <%@page import="DAO.AccountDAO"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
@@ -21,7 +22,7 @@
     </head>
     <body class="max-w-[var(--maxWidth)] w-[100vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
         <%
-            AccountDAO d =new AccountDAO();
+            AccountDAO d = new AccountDAO();
             Account acc = (Account) session.getAttribute("loginUser");
             Employee em = null;
             if (acc.getRole().getRoleID() != 1) {
@@ -65,7 +66,7 @@
                         <img src="/PrjProject/img/profile/icon_proflie.png" alt="">
                         <p>Chỉnh sửa hồ sơ</p>
                     </div>
-                   
+
 
                 </div>
                 <!-- account detail -->
@@ -141,7 +142,7 @@
                     <div
                         class="col-span-2 lg:col-span-1   email_infor ml-[25px] mr-[25px] md:ml-[150px] md:mr-[150px]   lg:ml-0 lg:mr-0  p-[16px] mb-[16px]">
                         <p class="lg:hidden text-lg mb-[10px]">Other informations</p>
-                        
+
                         <%if (acc.getRole().getRoleID() != 1) {%>
                         <p>Day of birth</p>
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
@@ -154,7 +155,7 @@
                             %>
 
 
-                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="birthtxt" max="<%= verifyYear%>-12-31" value="<%= d.convertDateToString(em.getDayOfBirth()) %>" >
+                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="birthtxt" max="<%= verifyYear%>-12-31" value="<%= d.convertDateToString(em.getDayOfBirth())%>" >
                         </div>
                         <%}%>
 
@@ -168,12 +169,12 @@
                             %>
 
 
-                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" max="<%= formattedDate %>" value="<%= d.convertDateToString(em.getWorkingDay()) %>">
+                            <input type="date"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" max="<%= formattedDate%>" value="<%= d.convertDateToString(em.getWorkingDay())%>">
                         </div>
-                        <%}else if(acc.getRole().getRoleID() == 3){%>
-                              <input type="hidden"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" value="<%= d.convertDateToString(em.getWorkingDay()) %>">
-                       <%}%>
-                        
+                        <%} else if (acc.getRole().getRoleID() == 3) {%>
+                        <input type="hidden"  class="bg-gray-100 p-[8px] w-full outline-none " name="workingtxt" value="<%= d.convertDateToString(em.getWorkingDay())%>">
+                        <%}%>
+
                         <p class="mt-[20px] ">Sex</p>
                         <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
                             <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/sex.png" alt="">
@@ -190,9 +191,9 @@
                         <div class ="flex justify-center w-full">
                             <!-- msg o day ne !!!!!!!!!!!  -->
                             <%
-                                String msg =(String) request.getAttribute("WARN");
+                                String msg = (String) request.getAttribute("WARN");
                             %>
-                            <p class="font-bold text-lg text-red-500" > <%= (msg!=null)?msg:"" %></p>
+                            <p class="font-bold text-lg text-red-500" > <%= (msg != null) ? msg : ""%></p>
                         </div>
 
 
@@ -230,15 +231,28 @@
 
         </form>
 
+        <div  class="fixed left-0 bottom-12 mb-[75px] cursor-pointer">
+            <form action="mainController" method="get">
+                <button name="action" value="<%= CONSTANTS.GETHOMEPAGELOGIN%>"> <img class="w-[70px] " src="/PrjProject/img/profile/home.png" alt="">
+                </button>
+            </form>
+        </div>
 
+
+        <div class="fixed left-0 bottom-11 cursor-pointer">
+            <form action="mainController" method="get">
+                <button name="action" value="<%= CONSTANTS.GETPROFILE %>"> <img class="w-[70px] cursor-pointer" src="/PrjProject/img/profile/back.png" alt=""></button>
+                </button>
+            </form>
+        </div>
     </body>
     <script>
         let popup = document.getElementById("popup");
 
         function openpopup() {
             popup.classList.add("open-popup");
- 
-       }
+
+        }
 
         function removepopup() {
             popup.classList.remove("open-popup");
