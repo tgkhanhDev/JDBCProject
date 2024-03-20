@@ -1294,10 +1294,6 @@ public class RequestDAO {
 
     }
 
-
-
-
-=======
     public int getSizeOfRequest() {
         int result = 0;
         Connection cn = null;

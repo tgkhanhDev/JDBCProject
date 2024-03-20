@@ -30,12 +30,6 @@
             <div>
                 <div class="text-2xl border-b-2 mr-2">Quản Lý</div>
                 <div class="flex flex-col">
-                    <div>Page: <%=param%></div>
-
-                    <%--<jsp:useBean id="loginUser" class="DTO.Account" scope="session" />--%> 
-                    <jstl:set  var="loginUser" value="${sessionScope.loginUser}"/>
-                    <div><jstl:out value="${loginUser.lastName} ${loginUser.firstName}" /></div>
-                    <div><jstl:out value="${loginUser.role.roleName}" /></div>
 
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("1")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="1" data-sider >Sản phẩm</button></div>
                     <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("2")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="2" data-sider >Người dùng</button></div>
@@ -53,13 +47,6 @@
                     </div>
                 </div>
 
-                <!----CongTY:-->
-                <div class="mt-5">
-                    <div class="text-2xl border-b-2 mr-2 capitalize">Company Management</div>
-                    <div class="flex flex-col">
-                        <div class="px-5 py-2  bg-transparent  hover:bg-gray-700 cursor-pointer <%=           (param.equals("9")) ? "!bg-gray-800 !cursor-default" : ""%> "><button name="sec" class="text-xl capitalize" value="9" data-sider >nhân viên</button></div>
-                    </div>
-                </div>
 
         </form>
 

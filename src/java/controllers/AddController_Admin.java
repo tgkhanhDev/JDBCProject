@@ -102,7 +102,7 @@ public class AddController_Admin extends HttpServlet {
                     String Description = request.getParameter("Description");
 
                     //Admin nên prd phải null
-                    Transaction trans = new Transaction(0, new Date(), 0, 0, "1", null);
+                    Transaction trans = new Transaction(0, new Date(), 0, 0, "1", "");
                     int rsTrans = new TransactionDAO().addNewTransactionForCreateRequest(trans);
                     if (rsTrans > 0)
                     {

@@ -174,18 +174,21 @@
                             // in ra dich vu cho nabar moi lan qua trang nay
 
                             ArrayList<Service> serList = ser.getAllService();
-                            if (serList != null && serList.size() > 0) {
-                                for (Service item : serList) {
+                            if (serList != null && serList.size() > 0)
+                            {
+                                for (Service item : serList)
+                                {
 
                         %>
                         <div class="col-span-1 ">
                             <form action="mainController">
-                                <%
-                                    if (item.getServicePrice() == 0) {
+                                <%                                    if (item.getServicePrice() == 0)
+                                    {
                                 %>
                                 <input type="hidden" name="action" value=<%=CONSTANTS.GETPRODUCTS%>>
                                 <%
-                                } else {
+                                } else
+                                {
                                 %>
                                 <input type="hidden" name="action" value=<%=CONSTANTS.APPLICATION%>>
                                 <input type="hidden" name="applicationID" value=<%=    item.getId()%>>
@@ -243,7 +246,7 @@
                         </form>
                         <form class="col-span-2" action="mainController" method="get">
                             <button   type="submit" name="action" value="getCreatereq">
-                                
+
                                 <p>Tạo đơn</p>
                             </button>
                         </form>
@@ -266,7 +269,8 @@
                             <p>Hồ sơ</p>
                         </a>
 
-                        <%if (acc.getRole().getRoleID() == 1) {%>
+                        <%if (acc.getRole().getRoleID() == 1)
+                            {%>
                         <a class="sub-menu-link" href="">
                             <img src="/PrjProject/img/navbarSignin/shopping.png" alt="">
                             <p>Giỏ hàng</p>
@@ -276,7 +280,7 @@
 
                         <%}%>
 
-                         
+
                         <form action="mainController" method="post">
                             <button class="sub-menu-link mb-[2px] " id="sub-menu-link-admin"  type="submit" name="action" value="getCreatereq">
 
@@ -303,7 +307,7 @@
                             </button>
                         </form>
 
-                        <form action="mainController" method="post">
+                        <form action="mainController" method="get">
                             <button class="sub-menu-link mb-[2px] " id="sub-menu-link-admin"  type="submit" name="action" value="getContract">
                                 <input  type="hidden" name="searchIDtxt" value="" />
                                 <input  type="hidden" name="searchStatustxt" value="" />
@@ -325,12 +329,14 @@
                             </button>
                         </form>
 
+
                         <a class="sub-menu-link" href="mainController?action=getLogout">
                             <img src="/PrjProject/img/navbarSignin/logout.png" alt="">
                             <p>Đăng xuất</p>
                         </a>
                         <hr>
-                        <% if (acc.getRole().getRoleID() != 1) {%>
+                        <% if (acc.getRole().getRoleID() != 1)
+                            {%>
                         <!-- admin only -->
                         <form action="mainController" method="get">
                             <button class="sub-menu-link mb-[2px] " id="sub-menu-link-admin"  type="submit" name="action" value="<%=     CONSTANTS.GETPRODUCT_ADMIN%>">

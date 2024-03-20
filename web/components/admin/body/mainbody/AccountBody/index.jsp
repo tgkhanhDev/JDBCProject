@@ -30,6 +30,8 @@
         <jstl:set var='sec' value="${param.sec}" />
         <jstl:set var='page' value="${param.page}" />
         <!--abc--> 
+        <div class="flex justify-center text-3xl font-bold">Người dùng</div>
+
 
         <!--Dropdown--> 
         <div class="flex gap-2" >

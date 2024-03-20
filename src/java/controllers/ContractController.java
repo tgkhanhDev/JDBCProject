@@ -40,6 +40,7 @@ public class ContractController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            out.print("CONTRACT");
             HttpSession session = request.getSession();
             Account acc = (Account) session.getAttribute("loginUser");
             ContactDAO rq = new ContactDAO ();

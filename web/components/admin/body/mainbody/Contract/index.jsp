@@ -17,7 +17,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Contract</h1>
+        <div class="flex justify-center text-3xl font-bold">Contract</div>
         <jstl:set var='sec' value="${param.sec}" />
         <jstl:set var='page' value="${(param.page == null)?'1': param.page }" />
         <jstl:set var="transID" value="${param.transID}" />
@@ -130,7 +130,7 @@
                                     <input type="hidden" name="page" value="${page}" />
                                     <input type="hidden" name="transID" value="${item.transaction.tranID}" />
 
-                                    <button class="px-4 py-2 rounded bg-yellow-500 text-white">View Transaction Detail</button>
+                                    <button class="px-4 py-2 rounded bg-yellow-500 text-white">View Payment Detail</button>
                                 </form>
                             </td>
 

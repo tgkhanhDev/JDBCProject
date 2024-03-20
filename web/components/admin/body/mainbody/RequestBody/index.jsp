@@ -25,6 +25,9 @@
     </head>
     <body>
         <!--//           Lấy từ session--> 
+        <div class="flex justify-center text-3xl font-bold">Request</div>
+
+
         <jstl:set var="accSes" value="${sessionScope.loginUser}" />
         <jstl:set var="search" value="${param.search}" />
         <form action="mainController" class="flex items-center gap-10 my-5">
@@ -43,8 +46,7 @@
                 String datePar = (String) request.getParameter("date");
                 datePar = (datePar == null) ? "1" : datePar;
                 date = (date == null) ? datePar : date;
-                
-                
+
 
             %>
             <div class="flex gap-2" >
@@ -206,7 +208,7 @@
                                         <input type="hidden" name="search" value="${search}" />
                                         <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                                         <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
-                                        <input type="hidden" name="page" value="<%=          currentPage %>" />
+                                        <input type="hidden" name="page" value="<%=          currentPage%>" />
 
                                         <!--input để xem nếu chưa đc gắn managerID thì sẽ tự gắn--> 
                                         <input type="hidden" name="isAttach" value="<%=    (item.getAdminAcc() != null)%>"/>
@@ -265,7 +267,7 @@
                             <%=          item.getDescription()%>
                         </td>
                         <td class="px-6 py-4">
-                            <%=          item.getContact().getTransaction().getTranID()  %>
+                            <%=          item.getContact().getTransaction().getTranID()%>
                         </td>
                     </tr>
                     <%                            }
@@ -297,7 +299,7 @@
                         <input type="hidden" name="search" value="${search}" />
                         <input type="hidden" name="date" value="<%=          request.getParameter("date")%>" />
                         <input type="hidden" name="status" value="<%=          request.getParameter("status")%>" />
-                        <input type="hidden" name="page" value="<%=       currentPage  %>" />
+                        <input type="hidden" name="page" value="<%=       currentPage%>" />
 
                     </div>
                     <button id="toggleForm" class="absolute top-3 right-3">

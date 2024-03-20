@@ -2466,7 +2466,7 @@ public class TransactionDAO {
     }
 
     
-=======
+//=======
     public int addNewTransaction(String date, int quantity, int money, int prdID) {
         int result = 0;
         Connection cn = null;

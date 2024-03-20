@@ -20,6 +20,9 @@
     </head>
     <body class="">
 
+        <div class="flex justify-center text-3xl font-bold">Quản Lý Sản Phẩm</div>
+
+
         <!--Dropdown--> 
         <div class="flex gap-2" >
             <!--            <div class="">Filter theo danh mục: </div>
@@ -84,7 +87,7 @@
             <tbody>
                 <%
 
-                    ArrayList<Product> list = (ArrayList<Product>)session.getAttribute("list");
+                    ArrayList<Product> list = (ArrayList<Product>) session.getAttribute("list");
                     if (list != null)
                     {
                         String currentPage = (String) request.getParameter("page");
@@ -119,7 +122,7 @@
                         <%=          item.getSpeed()%>
                     </td>
                     <td class="px-6 py-4 text-center capitalize">
-                        <%=          new ProductDAO().getCatenameByID(item.getCategory().getCate_ID())   %>
+                        <%=          new ProductDAO().getCatenameByID(item.getCategory().getCate_ID())%>
                     </td>
                     <td class="px-6 py-4 flex justify-center items-center">
                         <form action="mainController" />

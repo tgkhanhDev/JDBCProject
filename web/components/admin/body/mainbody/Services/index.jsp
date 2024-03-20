@@ -23,30 +23,9 @@
         <jstl:set var='sec' value="${param.sec}" />
         <jstl:set var='page' value="${param.page}" />
         <!--abc--> 
+        <div class="flex justify-center text-3xl font-bold">Service</div>
 
-        <!--Dropdown--> 
-        <div class="flex gap-2" >
-            <div class="">Danh mục đang hiển thị: </div>
-            <select class="rounded" id="cars">
-                <option value="allProduct">Toàn bộ sản phẩm</option>
-                <option value="cate">Danh mục sản phẩm</option>
-                <option value="service">Dịch vụ</option>
-            </select>
-        </div>
-        <!--endDropdown-->
-
-
-        <!--Search--> 
-        <div class="my-5">
-            <form action="mainController" class="flex items-center gap-2">
-                <input type="hidden" name="action" value=<%=    CONSTANTS.GETPRODUCT_ADMIN%> />
-                <input type="hidden" name="sec" value=<%= request.getParameter("sec")%>  />
-                <div class="mr-2">Tìm kiếm: </div>
-                <input class="border-2" name="search" value="<%=(request.getParameter("search") != null) ? request.getParameter("search") : ""%>" placeholder="Enter phone numbers..." />
-                <button type="submit" class="px-4 py-2  rounded bg-yellow-600">Search</button>
-            </form
-        </div>
-
+        
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-5">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

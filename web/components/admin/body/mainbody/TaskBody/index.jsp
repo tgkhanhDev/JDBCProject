@@ -31,6 +31,10 @@
         <!--//           Lấy từ session--> 
         <jstl:set var="accSes" value="${sessionScope.loginUser}" />
         <jstl:set var="search" value="${param.search}" />
+
+        <div class="flex justify-center text-3xl font-bold">Giao Task</div>
+
+
         <form action="mainController" class="flex items-center gap-10 my-5">
             <input type="hidden" name="action" value="<%=CONSTANTS.GETPRODUCT_ADMIN%>" />
             <input type="hidden" name="sec" value="<%=         request.getParameter("sec")%>" />

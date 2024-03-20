@@ -4,6 +4,7 @@
     Author     : Lenovo
 --%>
 
+<%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Account"%>
 <%@page import="DAO.AccountDAO"%>
 <%@page import="DTO.Request"%>
@@ -118,7 +119,7 @@
                     <input type="hidden"class="" name ="currentPagetxt" value="1"> 
                     <div class="col-span-9 grid grid-cols-10 ">
                         <div class=" col-span-10 flex justify-start font-bold pl-[10px]">
-                            <p>Tìm kiếm ID hợp đồng</p>
+                            <p>Tìm kiếm ID giao dịch</p>
                         </div>
                         <div class="col-span-10 lg:col-span-4 flex border-2 w-auto border-gray-400 rounded-md mr-[20px]" >
                             <!-- neu nhu ma o tran hien tai ma nhan search thi gia tri cua current page giu nguyen con neu curr >page thi sset ve curr 1 --> 
@@ -126,7 +127,7 @@
                             <button class=" cursor-pointer bg-gray-100  rounded-l-md   border-2 border-r-gray-400 "><img
                                     class="w-[29px] h-[22px]" src="/PrjProject/img/contact/sreach.png" alt=""></button>
                             <input class=" pr-[10px] pl-[10px] text-base w-full outline-none  bg-slate-200 " type="search"
-                                   name="searchIDtxt" placeholder="Nhập id hợp đồng " value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>">
+                                   name="searchIDtxt" placeholder="Nhập id giao dịch " value="<%= (msgIDSearch != null) ? msgIDSearch : ""%>">
                         </div>
                         <div class="hidden  lg:col-span-6">
 
@@ -135,7 +136,7 @@
                     <div class=" col-span-3   w-full ">
 
                         <div class="flex justify-center font-bold">
-                            <p>Tìm kiếm trạng thái hợp đồng</p>
+                            <p>Tìm kiếm trạng thái giao dịch</p>
                         </div>
                         <div     class="flex justify-end w-full border-2 border-gray-400 rounded-md ">
 

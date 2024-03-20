@@ -28,6 +28,7 @@
         <jstl:set var="status" value="${param.status}" scope="page" />
         <jstl:set var="list" value="${sessionScope.list }"  />
         <jstl:set var="size" value="${sessionScope.size }"  />
+        <div class="flex justify-center text-3xl font-bold">Payment</div>
 
         <!--Search--> 
         <div class="my-5 flex flex-col">
