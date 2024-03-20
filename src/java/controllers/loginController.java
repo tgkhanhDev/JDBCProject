@@ -40,8 +40,7 @@ public class loginController extends HttpServlet {
             String phone = request.getParameter("txtphone");
             String gmail = request.getParameter("txtgmail");
             String pass = request.getParameter("txtpass");
-            // thông báo đc in ra khi ng dùng cố truy cập vào 1 chức năng cần login
-            String Mustlogin = (String) request.getAttribute("MUSTLOGIN");
+
 //         sử dụng hàm để tìm Account
             AccountDAO d = new AccountDAO();
             Account acc = d.getClientAccount(phone, gmail, pass);
@@ -49,25 +48,20 @@ public class loginController extends HttpServlet {
                 // luu trong trong session
                 HttpSession session = request.getSession();
                 session.setAttribute("loginUser", acc);
-                if (acc.getRole().getRoleID() != 1) {
+                if(acc.getRole().getRoleID()!=1){
                     Employee em = d.getEmployeInfor(acc.getAccountID());
-                    session.setAttribute("emInfor", em);
+                     session.setAttribute("emInfor", em);   
                 }
                 int status = Integer.parseInt(acc.getStatus());
                 if (status == 1) {
-                    request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETHOMEPAGELOGIN).forward(request, response);
+                    request.getRequestDispatcher("mainController?action="+CONSTANTS.GETHOMEPAGELOGIN).forward(request, response);
                 } else {
                     request.setAttribute("ERROR", " Tài khoản của bạn đã vi phạm ");
                     request.getRequestDispatcher("mainController?action=loginpage&renotify=0&sec=1").forward(request, response);
                 }
             } else {
 //                    them cai thong bao sai
-                if (Mustlogin != null) {
-                    request.setAttribute("ERROR", Mustlogin);
-
-                } else {
-                    request.setAttribute("ERROR", " Gmail hoặc mật khẩu đã sai ");
-                }
+                request.setAttribute("ERROR", " Gmail hoặc mật khẩu đã sai ");
                 request.getRequestDispatcher("mainController?action=loginpage&renotify=0&sec=1").forward(request, response);
             }
         }

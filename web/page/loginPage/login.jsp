@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="lg:w-[70%] m-auto">
                                     <div class="">Phone number (Username):</div>
-                                    <input type="text" class="text-black w-full m-auto rounded-xl" name="txtphone" placeholder="enter numberphone from 8 to 10 digits" pattern="[0-9]{8,10}" required=""/>
+                                    <input type="text" class="text-black w-full m-auto rounded-xl" name="txtphone" placeholder="enter numberphone" pattern="[0-9]{8,10}" required=""/>
                                 </div>
                                 <div class="lg:w-[70%] m-auto">
                                     <div class="">Gmail:</div>
@@ -140,11 +140,11 @@
                                 </div>
                                 <div class="lg:w-[70%] m-auto">
                                     <div class="">Password:</div>
-                                    <input type="password" class="text-black w-full m-auto rounded-xl" name="txtpass" placeholder="enter password atleast 5 digits" pattern="\S{5,}" required=""/>
+                                    <input type="password" class="text-black w-full m-auto rounded-xl" name="txtpass" placeholder="enter password" pattern="\S{5,}" required=""/>
                                 </div>
                                 <div class="lg:w-[70%] m-auto">
                                     <div class="">Confirm Password:</div>
-                                    <input type="password" class="text-black w-full m-auto rounded-xl" name="txtpassagain" placeholder="enter repassword" pattern="\S{5,}" required=""/>
+                                    <input type="password" class="text-black w-full m-auto rounded-xl" name="txtpassagain" placeholder="enter password" pattern="\S{5,}" required=""/>
                                     <div class="w-full flex justify-end"> 
                                         <%
                                             int msgRE = Integer.parseInt((String) request.getParameter("renotify"));

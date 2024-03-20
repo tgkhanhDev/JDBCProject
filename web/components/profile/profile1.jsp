@@ -115,7 +115,12 @@
 
         <%
             Account acc = (Account) session.getAttribute("loginUser");
+            Employee em = null;
+            if (acc.getRole().getRoleID() != 1) {
 
+                em = (Employee) session.getAttribute("emInfor");
+
+            }
 
         %>
 
@@ -132,7 +137,12 @@
                 <div class="tilte_name mb-0">
                     <span class="text-cyan-500">Role:</span> <%= acc.getRole().getRoleName()%> 
                 </div>
+                <% if (acc.getRole().getRoleID() != 1) {%>
 
+                <div class="title_role mb-[10px] lg:mb-0">
+                    <span class="text-cyan-500">Major:</span> <%= em.getMajor().getMajorName()%> 
+                </div>
+                <%}%>
             </div>
             <!-- phan ben display ne  -->
             <div
@@ -207,7 +217,13 @@
                                 <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/phone.png" alt="">
                                 <p class="p-[8px] "><%= acc.getPhone()%></p>
                             </div>
-
+                            <% if (acc.getRole().getRoleID() != 1) {%>
+                            <p class="mt-[20px] ">Identify</p>
+                            <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
+                                <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/identify.png" alt="">
+                                <p class="p-[8px] "><%=  em.getIdentify_ID()%></p>
+                            </div>
+                            <%}%>
                         </div>
 
 
@@ -224,7 +240,42 @@
                             class="col-span-2 lg:col-span-1   email_infor ml-[25px] mr-[25px] md:ml-[150px] md:mr-[150px]   lg:ml-0 lg:mr-0  p-[16px] mb-[16px]">
                             <p class="lg:hidden text-lg mb-[10px]">Other informations</p>
 
+                            <% if (acc.getRole().getRoleID() != 1) { %>
+                            <%  Date birth = em.getDayOfBirth();
+                                Calendar calB = Calendar.getInstance();
+                                calB.setTime(birth);
+                                calB.clear(Calendar.HOUR);
+                                calB.clear(Calendar.MINUTE);
+                                calB.clear(Calendar.SECOND);
+                                calB.clear(Calendar.MILLISECOND);
+                                birth = calB.getTime();
+                                String formattedBirth = new SimpleDateFormat("dd-MM-yyyy").format(birth);
+                            %>
 
+                            <p>Date of birth</p>
+                            <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
+                                <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/dayOfbirth.png" alt="">
+                                <p class="p-[8px] "><%= formattedBirth%></p>
+                            </div>
+                            <%
+                                Date working = em.getWorkingDay();
+                                Calendar calW = Calendar.getInstance();
+                                calW.setTime(working);
+                                calW.clear(Calendar.HOUR);
+                                calW.clear(Calendar.MINUTE);
+                                calW.clear(Calendar.SECOND);
+                                calW.clear(Calendar.MILLISECOND);
+                                working = calW.getTime();
+                                String formattedWorking = new SimpleDateFormat("dd-MM-yyyy").format(working);
+
+                            %>
+                            <p>Working Day</p>
+                            <div class="bg-gray-100 flex mr-[65px] items-center  border-2  border-gray-200">
+                                <img class="h-[22px] pl-[4px]" src="/PrjProject/img/profile/dayOfbirth.png" alt="">
+                                <p class="p-[8px] "><%= formattedWorking%></p>
+                            </div>
+
+                            <%}%>
 
 
                             <p class="mt-[20px] ">Sex</p>
@@ -236,17 +287,13 @@
 
                         </div>
 
-                        <div class="col-span-2 mt-[24px] mb-[0px]">
+                        <div class="col-span-2 mt-[24px] mb-[24px]">
                             <hr>
-                            <%
-                                String msg = (String) request.getAttribute("NOTIFYPRO");
-                            %>
-                            <p class="font-bold text-lg text-green-500 flex justify-center" > <%= (msg != null) ? msg : ""%></p>
                         </div>
 
-                        <div class="col-span-2 mt-[10px] mb-[24px] mr-[32px] flex justify-end">
+                        <div class="col-span-2 mt-[24px] mb-[24px] mr-[32px] flex justify-end">
 
-                            <form action="mainController" method="get">
+                            <form action="mainController" method="post">
                                 <input type="hidden" name="action" value="viewuppro" >
                                 <button 
                                     class="statusButton flex items-center  bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
@@ -274,7 +321,7 @@
                             int indexList = (int) request.getAttribute("indexList");
 
                             ArrayList<Request> myDevice = (ArrayList<Request>) request.getAttribute("listDevice");
-                            // check thu phan tu co ton tai trong list ko neu nhu list = 0 thi in ra list rong
+
 
                     %>
                     <div id="divb"
@@ -300,9 +347,7 @@
                             </tr>
 
 
-                            <%
-                                if (total > 0) {
-                                    for (Request list : myDevice) {
+                            <%                                    for (Request list : myDevice) {
                             %>
                             <tr class="grid grid-cols-12 ">
                                 <td class="col-span-2 flex justify-center border-2     border-gray-400"><%= list.getContact().getTransaction().getProduct().getPrd_ID()%></td>
@@ -329,7 +374,7 @@
                                         <div class="flex flex-col w-full text-start gap-3">
                                             <p class="font-bold text-2xl " >Thông tin san pham</p>
                                             <p> <span class="font-bold">Tên sản phẩm:</span> <%=list.getContact().getTransaction().getProduct().getName()%></p>
-                                            <p>  <span class="font-bold">Giá tiền:</span> <%= list.getContact().getTransaction().getMoney()%></p>
+                                            <p>  <span class="font-bold">Giá tiền:</span> <%= list.getContact().getTransaction().getMoney()%>  </p>
                                             <p>  <span class="font-bold">Ngày giao dịch:</span> <%= rq.formatDate(list.getContact().getTransaction().getDate())%> </p>
                                             <p> <span class="font-bold">Số lượng:</span> <%= list.getContact().getTransaction().getQuantity()%>  </p>
                                         </div>
@@ -345,13 +390,8 @@
 
                             </div>
 
-                            <% }
-                            } else {%>
-                            <tr class="grid grid-cols-12 ">
-                                <th class="col-span-12 flex justify-center border-2 rounded-l-sm  font-semibold text-2xl     border-gray-400"> < Danh sách rỗng ></th>
+                            <% }%>
 
-                            </tr>
-                            <%}%>
                         </table>
 
                         <ul class="pagination mb-[10px] gap-3 text-gray-500 ">
@@ -430,17 +470,26 @@
         var btn_divb = document.getElementById("btn_divb");
         var diva = document.getElementById("diva");
         var divb = document.getElementById("divb");
-
-        <% String showDivb = (String) request.getAttribute("myDevice");
-               if (showDivb == null) {
-        %>
+        <%if (acc.getRole().getRoleID() == 1) {%>
         divb.style.display = 'none';
         diva.style.display = 'grid';
         diva.classList.add("open");
         btn_diva.classList.add("status");
         btn_divb.classList.remove("status");
         divb.classList.remove("open");
-        <%} else if (showDivb != null) {%>
+        <%}%>
+
+        <% String showDivb = (String) request.getAttribute("myDevice");
+            if (showDivb == null && acc.getRole().getRoleID() != 1) {
+        %>
+
+        divb.style.display = 'none';
+        diva.style.display = 'grid';
+        diva.classList.add("open");
+        btn_diva.classList.add("status");
+        btn_divb.classList.remove("status");
+        divb.classList.remove("open");
+        <%} else if (showDivb != null && acc.getRole().getRoleID() != 1) {%>
         btn_divb.classList.add("status");
         btn_diva.classList.remove("status");
         divb.style.display = 'block';
@@ -448,8 +497,6 @@
         divb.classList.add("open");
         diva.style.display = 'none';
         <%}%>
-
-
 
 
         btn_diva.addEventListener('click', () => {

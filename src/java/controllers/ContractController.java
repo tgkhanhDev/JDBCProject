@@ -5,11 +5,8 @@
  */
 package controllers;
 
-import DAO.ContactDAO;
-import DAO.RequestDAO;
 import DAO.ServiceDAO;
 import DTO.Account;
-import DTO.Request;
 import DTO.Service;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,84 +39,14 @@ public class ContractController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             Account acc = (Account) session.getAttribute("loginUser");
-            ContactDAO rq = new ContactDAO ();
             ServiceDAO ser = new ServiceDAO();
-            // in ra dich vu cho nabar moi lan qua trang nay
             ArrayList<Service> serList = ser.getAllService();
+
             request.setAttribute("serviceList", serList);
-            int currentPage = Integer.parseInt(request.getParameter("currentPagetxt"));
-            // lay sreach IDcontact
-            String searchID = request.getParameter("searchIDtxt");
-            // search status contact
-            String searchStatus = request.getParameter("searchStatustxt");
-
-            //check thu search co chua chu cai ko
-            if (rq.checkNumberInString(searchID) != 0) {
-                currentPage = 1;
-                // tra ve list
-                ArrayList<Request> list = (acc.getRole().getRoleID() != 1) ? rq.getAllAdminContract(acc, currentPage) : rq.getAllContractClient(acc, currentPage);
-                request.setAttribute("error", "Tìm kiếm không được chứa kí tự");
-                
-                request.setAttribute("currentPage", currentPage);
-                request.setAttribute("list", list);
-                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-            }
-
             if (acc != null) {
-
-                if (acc.getRole().getRoleID() == 1) {
-                    if (searchID.equals("")) {
-                        ArrayList<Request> list = rq.getAllContractClient(acc, currentPage);
-                        // tra ve list
-                        request.setAttribute("currentPage", currentPage);
-                        request.setAttribute("list", list);
-                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-
-                    } else {
-                        ArrayList<Request> list = rq.getAllContractClientByContactID(acc, currentPage, searchID);
-                        // gui 1 request thong bao dang tim kiem
-                        request.setAttribute("searchIDtxt", searchID);
-                        request.setAttribute("list", list);
-                        request.setAttribute("currentPage", currentPage);
-                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-                    }
-                } else {
-                    if (searchID.equals("") && searchStatus.equals("")) {
-                        ArrayList<Request> list = rq.getAllAdminContract(acc, currentPage);
-                        // tra ve list
-                        request.setAttribute("currentPage", currentPage);
-                        request.setAttribute("list", list);
-                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-                    } else if (!searchID.equals("")&& searchStatus.equals("")) {
-                        ArrayList<Request> list = rq.getAllAdminContractByContactID(acc, currentPage, searchID);
-                        // gui 1 request thong bao dang tim kiem
-                        request.setAttribute("searchIDtxt", searchID);
-                        // gui 1 thng bao status
-                       
-                        request.setAttribute("currentPage", currentPage);
-                        request.setAttribute("list", list);
-                        request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-                    } else if (!searchStatus.equals("")&&searchID.equals("")) {
-                        ArrayList<Request> list = rq.getAllAdminContractByContractStatus(acc, currentPage, Integer.parseInt(searchStatus));
-                       
-                        request.setAttribute("searchStatustxt", searchStatus);
-                        request.setAttribute("currentPage", currentPage);
-                        request.setAttribute("list", list);
-                     request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-                    }else if(!searchID.equals("")&&!searchStatus.equals("")){
-                      ArrayList<Request> list = rq.getAllAdminContractByContractStatusAndContactID(acc, currentPage,Integer.parseInt(searchStatus), searchID);
-                       request.setAttribute("searchIDtxt", searchID);
-                       request.setAttribute("searchStatustxt", searchStatus);
-                        request.setAttribute("currentPage", currentPage);
-                        request.setAttribute("list", list);
-                       request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
-                    }
-                }
-
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWCONTRACT).forward(request, response);
             } else {
-                //tra ve thong bao loi
-        
-                request.getRequestDispatcher("mainController?action=" + CONSTANTS.GETHOMEPAGELOGIN).forward(request, response);
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWHOME).forward(request, response);
             }
         }
     }

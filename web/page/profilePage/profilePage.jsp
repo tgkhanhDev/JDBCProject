@@ -4,7 +4,6 @@
     Author     : Lenovo
 --%>
 
-<%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -33,24 +32,18 @@
     <body>
         <%
             Account acc = (Account) session.getAttribute("loginUser");
-            if (acc.getRole().getRoleID() == 1) {
+            if (acc.getRole().getRoleID()==1){
         %>
-
-
-        <jsp:include page="/components/navbarsignin/navbarSignin.jsp" /> 
+        
+        
         <jsp:include page="/components/profile/profile.jsp" /> 
-
-        <%} else {%>
-        <jsp:include page="/components/profile/profileAdmin.jsp" /> 
+        
+        <%}else{%>
+              <jsp:include page="/components/profile/profileAdmin.jsp" /> 
         <%}%>
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500 ">
-            
             <jsp:include page="/components/footer/footer.jsp" />
         </div> 
-
-
-        <script type="text/javascript" src="/PrjProject/Javascript/Navbar/index.js"></script> <!-- For Navbar -->
-        <script type="text/javascript" src="/PrjProject/Javascript/NavbarSignin/index.js"></script>
         <script type="text/javascript"  src="/PrjProject/Javascript/Footer/index.js"></script>
     </body>
 </html>
