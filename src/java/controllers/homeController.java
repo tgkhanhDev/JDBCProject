@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,8 +39,7 @@ public class homeController extends HttpServlet {
             ServiceDAO ser = new ServiceDAO();
             ArrayList<Service> serList = ser.getAllService();
 
-            HttpSession session = request.getSession();
-            session.setAttribute("serviceList", serList);//get Service for render
+            request.setAttribute("serviceList", serList);//get Service for render
 //            Về home nè 
             request.getRequestDispatcher("mainController?action="+CONSTANTS.VIEWHOME).forward(request, response);
             

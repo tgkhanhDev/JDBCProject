@@ -21,24 +21,7 @@
     <body>
         <div class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
 
-            <div class="flex justify-between relative">
-                <div class="pageTitle">Sản phẩm</div>
-                <div class="absolute right-0">
-                    <form action="mainController" >
-                        <button
-                            class="rounded-full w-full max-w-[280px]  flex items-center  justify-center transition-all duration-500 hover:bg-indigo-400 ">
-                            <div class="rotate-[180deg] text-indigo-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
-                                <path d="M8.25324 5.49609L13.7535 10.9963L8.25 16.4998" stroke="#4F46E5" stroke-width="1.6"
-                                      stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <span class="px-2 font-semibold text-lg leading-8 text-indigo-100">Back to Home</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-
+            <div class="pageTitle">Sản phẩm</div>
 
             <!-- Section -->
             <div class="flex justify-center gap-10 bg-gray-100 py-8">
@@ -252,19 +235,18 @@
             </div>
 
         </div>
-
+                        
+          <%
+          String mess = (String) request.getAttribute("message");
+          if(mess != null){
+              %>
+              <script>
+                  alert("<%=  mess %>");
+              </script>
         <%
-            String mess = (String) request.getAttribute("message");
-            if (mess != null)
-            {
-        %>
-        <script>
-            alert("<%=  mess%>");
-        </script>
-        <%
-            }
-        %>
-
+          }
+          %>
+                        
         <script>
             console.log("Hello Cart JS");
 

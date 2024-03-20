@@ -135,13 +135,6 @@ public class AddController_Admin extends HttpServlet {
                     result = new ContactDAO().addContract_Form(transactionForm, serviceForm);
 
                     break;
-                    
-                case "7":
-                    String serName = request.getParameter("serName");
-                    int price7 = Integer.parseInt(request.getParameter("price"));
-                    result = new ServiceDAO().addService(serName, price7);
-                    
-                    break;
             }
             
             if (result >= 1)

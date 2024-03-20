@@ -34,23 +34,9 @@
 
     </head>
     <body>
+ 
 
-
-        <%
-            Account acc = (Account) session.getAttribute("loginUser");
-            if (acc != null)
-            {
-        %>
-        <jsp:include page="/components/navbarsignin/navbarSignin.jsp" />
-        <%
-        } else
-        {
-        %>
         <jsp:include page="/components/navbar/navbar.jsp" />
-        <%
-            }
-
-        %>
 
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
             <jsp:include page="/components/carousel/carousel.jsp" />

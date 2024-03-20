@@ -155,10 +155,6 @@ public class AdminController_Admin extends HttpServlet {
                     jstlFlag = "alter";
                     jstlSize = new ContactDAO().countContract();
                     break;
-                    
-                case "7":
-                    list = new ServiceDAO().getAllService();
-                    break;
             }
             request.setAttribute("sec", sec);
             session.setAttribute("list", list);

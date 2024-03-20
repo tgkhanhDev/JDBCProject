@@ -4,7 +4,6 @@
     Author     : ACER
 --%>
 
-<%@page import="DTO.Account"%>
 <%@page import="controllers.CONSTANTS"%>
 <%@page import="DTO.ProductCategories"%>
 <%@page import="DAO.ProductDAO"%>
@@ -35,24 +34,11 @@
         <link rel="stylesheet" href="utils.css"/>
     </head>
     <body>
-        <%
-            Account acc = (Account) session.getAttribute("loginUser");
-            if (acc != null)
-            {
-        %>
-        <jsp:include page="/components/navbarsignin/navbarSignin.jsp" />
-        <%
-        } else
-        {
-        %>
         <jsp:include page="/components/navbar/navbar.jsp" />
-        <%
-            }
-        %>
         <jsp:include page="/components/productItem/ProductLayout.jsp" />
 
         <script src="./productJS.js"></script>
         <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
-
+        
     </body>
 </html>

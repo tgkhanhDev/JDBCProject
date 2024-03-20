@@ -9,7 +9,6 @@ import DAO.AccountDAO;
 import DAO.EmployeeDAO;
 import DAO.ProductDAO;
 import DAO.RequestDAO;
-import DAO.ServiceDAO;
 import DAO.TransactionDAO;
 import DTO.Account;
 import DTO.Employee;
@@ -87,6 +86,7 @@ public class ProductsFormController_Admin extends HttpServlet {
                         request.setAttribute("formList", formList);
                         request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
 
+                        
                     } else if (flag.equals("reloadUpdate"))
                     {
 
@@ -96,7 +96,7 @@ public class ProductsFormController_Admin extends HttpServlet {
                         Transaction oldTransForm = new TransactionDAO().getTransByID(Integer.parseInt(transForm));
                         Transaction trans = new Transaction(oldTransForm.getTranID(), oldTransForm.getDate(), Integer.parseInt(quantForm), oldTransForm.getMoney(), oldTransForm.getStatus(), new ProductDAO().getProductByID(proForm));
                         formList = trans;
-
+                        
                     } else if (flag.equals("reloadCreate"))
                     {
                         String proForm = request.getParameter("formProductReload");
@@ -107,29 +107,20 @@ public class ProductsFormController_Admin extends HttpServlet {
                         request.setAttribute("createFlag", "alert");
                     }
                     break;
-
+                    
                 case "6":
                     String transID = request.getParameter("transID");
                     Transaction formTransaction = new TransactionDAO().getTransByID(Integer.parseInt(transID));
                     formList = formTransaction;
-
+                    
                     break;
-                case "7":
-
-                    out.print("====FORM====");
-
-                    String serID = request.getParameter("serID");
-
-                    out.print("serID: " + serID);
-                    formList = new ServiceDAO().getServiceByID(Integer.parseInt(serID));
-
-                    break;
-
+                    
             }
             request.setAttribute("sec", sec);
             request.setAttribute("formList", formList);
 
-            request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
+            //            Về view nè 
+                request.getRequestDispatcher("mainController?action=" + CONSTANTS.VIEWPRODUCT_ADMIN).forward(request, response);
 
         }
     }

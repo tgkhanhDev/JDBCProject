@@ -7,7 +7,6 @@ package controllers;
 
 import DAO.AccountDAO;
 import DAO.ProductDAO;
-import DAO.ServiceDAO;
 import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -107,9 +106,6 @@ public class BlockController_Admin extends HttpServlet {
                 case "3":
                     break;
                 case "4":
-                    break;
-                case "7":
-                    result = new ServiceDAO().blockService(id);
                     break;
             }
 

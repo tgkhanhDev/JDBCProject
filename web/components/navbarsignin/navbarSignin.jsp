@@ -168,7 +168,7 @@
                      class="absolute top-0 w-[30vw] bg-white z-30 transition-all ease-in-out duration-200 translate-y-[-110%]">
                     <div class="w-full h-full p-3 grid grid-cols-3">
                         <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
-                        <%                            ArrayList<Service> serList = (ArrayList<Service>) session.getAttribute("serviceList");
+                        <%                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
                             if (serList != null && serList.size() > 0)
                             {
                                 for (Service item : serList)
@@ -249,7 +249,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="sub-menu-wrap " id="subMenu">
                     <div class="sub-menu" >
                         <div class="user-infor">
@@ -344,11 +343,7 @@
 
         <!-- Optional JavaScript -->
         <!--PUT IN index.jsp-->
-        <!--Component's JS--> 
-        <script type="text/javascript" src="/PrjProject/Javascript/Navbar/index.js"></script> <!-- For Navbar -->
-        <script type="text/javascript" src="/PrjProject/Javascript/NavbarSignin/index.js"></script>
-        <script type="text/javascript"  src="/PrjProject/Javascript/News/index.js"></script> <!--For NEWS -->
-        <script type="text/javascript"  src="/PrjProject/Javascript/Footer/index.js"></script>
+
     </body>
 
 </html>
