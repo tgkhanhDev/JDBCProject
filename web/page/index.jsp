@@ -34,9 +34,23 @@
 
     </head>
     <body>
- 
 
+
+        <%
+            Account acc = (Account) session.getAttribute("loginUser");
+            if (acc != null)
+            {
+        %>
+        <jsp:include page="/components/navbarsignin/navbarSignin.jsp" />
+        <%
+        } else
+        {
+        %>
         <jsp:include page="/components/navbar/navbar.jsp" />
+        <%
+            }
+
+        %>
 
         <div  class="max-w-[var(--maxWidth)] w-[95vw] m-auto overflow-x-hidden transition-all ease-in-out duration-500">
             <jsp:include page="/components/carousel/carousel.jsp" />
@@ -102,6 +116,7 @@
         <script type="text/javascript" src="Javascript/Navbar/index.js"></script> <!-- For Navbar -->
         <script type="text/javascript"  src="Javascript/News/index.js"></script> <!--For NEWS -->
         <script type="text/javascript"  src="Javascript/Footer/index.js"></script>
+        <script type="text/javascript"  src="Javascript/Cart/index.js"></script> <!--For cart -->
 
 
     </body>

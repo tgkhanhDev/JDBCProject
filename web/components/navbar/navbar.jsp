@@ -87,7 +87,9 @@
                     </ul>
                 </div>
                 <form  action="mainController" >
+
                     <input type="hidden" name="action" value= "<%= CONSTANTS.VIEWLOGINPAGE%>"  />
+
                     <input type="hidden" name="renotify" value= "0"  />
                     <button type="submit" name="sec" value="1" class=" lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold rounded-xl transition duration-200">Sign In</button>
                     <button type="submit" name="sec" value="2"  class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
@@ -161,9 +163,13 @@
                     <div class="w-full h-full p-3 grid grid-cols-3">
                         <div class="col-span-3 font-bold">Danh sách dịch vụ</div>
                         <%
-                            ArrayList<Service> serList = (ArrayList<Service>) request.getAttribute("serviceList");
-                            if (serList != null && serList.size() > 0) {
-                                for (Service item : serList) {
+
+                            ArrayList<Service> serList = (ArrayList<Service>) request.getSession().getAttribute("serviceList");
+                            if (serList != null && serList.size() > 0)
+                            {
+                                for (Service item : serList)
+                                {
+
                         %>
                         <div class="col-span-1 ">
                             <form action="mainController">
@@ -244,6 +250,7 @@
 
         <!-- Optional JavaScript -->
         <!--PUT IN index.jsp--> 
+        
     </body>
 
 </html>

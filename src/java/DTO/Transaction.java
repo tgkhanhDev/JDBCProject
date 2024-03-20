@@ -5,6 +5,7 @@
  */
 package DTO;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -24,6 +25,10 @@ public class Transaction {
 
   
 
+    public Transaction() {
+    }
+
+    
     public Transaction(int TranID, Date date, int quantity, double money, String status, Product product) {
         this.TranID = TranID;
         this.date = date;
@@ -54,6 +59,10 @@ public class Transaction {
 
     public Date getDate() {
         return date;
+    }
+    
+    public String getDateForRendering() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     public void setDate(Date date) {
@@ -92,6 +101,7 @@ public class Transaction {
         this.product = product;
     }
 
+
     public String getProID() {
         return proID;
     }
@@ -99,6 +109,7 @@ public class Transaction {
     public void setProID(String proID) {
         this.proID = proID;
     }
+
 
 
 

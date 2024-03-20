@@ -15,6 +15,7 @@
         <div id="main" class="w-[calc(100vw-200px)] ml-[200px]">
             <%
                 String param = (String) request.getParameter("sec");
+                String flag = null;
                 if (param == null)
                 {
                     param = "1";
@@ -34,15 +35,37 @@
             %> <jsp:include page="/components/admin/body/mainbody/TaskBody/index.jsp" /><%
                     break;
                 case "5":
-            %> <jsp:include page="/components/admin/body/mainbody/EmployeeBody/index.jsp" /><%
+            %> <jsp:include page="/components/admin/body/mainbody/Transaction/index.jsp" /><%
+                    flag = "alter";
+                    break;
+                case "6":
+            %> <jsp:include page="/components/admin/body/mainbody/Contract/index.jsp" /><%
+                    flag = "alter";
+                    break;
+                case "7":
+            %> <jsp:include page="/components/admin/body/mainbody/Services/index.jsp" /><%
                         break;
+
                 }
 
 
             %>
 
             <!--Pagination--> 
+            <%                if (flag == null)
+                {
+            %>
             <jsp:include page="/components/admin/body/pagination/index.jsp" />
+            
+            <%
+            } else
+            {
+            %>
+            <jsp:include page="/components/admin/body/pagination/jstlPagination.jsp" />
+
+            <%
+                }
+            %>
 
 
         </div>

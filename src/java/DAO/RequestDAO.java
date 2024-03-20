@@ -43,9 +43,11 @@ public class RequestDAO {
     public int getTotalRequest(int AccountID) {
         Connection cn = null;
         int total = 0;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELECT count(*)as[Count]\n"
                         + "FROM Request \n"
                         + "join RequestType on Request.reqTypeID=RequestType.reqTypeID\n"
@@ -63,11 +65,13 @@ public class RequestDAO {
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, AccountID);
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     total = table.getInt("Count");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
         }
 
         return total;
@@ -78,9 +82,11 @@ public class RequestDAO {
         ArrayList<Request> list = new ArrayList<>();
         AccountDAO d = new AccountDAO();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = "SELEcT Request.[ReqID],Request.[AccountID],Request.[ManagerAccountID],\n"
                         + "\n"
                         + "Request.[Description] as [requestDes],\n"
@@ -123,8 +129,10 @@ public class RequestDAO {
                 pst.setInt(1, acc.getAccountID());
                 pst.setInt(2, (index - 1) * 2);
                 ResultSet table = pst.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int ReqID = table.getInt("ReqID");
 
                         ProductCategories cate = new ProductCategories(table.getInt("cate_ID"), table.getString("cateName"), table.getString("cateIcon"), table.getString("cateStatus"));
@@ -148,14 +156,19 @@ public class RequestDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -165,9 +178,11 @@ public class RequestDAO {
     public int getTotalDeviceBySearching(Account acc, int proID) {
         Connection cn = null;
         int total = 0;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = " SELEcT count(*)as[Count]\n"
                         + "FROM Request \n"
                         + "join RequestType on Request.reqTypeID=RequestType.reqTypeID\n"
@@ -187,11 +202,13 @@ public class RequestDAO {
                 pst.setInt(2, proID);
 
                 ResultSet table = pst.executeQuery();
-                if (table != null && table.next()) {
+                if (table != null && table.next())
+                {
                     total = table.getInt("Count");
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
         }
 
         return total;
@@ -201,9 +218,11 @@ public class RequestDAO {
         ArrayList<Request> list = new ArrayList<>();
         AccountDAO d = new AccountDAO();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
-            if (cn != null) {
+            if (cn != null)
+            {
                 String sql = " SELEcT Request.[ReqID],Request.[AccountID],Request.[ManagerAccountID],\n"
                         + "\n"
                         + "Request.[Description] as [requestDes],\n"
@@ -246,8 +265,10 @@ public class RequestDAO {
                 pst.setInt(2, proID);
                 pst.setInt(3, index);
                 ResultSet table = pst.executeQuery();
-                if (table != null) {
-                    while (table.next()) {
+                if (table != null)
+                {
+                    while (table.next())
+                    {
                         int ReqID = table.getInt("ReqID");
 
                         ProductCategories cate = new ProductCategories(table.getInt("cate_ID"), table.getString("cateName"), table.getString("cateIcon"), table.getString("cateStatus"));
@@ -270,21 +291,26 @@ public class RequestDAO {
                 }
 
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
+
         } finally {
             try {
                 if (cn != null) {
+
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
         return list;
     }
 
-//test case
+
+
     //Get Req:
     public Request getRequestByID(int id) {
         Request rs = null;
@@ -418,7 +444,7 @@ public class RequestDAO {
         return list;
     }
 //POST UPDATE=======================================================================:
-
+    
     public int addRequest(Request request) {
         int result = 0;
         Connection cn = null;
@@ -449,6 +475,49 @@ public class RequestDAO {
                     cn.close();
                 }
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+    public int addRequestForClient(Request request) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "INSERT INTO [dbo].[Request]([AccountID],[ManagerAccountID],[ContactID],[StatusID],[reqTypeID],[Description])\n"
+                        + "VALUES (?,null,(SELECT Max([ContactID]) FROM [dbo].[Contact]),?,?,?)";
+
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, request.getAcc().getAccountID());
+//                pst.setInt(2, request.getAdminAcc().getAccountID());
+                pst.setInt(2, request.getStatusType().getStatusID());
+                pst.setInt(3, request.getRequestType().getRqTyID());
+                pst.setString(4, request.getDescription());
+
+                //Tra ve 0/1
+                result = pst.executeUpdate();
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -550,7 +619,8 @@ public class RequestDAO {
     public ArrayList<Request> getSortRequestByManagerID(String dateSort, String phoneSearch, String status, int managerID) {
         ArrayList<Request> list = new ArrayList<>();
         Connection cn = null;
-        try {
+        try
+        {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = "DECLARE @SortOrder varchar = ?\n"
@@ -607,14 +677,19 @@ public class RequestDAO {
 
             }
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            try {
-                if (cn != null) {
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
                     cn.close();
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -1220,6 +1295,96 @@ public class RequestDAO {
     }
 
 
+
+
+=======
+    public int getSizeOfRequest() {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "SELECT COUNT(*) as 'rowQuantity' FROM [dbo].[Request]";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        result = table.getInt("rowQuantity");
+                    }
+                }
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+    public int getSizeOfTaskByManagerID(int id) {
+        int result = 0;
+        Connection cn = null;
+        try
+        {
+            cn = DBUtils.makeConnection();
+            if (cn != null)
+            {
+
+                String sql
+                        = "SELECT COUNT(*) as 'rowQuantity' FROM [dbo].[Request]\n"
+                        + "WHERE [ManagerAccountID] = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet table = st.executeQuery();
+
+                if (table != null)
+                {
+                    while (table.next())
+                    {
+                        result = table.getInt("rowQuantity");
+                    }
+                }
+
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                if (cn != null)
+                {
+                    cn.close();
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
 
 
 }

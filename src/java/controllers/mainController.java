@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import DTO.Account;
 import DTO.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,16 +34,24 @@ public class mainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter())
+        {
             String url = "";
 
             String action = request.getParameter("action");
 
-            if (action == null) {
+            HttpSession session = request.getSession();
+            Account acc = (Account) session.getAttribute("loginUser");
+
+//            if(acc == null) action = null;
+            
+            if (action == null)
+            {
                 action = CONSTANTS.GETHOME;
             }
 
-            switch (action) {
+            switch (action)
+            {
                 case CONSTANTS.VIEWHOME:
                     url = "page/index.jsp";
                     break;
@@ -103,6 +113,7 @@ public class mainController extends HttpServlet {
                     url = "page/contactPage/contactPage.jsp";
                     break;
 
+
                 case CONSTANTS.GETTRAN:
                     url = "TransactionController";
                     break;
@@ -124,6 +135,7 @@ public class mainController extends HttpServlet {
                 
                     
                 
+
 //                    CALL GET => VIEW 
 //                    CALL FORM => GET => View 
                 case CONSTANTS.GETPRODUCT_ADMIN:
@@ -147,6 +159,30 @@ public class mainController extends HttpServlet {
                     break;
                 case CONSTANTS.LOGOUT:
                     url = "logoutController";
+                    break;
+                case CONSTANTS.TABLECART:
+                    url = "handleTableCart";
+                    break;
+                case CONSTANTS.REQUESTVALIDATE_ADMIN:
+                    url = "RequestValidation_Admin";
+                    break;
+                case CONSTANTS.PAYALLPRODUCTS:
+                    url = "PayAllProducts";
+                    break;
+                case CONSTANTS.VIEWPAYMENT:
+                    url = "page/paymentPage/payment.jsp";
+                    break;
+                case CONSTANTS.UPDATECART:
+                    url = "UpdateCart";
+                    break;
+                case CONSTANTS.GETTASK_TECHNICIAN:
+                    url = "TechnicianController_Technician";
+                    break;
+                case CONSTANTS.VIEW_TECHNICIAN:
+                    url = "page/technicianPage/technician.jsp";
+                    break;
+                case CONSTANTS.UPDATE_TECHNICIAN:
+                    url = "UpdateTechnician";
                     break;
                 default:
                     url = "testController";

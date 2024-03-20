@@ -119,7 +119,7 @@
                         <%=          item.getSpeed()%>
                     </td>
                     <td class="px-6 py-4 text-center capitalize">
-                        <%=          new ProductDAO().getCatenameByID(item.getCategory().getCate_ID())%>
+                        <%=          new ProductDAO().getCatenameByID(item.getCategory().getCate_ID())   %>
                     </td>
                     <td class="px-6 py-4 flex justify-center items-center">
                         <form action="mainController" />

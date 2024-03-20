@@ -52,6 +52,19 @@ public interface CONSTANTS {
 
     public final String APPLICATION = "application"; // qua trang viết đơn
 
+    
+    public final String GETCART = "getCart";// xu ly cart
+    public final String TABLECART = "tableCart"; // xu ly tableCart
+    public final String VIEWCART = "viewCart"; // qua gio hang, xu ly thanh toan
+    
+    public final String PAYALLPRODUCTS = "payAll";
+    public final String VIEWPAYMENT = "viewPayment";
+    public final String UPDATECART = "updateCart";
+    
+    
+    
+    
+
     //admin
     public final String GETPRODUCT_ADMIN = "getProductAdmin"; // Lấy thông tin admin
     public final String VIEWPRODUCT_ADMIN = "productAdmin"; // qua trang Admin
@@ -61,4 +74,13 @@ public interface CONSTANTS {
     public final String ADDINFO_ADMIN = "addAdmin"; // qua Add Servlet
     public final String BLOCK_ADMIN = "blockAdmin"; // qua Add Servlet
     public final String LOGOUT = "getLogout";
+    
+    public final String REQUESTVALIDATE_ADMIN = "validateRqAdmin";
+    
+    
+    //Technician
+    public final String GETTASK_TECHNICIAN = "getTaskTechni";
+    public final String VIEW_TECHNICIAN = "viewTechni";
+    public final String UPDATE_TECHNICIAN = "updateTechni";
+    
 }

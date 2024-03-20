@@ -77,6 +77,7 @@
         <servlet-class>controllers.ContractController</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>TransactionController</servlet-name>
         <servlet-class>controllers.TransactionController</servlet-class>
     </servlet>
@@ -87,6 +88,30 @@
     <servlet>
         <servlet-name>CreateRequestClient</servlet-name>
         <servlet-class>controllers.CreateRequestClient</servlet-class>
+
+        <servlet-name>handleTableCart</servlet-name>
+        <servlet-class>controllers.handleTableCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestValidation_Admin</servlet-name>
+        <servlet-class>controllers.RequestValidation_Admin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PayAllProducts</servlet-name>
+        <servlet-class>controllers.PayAllProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCart</servlet-name>
+        <servlet-class>controllers.UpdateCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TechnicianController_Technician</servlet-name>
+        <servlet-class>controllers.TechnicianController_Technician</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateTechnician</servlet-name>
+        <servlet-class>controllers.UpdateTechnician</servlet-class>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
@@ -153,6 +178,7 @@
         <url-pattern>/ContractController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+
         <servlet-name>TransactionController</servlet-name>
         <url-pattern>/TransactionController</url-pattern>
     </servlet-mapping>
@@ -163,6 +189,30 @@
     <servlet-mapping>
         <servlet-name>CreateRequestClient</servlet-name>
         <url-pattern>/CreateRequestClient</url-pattern>
+
+        <servlet-name>handleTableCart</servlet-name>
+        <url-pattern>/handleTableCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestValidation_Admin</servlet-name>
+        <url-pattern>/RequestValidation_Admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayAllProducts</servlet-name>
+        <url-pattern>/PayAllProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCart</servlet-name>
+        <url-pattern>/UpdateCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TechnicianController_Technician</servlet-name>
+        <url-pattern>/TechnicianController_Technician</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateTechnician</servlet-name>
+        <url-pattern>/UpdateTechnician</url-pattern>
+
     </servlet-mapping>
     <session-config>
         <session-timeout>
